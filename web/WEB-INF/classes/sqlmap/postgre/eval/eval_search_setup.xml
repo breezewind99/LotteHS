@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eval_search_setup">
+	<!-- 조건 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="map">
+		/* 조건 count selectCount */
+		select 
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_search_setup A
+		left join tbl_eval_event B on A.event_code = B.event_code
+		<!--where a.user_id=#{user_id} -->
+	</select>
+	
+	<!-- 조건 리스트 보기 selectList -->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 조건 리스트 보기 selectList */
+		select 
+			(${tot_cnt}-rownum+1) as idx
+			,*
+		from (
+			select 
+				ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as rownum
+				,A.ss_seq
+				,A.ss_fdate
+				,A.ss_tdate
+				,A.ss_fhour
+				,A.ss_thour
+				,A.ss_fminute
+				,A.ss_tminute
+				,A.ss_ftime
+				,A.ss_ttime
+				,A.event_code
+				,B.event_name
+				,B.event_status
+			from tbl_search_setup A 
+			left join tbl_eval_event b on A.event_code = B.event_code
+			<!--where a.user_id=#{user_id} -->
+			order by ${sort_idx} ${sort_dir}
+			limit ${top_cnt} offset (${start_cnt}-1)
+		) U
+	</select>
+	
+	<!-- 팝업 조건 count popSelectCount -->
+	<select id="popSelectCount" parameterType="map" resultType="map">
+		/* 팝업 조건 count popSelectCount */
+		select
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_search_setup A 
+		left join tbl_eval_event B on A.event_code = B.event_code
+		where a.event_code = #{event_code}
+	</select>
+	
+	<!-- 팝업 조건 리스트 보기 popSelectList -->
+	<select id="popSelectList" parameterType="map" resultType="map">
+		/* 팝업 조건 리스트 보기 popSelectList */
+		select
+			ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as idx 
+			,A.ss_seq
+			,A.ss_fdate
+			,A.ss_tdate
+			,A.ss_fhour
+			,A.ss_thour
+			,A.ss_fminute
+			,A.ss_tminute
+			,A.ss_ftime
+			,A.ss_ttime
+			,A.event_code
+			,B.event_name
+			,B.event_status
+		from tbl_search_setup A 
+		left join tbl_eval_event B on A.event_code = B.event_code
+		where A.event_code = #{event_code}
+		order by ${sort_idx} ${sort_dir}
+	</select>	
+
+	<!-- 조건 등록 insertSetup -->
+	<insert id="insertSetup" parameterType="map">
+		/* 조건 등록 insertSetup */
+		insert into tbl_search_setup (
+			user_id,event_code,ss_fdate,ss_tdate,ss_fhour,ss_thour,ss_fminute,ss_tminute,ss_ftime,ss_ttime
+		) values (
+			#{user_id},#{event_code},#{ss_fdate},#{ss_tdate},#{ss_fhour},#{ss_thour},#{ss_fminute},#{ss_tminute},#{ss_ftime},#{ss_ttime}
+		)
+	</insert>
+
+	<!-- 조건 수정 updateSetup -->
+	<insert id="updateSetup" parameterType="map">
+		/* 조건 수정 updateSetup */
+		update tbl_search_setup
+			set ss_fdate = #{ss_fdate}
+				,ss_tdate = #{ss_tdate}
+				,ss_fhour = #{ss_fhour}
+				,ss_thour = #{ss_thour}
+				,ss_fminute = #{ss_fminute}
+				,ss_tminute = #{ss_tminute}
+				,ss_ftime = #{ss_ftime}
+				,ss_ttime = #{ss_ttime}
+		where ss_seq = #{ss_seq}::int
+	</insert>
+	
+	<!-- 조건 삭제 deleteSearchSetup -->
+	<delete id="deleteSearchSetup" parameterType="string">
+		/* 조건 삭제 deleteSearchSetup */
+		delete from tbl_search_setup 
+		where ss_seq = #{ss_seq}::int
+	</delete>	
+</mapper>

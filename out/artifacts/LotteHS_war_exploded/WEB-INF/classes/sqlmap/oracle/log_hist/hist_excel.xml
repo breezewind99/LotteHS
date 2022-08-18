@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_excel">
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- excel저장 이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="lowerMap">
+		/* excel저장 이력 count selectCount */
+		select 
+			count(*) as tot_cnt
+			,ceil(count(*) / ${top_cnt}) as page_cnt
+		from tbl_excel_hist
+		where 1=1
+		and excel_datm between to_date(#{excel_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{excel_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='excel_id!=null and excel_id!=""'>
+		and excel_id like #{excel_id} || '%'
+		</if>
+		<if test='excel_name!=null and excel_name!=""'>
+		and excel_name like #{excel_name} || '%'
+		</if>
+	</select>
+	
+	<!-- excel저장 이력 조회  selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* excel저장 이력 조회  selectList */
+		select
+			(${tot_cnt}-rnum+1) as idx
+			,X.*
+		from 
+		(
+			select
+				rownum as rnum
+				,XX.*
+			from 
+			(
+				select
+					to_char(teh.excel_datm, 'YYYY-MM-DD HH24:MI:SS') as excel_datm
+					,teh.excel_id
+					,teh.excel_menu
+					,teh.excel_name
+					,teh.excel_ip
+					,(select part_name from tbl_user_group 
+						where part_depth = 1 
+						and bpart_code = tu.bpart_code) as bpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 2 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code) as mpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 3 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code 
+						and spart_code = tu.spart_code) as spart_name
+				from tbl_excel_hist teh
+				left join tbl_user tu on teh.excel_id = tu.user_id
+				where 1=1
+				and teh.excel_datm between to_date(#{excel_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{excel_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				<if test='excel_id!=null and excel_id!=""'>
+				and teh.excel_id like #{excel_id} || '%'
+				</if>
+				<if test='excel_name!=null and excel_name!=""'>
+				and teh.excel_name like #{excel_name} || '%'
+				</if>
+				order by ${sort_idx} ${sort_dir}
+			) XX
+		<![CDATA[
+			where rownum <= ${end_cnt}
+		) X
+		where X.rnum >= ${start_cnt}
+		]]>
+	</select>
+	
+	<!-- excel저장 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="lowerMap">
+		/* excel저장 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select
+			to_char(teh.excel_datm, 'YYYY-MM-DD HH24:MI:SS') as excel_datm
+			,teh.excel_id
+			,teh.excel_menu
+			,teh.excel_name
+			,teh.excel_ip
+			,(select part_name from tbl_user_group 
+				where part_depth = 1 
+				and bpart_code = tu.bpart_code) as bpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 2 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code) as mpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code 
+				and spart_code = tu.spart_code) as spart_name
+		from tbl_excel_hist teh
+		left join tbl_user tu on teh.excel_id = tu.user_id
+		where 1=1
+		and teh.excel_datm between to_date(#{excel_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{excel_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='excel_id!=null and excel_id!=""'>
+		and teh.excel_id like #{excel_id} || '%'
+		</if>
+		<if test='excel_name!=null and excel_name!=""'>
+		and teh.excel_name like #{excel_name} || '%'
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
+	
+	<!-- excel저장 이력 저장 insertExcelHist -->
+	<insert id="insertExcelHist" parameterType="map">
+		insert into tbl_excel_hist	/* excel저장 이력 저장 insertExcelHist */ 
+		(
+			excel_datm
+			,excel_id
+			,excel_menu
+			,excel_name
+			,excel_ip
+		)
+		values 
+		(
+			sysdate
+			,#{excel_id}
+			,#{excel_menu}
+			,#{excel_name}
+			,#{excel_ip}
+		)
+	</insert>
+	
+</mapper>

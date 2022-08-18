@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 사용자 잠금여부 체크 selectLockCheck -->
+	<select id="selectLockCheck" parameterType="string" resultType="int">
+		/* 사용자 잠금여부 체크 selectLockCheck */
+		select count(*) as lock_cnt
+		from tbl_login_result
+		where login_date = to_char(current_timestamp(3)::timestamp, 'YYYY-MM-DD') 
+		and login_id = #{login_id} 
+		and fail_cnt >= 5
+	</select>
+	
+	<!-- 사용자 아이디,비밀번호 체크 selectLoginUser -->
+	<select id="selectLoginUser" parameterType="map" resultType="map">
+		/* 사용자 아이디,비밀번호 체크 selectLoginUser */
+		select 
+			user_id
+			,user_name
+			,business_code
+			,bpart_code
+			,mpart_code
+			,spart_code
+			,user_level
+			,eval_yn
+			,coalesce(pass_expire_date, '') as pass_expire_date
+			,coalesce(pass_upd_date, '') as pass_upd_date
+			,to_char(current_timestamp(3), 'YYYY-MM-DD HH24:MI:SS') as login_datm
+			,fn_GetCodeName('USER_LEVEL', user_level) as level_name
+			,coalesce(user_ip, '') as user_ip
+			,(case when login_chk_datm is not null then current_date - login_chk_datm::date
+ 				else 0 end ) as login_check_day
+			,(case when pass_expire_date is not null then pass_expire_date::date - current_date 
+			 	else 0 end ) as pass_check_day
+			,'' as down_ip
+			,rec_down_yn
+			,lock_yn
+			,resign_yn
+			,use_yn
+		from tbl_user
+		where 1=1 
+		and user_id = #{login_id} 
+		and user_pass = #{login_pass} 
+	</select>
+	
+	<!-- 사용자 아이디,비밀번호 체크 selectAutoLoginUser -->
+	<select id="selectAutoLoginUser" parameterType="map" resultType="map">
+		/* 사용자 아이디,비밀번호 체크 selectAutoLoginUser */
+		select 
+			user_id
+			,user_name
+			,business_code
+			,bpart_code
+			,mpart_code
+			,spart_code
+			,user_level
+			,coalesce(pass_expire_date,'') as pass_expire_date
+			,coalesce(pass_upd_date,'') as pass_upd_date
+			,to_char(current_timestamp(3), 'YYYY-MM-DD HH24:MI:SS') as login_datm
+			,fn_GetCodeName('USER_LEVEL', user_level) as level_name
+			,coalesce(user_ip,'') as user_ip
+			,(case when login_chk_datm is not null then current_date - login_chk_datm::date
+ 				else 0 end ) as login_check_day
+			,(case when pass_expire_date is not null then pass_expire_date::date - current_date 
+			 	else 0 end ) as pass_check_day
+		from tbl_user
+		where user_id = #{login_id} 
+		and lock_yn = '0' 
+		and resign_yn = '0' 
+		and use_yn = '1'
+	</select>		
+	
+	<!-- 오늘 날짜 로그인 결과 데이터 존재 유무 체크 selectCountLoginResult -->
+	<select id="selectCountLoginResult" parameterType="string" resultType="int">
+		/* 오늘 날짜 로그인 결과 데이터 존재 유무 체크 selectCountLoginResult */
+		select count(*) cnt 
+		from tbl_login_result 
+		where login_date = to_char(current_timestamp(3), 'YYYY-MM-DD') 
+		and login_id = #{login_id}
+	</select>
+	
+	<!-- 사용자 아이디,비밀번호 체크 selectSSOLoginUser -->
+	<select id="selectSSOLoginUser" parameterType="map" resultType="map">
+		/* 사용자 아이디,비밀번호 체크 selectSSOLoginUser */
+		select 
+			user_id
+			,user_name
+			,business_code
+			,bpart_code
+			,mpart_code
+			,spart_code
+			,user_level
+			,eval_yn
+			,coalesce(pass_expire_date,'') as pass_expire_date
+			,coalesce(pass_upd_date,'') as pass_upd_date
+			,to_char(current_timestamp(3), 'YYYY-MM-DD HH24:MI:SS') as login_datm
+			,fn_GetCodeName('USER_LEVEL', user_level) as level_name
+			,coalesce(user_ip,'') as user_ip
+			,(case when login_chk_datm is not null then current_date - login_chk_datm::date
+ 				else 0 end ) as login_check_day
+			,(case when pass_expire_date is not null then pass_expire_date::date - current_date 
+			 	else 0 end ) as pass_check_day
+			,'' as down_ip
+			,lock_yn
+			,resign_yn
+			,use_yn
+			,rec_down_yn
+		from tbl_user
+		where user_id = #{login_id}
+	</select>
+	
+	<!-- 사용자 존재 유무 체크 selectIdCheck -->
+	<select id="selectIdCheck" parameterType="string" resultType="int">
+		/* 사용자 존재 유무 체크 selectIdCheck */
+		select count(*) as id_cnt
+		from tbl_user
+		where user_id = #{login_id}
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- 오늘 날짜 로그인 결과 신규 등록 insertLoginResult -->
+	<insert id="insertLoginResult" parameterType="string">
+		/* 오늘 날짜 로그인 결과 신규 등록 insertLoginResult */
+		insert into tbl_login_result (
+			login_date, login_id, succ_cnt, fail_cnt
+		) values (
+			to_char(current_timestamp(3), 'YYYY-MM-DD'), #{login_id}, 0, 0
+		)
+	</insert>
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- 오늘 날짜 로그인 결과 업데이트 updateLoginResult -->
+	<update id="updateLoginResult" parameterType="map">
+		/* 오늘 날짜 로그인 결과 업데이트 updateLoginResult */
+		update tbl_login_result
+		<set>
+			<if test='login_result=="1"'>succ_cnt = succ_cnt+1</if>
+			<if test='login_result=="0"'>fail_cnt = fail_cnt+1</if>
+		</set>
+		where 1=1
+		and login_date = to_char(current_timestamp(3), 'YYYY-MM-DD') 
+		and login_id = #{login_id}
+	</update>
+	
+</mapper>

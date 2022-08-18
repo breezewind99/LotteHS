@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="stat_user_dept">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 상담원/부서별 통계 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 상담원/부서별 통계 조회 selectList */
+		select 
+			*
+		from 
+		(
+			select 
+				tt.rec_date,
+				<choose>
+					<when test='s.date_type=="DD"'>
+					substr(tt.rec_date, 1, 4) || '-' || substr(tt.rec_date, 5, 2) || '-' || substr(tt.rec_date, 7, 2)
+					</when>
+					<when test='s.date_type=="MM"'>
+					substr(tt.rec_date, 1, 4) || '-' || substr(tt.rec_date, 5, 2)
+					</when>
+					<when test='s.date_type=="YY"'>
+					tt.rec_date
+					</when>
+					<when test='s.date_type=="HH"'>
+					tt.rec_date || '시'
+					</when>
+					<when test='s.date_type=="WW"'>
+					substr(tt.rec_date, 1, 4) || '-' || substr(tt.rec_date, 5, 2) || '-' || substr(tt.rec_date, 7, 1) || '주차'
+					</when>
+					<when test='s.date_type=="WD"'>
+					case tt.rec_date when '1' then '일'
+									 when '2' then '월'
+									 when '3' then '화'
+									 when '4' then '수'
+									 when '5' then '목'
+									 when '6' then '금'
+									 when '7' then '토'
+						else 'X' end
+					</when>
+				</choose> as v_rec_date
+				,(case tt.user_id when '' then '상담사 정보 없음'
+					else tt.user_id end) as user_id
+				<choose>
+					<when test='s.stat_type=="US"'>
+					,nvl(max(user_name), (case user_id when '' then '상담사 정보 없음' 
+												else user_id end))
+					</when>
+					<when test='s.stat_type=="DE"'>
+					,nvl((select part_name from tbl_user_group 
+							where business_code = substr(tt.user_id, 1, 2)
+						 	and bpart_code = substr(tt.user_id, 3, ${s._part_code_size})
+						 	and mpart_code = substr(tt.user_id, 3 + (${s._part_code_size}*1), ${s._part_code_size})
+							and spart_code = substr(tt.user_id, 3 + (${s._part_code_size}*2), ${s._part_code_size})
+							and part_depth = 3), '비매칭(' || substr(tt.user_id,-${s._part_code_size}) || ')')
+					</when>
+				</choose> as user_name
+				,sum(tt.tot_cnt) as tot_cnt
+				,sum(tt.tot_call_time) as tot_call_time
+				,round(sum(tt.tot_call_time)/sum(tt.tot_cnt)) as avg_call_time
+				,sum(tt.in_cnt) as in_cnt
+				,sum(tt.out_cnt) as out_cnt
+				,sum(tt.local_cnt) as local_cnt
+				,sum(tt.one_under_cnt) as one_under_cnt
+				,sum(tt.one_five_cnt) as one_five_cnt
+				,sum(tt.five_ten_cnt) as five_ten_cnt
+				,sum(tt.ten_over_cnt) as ten_over_cnt
+			from 
+			(
+				select
+				<choose>
+					<when test='s.date_type=="DD"'>
+					tsr.rec_date
+					</when>
+					<when test='s.date_type=="MM"'>
+					substr(tsr.rec_date, 1, 6)
+					</when>
+					<when test='s.date_type=="YY"'>
+					substr(tsr.rec_date, 1, 4)
+					</when>
+					<when test='s.date_type=="HH"'>
+					tsr.rec_hour
+					</when>
+					<when test='s.date_type=="WW"'>
+					substr(tsr.rec_date,1,6) || to_char(to_date(tsr.rec_date),'w')
+					</when>
+					<when test='s.date_type=="WD"'>
+					to_char(to_date(tsr.rec_date), 'd')
+					</when>
+				</choose> as rec_date
+				<choose>
+					<when test='s.stat_type=="US"'>
+					,tsr.user_id
+					</when>
+					<when test='s.stat_type=="DE"'>
+					,(tsr.business_code || tsr.bpart_code || tsr.mpart_code || tsr.spart_code)
+					</when>
+				</choose> as user_id
+					,tsr.tot_cnt
+					,tsr.tot_call_time
+					,tsr.in_cnt
+					,tsr.out_cnt
+					,tsr.local_cnt
+					,tsr.one_under_cnt
+					,tsr.one_five_cnt
+					,tsr.five_ten_cnt
+					,tsr.ten_over_cnt
+					,tb.user_name
+				from tbl_stat_record tsr 
+				left join tbl_user tb on tsr.user_id = tb.user_id
+				where tsr.rec_date between #{s.rec_date1} and #{s.rec_date2}
+				and tsr.rec_hour between #{s.rec_hour1} and #{s.rec_hour2}
+				<if test='s.bpart_code!=null and s.bpart_code!=""'>
+				and tsr.bpart_code = #{s.bpart_code}
+				</if>
+				<if test='s.mpart_code!=null and s.mpart_code!=""'>
+				and tsr.mpart_code = #{s.mpart_code}
+				</if>
+				<if test='s.spart_code!=null and s.spart_code!=""'>
+				and tsr.spart_code = #{s.spart_code}
+				</if>
+				<if test='s.user_id!=null and s.user_id!=""'>
+				and tsr.user_id = #{s.user_id}
+				</if>
+				<if test='s.user_name!=null and s.user_name!=""'>
+				and tb.user_name = #{s.user_name}
+				</if>
+				<if test='s._user_level!=null and s._user_level!="" and s._user_level>"A"'>
+					<choose>
+						<when test='s._user_level=="B"'>
+						and tsr.bpart_code = #{s._bpart_code}
+						</when>					
+						<when test='s._user_level=="C"'>
+						and tsr.bpart_code = #{s._bpart_code} 
+						and tsr.mpart_code = #{s._mpart_code}
+						</when>
+						<when test='s._user_level=="D"'>
+						and tsr.bpart_code = #{s._bpart_code} 
+						and tsr.mpart_code = #{s._mpart_code} 
+						and tsr.spart_code = #{s._spart_code}
+						</when>
+						<when test='s._user_level=="E"'>
+						and tsr.user_id = #{s._user_id}
+						</when>
+					</choose>
+				</if>
+			) tt
+			group by tt.rec_date, tt.user_id
+		) t
+		order by
+		<foreach collection='o' index='idx' item='item' open='' close='' separator=','>
+			${idx} ${item}
+		</foreach>
+	</select>
+</mapper>

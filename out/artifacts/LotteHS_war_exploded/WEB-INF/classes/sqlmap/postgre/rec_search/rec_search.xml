@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rec_search">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 검색조건 설정 조회 (조직도의 경우 강제로 노출순서를 첫번째로 조정) selectSearchConfig -->
+	<select id="selectSearchConfig" parameterType="map" resultType="map">
+		/* 검색조건 설정 조회 selectSearchConfig */
+		select 
+			conf_code
+			,conf_name
+			,conf_field
+			,conf_value
+			,default_used
+			,selected
+			,conf_etc
+			,(case conf_value when 'part_code' then 0 
+				else order_no end) as order_no
+		from (
+			select 
+				conf_code
+				,conf_name
+				,conf_field
+				,conf_value
+				,default_used
+				,default_used as selected
+				,coalesce(conf_etc,'') as conf_etc
+				,order_no
+			from tbl_search_config A
+			where business_code = #{business_code} 
+			and conf_type = 'S'
+		<if test='default_used!=null and default_used!=""'> 
+			and default_used = #{default_used} 
+		</if>
+			and use_yn = '1'
+			<![CDATA[
+			and user_level >= #{user_level}
+			and (select count(*) 
+					from tbl_search_user_config 
+					where user_id = #{user_id} 
+					and business_code = #{business_code} 
+					and conf_code = A.conf_code and 
+					conf_type = A.conf_type) < 1
+			]]>
+			union all
+			select 
+				A.conf_code
+				,B.conf_name
+				,B.conf_field
+				,B.conf_value
+				,B.default_used
+				,'1' as selected
+				,coalesce(B.conf_etc,'') as conf_etc
+				,A.order_no
+			from tbl_search_user_config A 
+			inner join tbl_search_config B on A.business_code = B.business_code 
+											and A.conf_code = B.conf_code 
+											and A.conf_type = B.conf_type
+			where A.user_id = #{user_id} 
+			and A.business_code = #{business_code} 
+			and A.conf_type = 'S' 
+			and B.use_yn = '1'
+			<![CDATA[
+				and B.user_level >= #{user_level}
+			]]>
+		) U
+		order by order_no asc
+	</select>
+
+	<!-- 목록 필드 설정 조회 selectResultConfig -->
+	<select id="selectResultConfig" parameterType="map" resultType="map">
+		/* 목록 필드 설정 조회 selectResultConfig */
+		select 
+			*
+		from (
+			select
+				conf_code
+				,conf_name
+				,conf_field
+				,order_used
+				,default_used
+				,default_used as selected
+				,coalesce(conf_etc,'') as conf_etc
+				,'0' as order_no
+				,conf_field as field_value
+				,conf_value as result_value
+			from tbl_search_config
+			where business_code = #{business_code} 
+			and conf_type = 'R' 
+			and conf_value = 'hidden' 
+			and use_yn = '1'
+			union all
+			select
+				conf_code
+				,conf_name
+				,conf_field
+				,order_used
+				,default_used
+				,default_used as selected
+				,coalesce(conf_etc,'') as conf_etc
+				,order_no
+				, conf_field as field_value
+				, (case when conf_value='normal' then 'n_' || conf_field 
+					else 'v_' || conf_value end) as result_value
+			from tbl_search_config A
+			where business_code = #{business_code} 
+			and conf_type = 'R'
+			<if test='default_used!=null and default_used!=""'> 
+			and default_used = #{default_used} 
+			</if>
+			and conf_value!='hidden' 
+			and use_yn = '1'
+			<![CDATA[
+			and user_level >= #{user_level}
+			and (select count(*) 
+					from tbl_search_user_config 
+					where user_id = #{user_id} 
+					and business_code = #{business_code} 
+					and conf_code = A.conf_code 
+					and conf_type = A.conf_type) < 1
+			]]>
+			union all
+			select
+				A.conf_code
+				,B.conf_name
+				,B.conf_field
+				,B.order_used
+				,B.default_used
+				,'1' as selected
+				,coalesce(B.conf_etc,'') as conf_etc
+				,A.order_no
+				,B.conf_field as field_value
+				,(case when B.conf_value='normal' then 'n_' || B.conf_field 
+					else 'v_' || B.conf_value end) as result_value
+			from tbl_search_user_config A 
+			inner join tbl_search_config B on A.business_code = B.business_code 
+											and A.conf_code = B.conf_code 
+											and A.conf_type = B.conf_type
+			where A.user_id = #{user_id} 
+			and A.business_code = #{business_code} 
+			and A.conf_type = 'R' 
+			and B.conf_value != 'hidden' 
+			and B.use_yn = '1'
+			<![CDATA[
+			and B.user_level >= #{user_level}
+			]]>
+		) U
+		order by order_no asc
+	</select>
+
+	<!-- 연관 녹취이력 조회 selectRelationList -->
+	<select id="selectRelationList" parameterType="map" resultType="map">
+		/* 연관 녹취이력 조회 selectRelationList */
+		select 
+			rec_seq
+			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,rec_date
+			,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+			,system_code
+			,rec_filename
+			,rec_keycode
+			,local_no
+			,user_id
+			,user_name
+			,coalesce(rec_store_code,'0') as rec_store_code
+			,web_url
+		from tbl_record
+		where 1=1
+		and rec_datm between (#{rec_date} || ' 00:00:00.000')::timestamp and (#{rec_date} || ' 23:59:59.997')::timestamp
+		and rec_keycode = #{rec_keycode}
+		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
+			<choose>
+				<when test='_user_level=="B"'>
+				and bpart_code = #{_bpart_code}
+				</when>
+				<when test='_user_level=="C"'>
+				and bpart_code = #{_bpart_code} 
+				and mpart_code = #{_mpart_code}
+				</when>
+				<when test='_user_level=="D"'>
+				and bpart_code = #{_bpart_code} 
+				and mpart_code = #{_mpart_code} 
+				and spart_code = #{_spart_code}
+				</when>
+				<when test='_user_level=="E"'>
+				and user_id = #{_user_id}
+				</when>
+			</choose>
+		</if>
+		order by rec_datm asc, rec_start_time asc			
+	</select>
+	
+	<!-- 상담APP 연동페이지 selectRelationList2 -->
+	<select id="selectRelationList2" parameterType="map" resultType="map">
+		/* 상담APP 연동페이지 selectRelationList2 */
+		select 
+			rec_seq
+			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			, rec_date
+			,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+			,to_char(rec_end_time, 'HH24:MI:SS') as rec_end_time
+			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+			,system_code
+			,company_code
+			,business_code
+			,local_no
+			,channel_no
+			,rec_keycode
+			,rec_inout
+			,rec_filename
+			,user_id
+			,user_name
+			,cust_id
+			,cust_name
+			,cust_tel
+			,cust_jumin
+			,web_url
+			,coalesce(rec_enc_code, '0') as rec_enc_code
+			,coalesce(rec_store_code, '0') as rec_store_code
+			,coalesce((select system_ip from tbl_system where system_code = tbl_record.system_code), '') as system_ip
+		from tbl_record
+		where 1=1
+		and rec_datm between (#{rec_date} || ' 00:00:00.000')::timestamp and (#{rec_date} || ' 23:59:59.997')::timestamp
+		and rec_keycode = #{rec_keycode}
+		and local_no = #{local_no}
+		order by rec_datm asc, rec_start_time asc
+	</select>
+	
+	<!-- 상담APP 연동페이지 selectRelationList4-->
+	<select id="selectRelationList4" parameterType="map" resultType="map">
+		/* 상담APP 연동페이지 selectRelationList4 */
+		select 
+			rec_seq
+			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,rec_date
+			,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+			,to_char(rec_end_time, 'HH24:MI:SS') as rec_end_time
+			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+			,system_code
+			,company_code
+			,business_code
+			,local_no
+			,channel_no
+			,rec_keycode
+			,rec_inout
+			,rec_filename
+			,user_id
+			,user_name
+			,cust_id
+			,cust_name
+			,cust_tel
+			,cust_jumin
+			,web_url
+			,coalesce(rec_enc_code, '0') as rec_enc_code
+			,coalesce(rec_store_code, '0') as rec_store_code
+			,coalesce((select system_ip from tbl_system
+						where system_code = tbl_record.system_code), '') as system_ip
+		from tbl_record
+		where 1=1
+		and rec_datm between (#{rec_date} || ' 00:00:00.000')::timestamp and (#{rec_date} || ' 23:59:59.997')::timestamp
+		and custom_fld_04 = #{rec_keycode}
+        and rec_end_gubun = 'S'			
+		order by rec_datm asc, rec_start_time asc
+	</select>
+
+	<!-- 상담APP 연동페이지 selectRelationList3 -->
+	<select id="selectRelationList3" parameterType="map" resultType="map">
+		/* 상담APP 연동페이지 selectRelationList3 */
+		select 
+			rec_seq
+			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,rec_date
+			,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+			,to_char(rec_end_time, 'HH24:MI:SS') as rec_end_time
+			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+			,system_code
+			,company_code
+			,business_code
+			,local_no
+			,channel_no
+			,rec_keycode
+			,rec_inout
+			,rec_filename
+			,user_id,user_name
+			,cust_id
+			,cust_name
+			,cust_tel
+			,cust_jumin
+			,web_url
+			,coalesce(rec_enc_code, '0') as rec_enc_code
+			,coalesce(rec_store_code, '0') as rec_store_code
+			,coalesce((select system_ip from tbl_system 
+						where system_code = tbl_record.system_code),'') as system_ip
+		from tbl_record
+		where 1=1
+		and rec_datm between (#{rec_date} || ' 00:00:00.000')::timestamp and (#{rec_date} || ' 23:59:59.997')::timestamp
+		and rec_keycode = #{rec_keycode}
+		and local_no = #{local_no}			
+		and user_id= #{user_id}
+		order by rec_datm asc, rec_start_time asc
+	</select>
+	
+	<!-- 단일 녹취이력 조회 selectItem  -->
+	<select id="selectItem" parameterType="map" resultType="map">
+		/* 단일 녹취이력 조회 selectItem  */
+		select 
+			to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,rec_date
+			,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+			,to_char(rec_end_time, 'HH24:MI:SS') as rec_end_time
+			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+			,system_code
+			,company_code
+			,business_code
+			,local_no
+			,channel_no
+			,rec_keycode
+			,rec_inout
+			,rec_filename
+			,user_id
+			,user_name
+			,cust_id
+			,cust_name
+			,cust_tel
+			,cust_jumin
+			,web_url
+			,coalesce(rec_enc_code,'0') rec_enc_code
+			,coalesce(rec_store_code,'0') rec_store_code
+			,coalesce((select system_ip from tbl_system  
+						where system_code = tbl_record.system_code),'') as system_ip
+		from tbl_record
+		where 1=1
+		<if test='rec_datm!=null and rec_datm!=""'>
+		and rec_datm = #{rec_datm}::timestamp
+		</if>
+		<if test='rec_date!=null and rec_date!=""'>
+		and rec_date = #{rec_date}
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+		and local_no = #{local_no}
+		</if>
+		<if test='rec_keycode!=null and rec_keycode!=""'>
+			and rec_keycode = #{rec_keycode}
+		</if>
+		<if test='rec_filename!=null and rec_filename!=""'>
+			and rec_filename = #{rec_filename}
+		</if>
+		limit 1
+	</select>
+
+	<!-- 녹취이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="map">
+		/* 녹취이력 count selectCount */
+		select 
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_record
+		where 1=1
+		and rec_datm between (#{rec_date1} || ' 00:00:00.000')::timestamp and (#{rec_date2} || ' 23:59:59.997')::timestamp
+		and rec_start_time between #{rec_start_time1}::time and #{rec_start_time2}::time
+		and rec_call_time between #{rec_call_time1}::time and #{rec_call_time2}::time
+		<if test='rec_succ_code!=null and rec_succ_code!=""'>
+		and rec_succ_code = #{rec_succ_code}
+		</if>			
+		<if test='system_code!=null and system_code!=""'>
+		and system_code = #{system_code}
+		</if>
+		<choose>
+			<when test='local_no1!=null and local_no1!="" and local_no2!=null and local_no2!=""'>
+				and local_no between #{local_no1} and #{local_no2}
+			</when>
+			<when test='local_no1!=null and local_no1!="" and (local_no2==null or local_no2=="")'>
+				and local_no like #{local_no1} || '%'
+			</when>
+			<when test='(local_no1==null or local_no1=="") and local_no2!=null and local_no2!=""'>
+				and local_no like #{local_no2} || '%'
+			</when>
+		</choose>
+		<if test='bpart_code!=null and bpart_code!=""'>
+		and bpart_code = #{bpart_code}
+		</if>
+		<if test='mpart_code!=null and mpart_code!=""'>
+		and mpart_code = #{mpart_code}
+		</if>
+		<if test='spart_code!=null and spart_code!=""'>
+		and spart_code = #{spart_code}
+		</if>
+		<if test='rec_inout!=null and rec_inout!=""'>
+		and rec_inout = #{rec_inout}
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and user_name like #{user_name} || '%'
+		</if>
+		<if test='cust_id!=null and cust_id!=""'>
+		and cust_id like #{cust_id} || '%'
+		</if>
+		<if test='cust_name!=null and cust_name!=""'>
+		and cust_name like #{cust_name} || '%'
+		</if>
+		<if test='cust_tel!=null and cust_tel!=""'>
+		and cust_tel like '%' || #{cust_tel} || '%'
+		</if>
+		<if test='rec_keycode!=null and rec_keycode!=""'>
+		and rec_keycode = #{rec_keycode}
+		</if>
+		<if test='rec_filename!=null and rec_filename!=""'>
+		and rec_filename like #{rec_filename} || '%'
+		</if>
+		<if test='rec_abort_code!=null and rec_abort_code!=""'>
+		and rec_abort_code = #{rec_abort_code}
+		</if>
+		<if test='rec_store_code!=null and rec_store_code!=""'>
+		and rec_store_code = #{rec_store_code}
+		</if>
+		<if test='rec_mystery_code!=null and rec_mystery_code!=""'>
+		and rec_mystery_code = #{rec_mystery_code}
+		</if>
+		<if test='user_list!=null and user_list!=""'>
+		and user_id in (${user_list})
+		</if>
+		<if test='custom_fld_01!=null and custom_fld_01!=""'>
+		and custom_fld_01 = #{custom_fld_01}
+		</if>
+		<if test='custom_fld_02!=null and custom_fld_02!=""'>
+		and custom_fld_02 = #{custom_fld_02}
+		</if>
+		<if test='custom_fld_03!=null and custom_fld_03!=""'>
+		and custom_fld_03 = #{custom_fld_03}
+		</if>
+		<if test='custom_fld_04!=null and custom_fld_04!=""'>
+		and custom_fld_04 = #{custom_fld_04}
+		</if>
+		<if test='custom_fld_05!=null and custom_fld_05!=""'>
+		and custom_fld_05 = #{custom_fld_05}
+		</if>
+		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
+			<choose>
+				<when test='_user_level=="B"'>
+					and bpart_code = #{_bpart_code}
+				</when>
+				<when test='_user_level=="C"'>
+					and bpart_code = #{_bpart_code} 
+					and mpart_code = #{_mpart_code}
+				</when>
+				<when test='_user_level=="D"'>
+					and bpart_code = #{_bpart_code} 
+					and mpart_code = #{_mpart_code} 
+					and spart_code = #{_spart_code}
+				</when>
+				<when test='_user_level=="E"'>
+					and user_id = #{_user_id}
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<!-- 녹취이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 녹취이력 조회 selectList */
+		select 
+			(${s.tot_cnt}-rownum+1) as idx
+			,*
+		from (
+			select
+				ROW_NUMBER() OVER(order by ${s.sort_idx} ${s.sort_dir}) as rownum
+				,rec_seq
+				,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+				,rec_keycode
+				,rec_filename
+				,local_no
+				,system_code
+				,business_code
+				,bpart_code
+				,mpart_code
+				,spart_code
+				,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+				,user_name
+				,cust_id
+				,custom_fld_01
+				,custom_fld_02
+				,custom_fld_03
+				,custom_fld_04
+				,custom_fld_05
+				,rec_stt_code
+			<foreach collection='r' index='idx' item='item' open=',' close='' separator=','>
+				<choose>			
+					<when test='idx=="v_rec_datm"'>
+						to_char(${item}, 'YYYYMMDD') as ${idx}
+					</when>
+					<when test='idx=="v_rec_start_time"'>
+						to_char(${item}, 'HH24:MI:SS') as ${idx}
+					</when>
+					<when test='idx=="v_rec_end_time"'>
+						to_char(${item}, 'HH24:MI:SS') as ${idx}
+					</when>
+					<when test='idx=="v_rec_call_time"'>
+						to_char(${item}, 'HH24:MI:SS') as ${idx}
+					</when>	
+					<when test='idx=="v_rec_inout"'>
+						(case ${item} when 'I' then '인' 
+									  when 'O' then '아웃' 
+									  when 'L' then '내선' 
+							else ${item} end) as ${idx}
+					</when>
+					<when test='idx=="v_rec_succ_code"'>
+						(case ${item} when '1' then '성공' 
+									  when '0' then '실패' 
+							else ${item} end) as ${idx}
+					</when>	
+					<when test='idx=="v_rec_bak_code"'>
+						(case ${item} when '0' then '대기' 
+									  when '1' then '성공' 
+									  when '2' then '실패' 
+							else ${item} end) as ${idx}
+					</when>	
+					<when test='idx=="v_cust_tel"'>
+						${item} as ${idx}
+					</when>
+					<when test='idx=="v_url"'>
+						'link' as ${idx}
+					</when>	
+					<when test='idx=="v_download"'>
+						'down' as ${idx}
+					</when>
+					<when test='idx=="v_memo"'>
+						coalesce(memo_cnt,0) as ${idx}
+					</when>
+					<otherwise>
+						${item} as ${idx}
+					</otherwise>
+				</choose>
+			</foreach>				
+			from tbl_record
+			where 1=1
+			and rec_datm between (#{s.rec_date1} || ' 00:00:00.000')::timestamp and (#{s.rec_date2} || ' 23:59:59.997')::timestamp
+			and rec_start_time between #{s.rec_start_time1}::time and #{s.rec_start_time2}::time
+			and rec_call_time between #{s.rec_call_time1}::time and #{s.rec_call_time2}::time
+			<if test='s.rec_succ_code!=null and s.rec_succ_code!=""'>
+			and rec_succ_code = #{s.rec_succ_code}
+			</if>				
+			<if test='s.system_code!=null and s.system_code!=""'>
+			and system_code = #{s.system_code}
+			</if>
+			<choose>
+				<when test='s.local_no1!=null and s.local_no1!="" and s.local_no2!=null and s.local_no2!=""'>
+					and local_no between #{s.local_no1} and #{s.local_no2}
+				</when>
+				<when test='s.local_no1!=null and s.local_no1!="" and (s.local_no2==null or s.local_no2=="")'>
+					and local_no like #{s.local_no1} || '%'
+				</when>
+				<when test='(s.local_no1==null or s.local_no1=="") and s.local_no2!=null and s.local_no2!=""'>
+					and local_no like #{s.local_no2} || '%'
+				</when>		
+			</choose>	
+			<if test='s.bpart_code!=null and s.bpart_code!=""'>
+			and bpart_code = #{s.bpart_code}
+			</if>
+			<if test='s.mpart_code!=null and s.mpart_code!=""'>
+			and mpart_code = #{s.mpart_code}
+			</if>
+			<if test='s.spart_code!=null and s.spart_code!=""'>
+			and spart_code = #{s.spart_code}
+			</if>					
+			<if test='s.rec_inout!=null and s.rec_inout!=""'>
+			and rec_inout = #{s.rec_inout}
+			</if>			
+			<if test='s.user_id!=null and s.user_id!=""'>
+			and user_id like '%' || #{s.user_id} || '%'
+			</if>
+			<if test='s.user_name!=null and s.user_name!=""'>
+			and user_name like '%' || #{s.user_name} || '%'
+			</if>	
+			<if test='s.cust_id!=null and s.cust_id!=""'>
+			and cust_id like '%' || #{s.cust_id} || '%'
+			</if>	
+			<if test='s.cust_name!=null and s.cust_name!=""'>
+			and cust_name like '%' || #{s.cust_name} || '%'
+			</if>	
+			<if test='s.cust_tel!=null and s.cust_tel!=""'>
+			and cust_tel like '%' ||  #{s.cust_tel} || '%'
+			<!--and cust_tel=encode(encrypt(convert_to(#{s.cust_tel},'utf8'), 'cnet', 'aes'), 'hex')-->
+			</if>
+			<if test='s.rec_keycode!=null and s.rec_keycode!=""'>
+			and rec_keycode = #{s.rec_keycode}
+			</if>
+			<if test='s.rec_filename!=null and s.rec_filename!=""'>
+			and rec_filename like #{s.rec_filename} || '%'
+			</if>
+			<if test='s.rec_abort_code!=null and s.rec_abort_code!=""'>
+			and rec_abort_code = #{s.rec_abort_code}
+			</if>
+			<if test='s.rec_store_code!=null and s.rec_store_code!=""'>
+			and rec_store_code = #{s.rec_store_code}
+			</if>
+			<if test='s.rec_mystery_code!=null and s.rec_mystery_code!=""'>
+			and rec_mystery_code = #{s.rec_mystery_code}
+			</if>
+			<if test='s.user_list!=null and s.user_list!=""'>
+			and user_id in (${s.user_list})
+			</if>
+			<if test='s.custom_fld_01!=null and s.custom_fld_01!=""'>
+			and custom_fld_01 = #{s.custom_fld_01}
+			</if>
+			<if test='s.custom_fld_02!=null and s.custom_fld_02!=""'>
+		 	and custom_fld_02 = #{s.custom_fld_02}
+			</if>
+			<if test='s.custom_fld_03!=null and s.custom_fld_03!=""'>
+			and custom_fld_03 = #{s.custom_fld_03}
+			</if>
+			<if test='s.custom_fld_04!=null and s.custom_fld_04!=""'>
+		 	and custom_fld_04 like '%' || #{s.custom_fld_04} || '%'
+			</if>
+		<if test='s.custom_fld_05!=null and s.custom_fld_05!=""'>
+		 	and custom_fld_05 = #{s.custom_fld_05}
+		</if>
+		<if test='s._user_level!=null and s._user_level!="" and s._user_level>"A"'>
+			<choose>
+				<when test='s._user_level=="B"'>
+					and bpart_code = #{s._bpart_code}
+				</when>			
+				<when test='s._user_level=="C"'>
+					and bpart_code = #{s._bpart_code} 
+					and mpart_code = #{s._mpart_code}
+				</when>
+				<when test='s._user_level=="D"'>
+					and bpart_code = #{s._bpart_code} 
+					and mpart_code = #{s._mpart_code} 
+					and spart_code = #{s._spart_code}
+				</when>
+				<when test='s._user_level=="E"'>
+					and user_id = #{s._user_id}
+				</when>
+			</choose>			
+		</if>
+			order by ${s.sort_idx} ${s.sort_dir}
+			limit ${s.top_cnt} offset (${s.start_cnt}-1)
+		) U
+	</select>
+	
+	<!-- 고객정보 누락 정보 조회 selectOmission  -->
+	<select id="selectOmission" parameterType="map" resultType="map">
+		/* 고객정보 누락 정보 조회 selectOmission */
+		select
+			coalesce(cust_id, '') as cust_id
+		  	,coalesce(rec_keycode, '') as rec_keycode
+		  	,coalesce(custom_fld_02, '') as custom_fld_02
+		  	,coalesce(custom_fld_03, '') as custom_fld_03
+		  	,coalesce(custom_fld_04, '') as custom_fld_04
+		from tbl_record
+		where 1=1
+		and rec_datm = #{rec_datm}::timestamp
+		and local_no = #{local_no}
+		and rec_filename = #{rec_filename}
+	</select>
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
+	
+	<!-- 고객 정보 누락 업데이트 updateOmission -->
+	<update id="updateOmission" parameterType="map">
+		/* 고객 정보 누락 업데이트 updateOmission */
+		update tbl_record
+		<set>
+			cust_id = #{cust_id}
+			,rec_keycode = #{rec_keycode}
+			,custom_fld_02 = #{custom_fld_02}
+			,custom_fld_03 = #{custom_fld_03}
+			,custom_fld_04 = #{custom_fld_04}
+		</set>
+		where 1=1
+		and rec_datm = #{rec_datm}::timestamp
+		and local_no = #{local_no}
+		and rec_filename = #{rec_filename}
+	</update>
+
+	<!-- 필수중단 업데이트 updateAbortCode -->
+	<update id="updateAbortCode" parameterType="map">
+		/* 필수중단 업데이트 updateAbortCode */
+		update tbl_record
+			set rec_abort_code = #{rec_abort_code}
+		where (rec_date = #{rec_date2} and rec_start_time between #{rec_start_time}::time and #{rec_end_time}::time)
+		   or (rec_date = #{rec_date2} and rec_end_time between #{rec_start_time}::time and #{rec_end_time}::time)
+	</update>
+
+</mapper>

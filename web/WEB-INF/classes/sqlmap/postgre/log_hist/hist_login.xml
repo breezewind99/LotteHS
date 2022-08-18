@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_login">
+
+	<!-- 로그인 이력 count selectCount  -->
+	<select id="selectCount" parameterType="map" resultType="map">
+		/* 로그인 이력 count selectCount */
+		select 
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_login_hist
+		where login_datm between (#{login_date1} || ' 00:00:00.000')::timestamp and (#{login_date2} || ' 23:59:59.997')::timestamp
+		<if test='login_id!=null and login_id!=""'>
+		and login_id like #{login_id} || '%'
+		</if>
+		<if test='login_name!=null and login_name!=""'>
+		and login_name like #{login_name} || '%'
+		</if>	
+		<if test='login_type!=null and login_type!=""'>
+		and login_type = #{login_type}
+		</if>	
+		<if test='login_result!=null and login_result!=""'>
+		and login_result = #{login_result}
+		</if>	
+	</select>
+	
+	<!-- 로그인 이력 조회  selectList-->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 로그인 이력 조회  selectList */
+		select 
+			(${tot_cnt}-rownum+1) as idx
+			,*
+		from (
+			select
+				ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as rownum
+				,login_type
+				,(case login_type when 'I' then '로그인' 
+					else '로그아웃' end) as v_login_type
+				,to_char(login_datm, 'YYYY-MM-DD HH24:MI:SS') as login_datm
+				,login_id
+				,login_name
+				,login_ip
+				,login_result
+				,(case login_result when '1' then '성공' 
+					else '실패' end) as v_login_result
+			from tbl_login_hist
+			where login_datm between (#{login_date1} || ' 00:00:00.000')::timestamp and (#{login_date2} || ' 23:59:59.997')::timestamp
+			<if test='login_id!=null and login_id!=""'>
+			and login_id like #{login_id} || '%'
+			</if>
+			<if test='login_name!=null and login_name!=""'>
+			and login_name like #{login_name} || '%'
+			</if>	
+			<if test='login_type!=null and login_type!=""'>
+			and login_type = #{login_type}
+			</if>	
+			<if test='login_result!=null and login_result!=""'>
+			and login_result = #{login_result}
+			</if>					
+			order by ${sort_idx} ${sort_dir}
+			limit ${top_cnt} offset (${start_cnt}-1)
+		) U
+	</select>
+	
+	<!-- 로그인 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="map">
+		/* 로그인 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			login_type
+			,(case login_type when 'I' then '로그인' 
+				else '로그아웃' end) as v_login_type
+			, to_char(login_datm, 'YYYY-MM-DD HH24:MI:SS') as login_datm
+			, login_id
+			, login_name
+			, login_ip
+			, login_result
+			,(case login_result when '1' then '성공' 
+				else '실패' end) as v_login_result
+		from tbl_login_hist
+		where login_datm between (#{login_date1} || ' 00:00:00.000')::timestamp and (#{login_date2} || ' 23:59:59.997')::timestamp
+		<if test='login_id!=null and login_id!=""'>
+		and login_id like #{login_id} || '%'
+		</if>
+		<if test='login_name!=null and login_name!=""'>
+		and login_name like #{login_name} || '%'
+		</if>	
+		<if test='login_type!=null and login_type!=""'>
+		and login_type = #{login_type}
+		</if>	
+		<if test='login_result!=null and login_result!=""'>
+		and login_result = #{login_result}
+		</if>		
+		order by ${sort_idx} ${sort_dir}
+	</select>
+		
+	<!-- 로그인 이력 저장 insertLoginHist -->
+	<insert id="insertLoginHist" parameterType="map">
+		/* 로그인 이력 저장 insertLoginHist */
+		insert into tbl_login_hist (
+			login_datm, login_id, login_name, login_ip, login_type, login_result
+		) values (
+			current_timestamp(3)::timestamp, #{login_id}, #{login_name}, #{login_ip}, #{login_type}, #{login_result}
+		)
+	</insert>	
+</mapper>

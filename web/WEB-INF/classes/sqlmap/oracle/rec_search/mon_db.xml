@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mon_db">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 모니터링 리스트 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 모니터링 리스트 조회 selectList */
+		select 
+			cm.state
+			,cm.channel
+			,cm.system_code
+			,cm.login
+			,cm.user_id
+			,cm.user_name
+			,cm.bpart_code
+			,cm.mpart_code
+			,cm.spart_code
+			,cm.ani
+			,cm.phone
+			,cm.datetime
+			,(lpad(trunc((to_date(to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') - to_date(cm.datetime, 'YYYY-MM-DD HH24:MI:SS'))*24), 2, '0')
+				|| ':' || lpad(trunc(mod((to_date(to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') - to_date(cm.datetime, 'YYYY-MM-DD HH24:MI:SS'))*24, 1)*60), 2, '0')
+				|| ':' || lpad(trunc(round(mod((to_date(to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') - to_date(cm.datetime, 'YYYY-MM-DD HH24:MI:SS'))*24*60, 1)*60)), 2, '0')
+			) as call_time
+		    ,ts.system_ip
+		    ,nvl(ts.backup_ip, '') as backup_ip
+			,cm.inout as rec_inout
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = cm.bpart_code 
+				and mpart_code = cm.mpart_code 
+				and spart_code = cm.spart_code) as spart_name
+		from crec_monitoring cm
+		inner join tbl_system ts on cm.system_code = ts.system_code
+		where 1=1
+		<if test='bpart_code!=null and bpart_code!=""'>
+		and cm.bpart_code = #{bpart_code}
+		</if>
+		<if test='mpart_code!=null and mpart_code!=""'>
+		and cm.mpart_code = #{mpart_code}
+		</if>
+		<if test='spart_code!=null and spart_code!=""'>
+		and cm.spart_code = #{spart_code}
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+		and cm.phone = #{local_no}
+		</if>
+		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
+			<choose>
+				<when test='_user_level=="B"'>
+					and cm.bpart_code = #{_bpart_code}
+				</when>	
+				<when test='_user_level=="C"'>
+					and cm.bpart_code = #{_bpart_code} 
+					and cm.mpart_code = #{_mpart_code}
+				</when>
+				<when test='_user_level=="D"'>
+					and cm.bpart_code = #{_bpart_code} 
+					and cm.mpart_code = #{_mpart_code} 
+					and cm.spart_code = #{_spart_code}
+				</when>
+				<when test='_user_level=="E"'>
+					and cm.user_id = #{_user_id}
+				</when>
+			</choose>
+		</if>
+		order by 
+		<choose>
+			<when test='mon_order=="in"'>
+				cm.state desc, cm.inout asc
+			</when>
+			<when test='mon_order=="ot"'>
+				cm.state desc, cm.inout desc
+			</when>
+			<when test='mon_order=="tm"'>
+				cm.state desc, cm.datetime desc
+			</when>
+			<when test='mon_order=="ln"'>
+				cm.phone asc
+			</when>
+			<when test='mon_order=="um"'>
+				cm.user_name asc
+			</when>
+			<otherwise>
+				to_number(cm.channel) asc
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 녹취전체 건수 및 진행중 건수 조회 selectCountList-->
+	<select id="selectCountList" parameterType="map" resultType="lowerMap">
+		/* 녹취전체 건수 및 진행중 건수 조회 selectCountList */
+		select
+			(select count(*) from tbl_record
+				where rec_date = to_char(sysdate,'YYYYMMDD')) as rec_count
+			,(select count(*) from crec_monitoring
+				where state = '1') as mon_count
+			,to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') as time
+		from dual
+	</select>
+	
+</mapper>

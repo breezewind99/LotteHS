@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="db_dual">
+
+	<!-- 반대편 DB 장애여부 확인 getObstacleDbCnt -->
+	<select id="getObstacleDbCnt" resultType="int">
+		/* 반대편 DB 장애여부 확인 getObstacleDbCnt */
+		select count(*) cnt
+		from tbl_obstacle_db
+		where db_repair_yn = 'n'
+	</select>
+	
+	<!-- 반대편 DB 장애로그 처리완료여부 확인 (cnt==0 : 처리완료) getObstacleLogCnt -->
+	<select id="getObstacleLogCnt" resultType="int">
+		/* 반대편 DB 장애로그 처리완료여부 확인 getObstacleLogCnt */
+		select count(*) cnt
+		from tbl_obstacle
+		where repair_yn = 'n'
+	</select>
+
+	<!-- 장애로그 입력 : 장애시간(웹서버 시간 :: 두 DB의 시간이 다를 수 있으므로 ), 쿼리문 입력 insertObstacleLog -->
+	<insert id="insertObstacleLog" parameterType="map">
+		/* 장애로그 입력 insertObstacleLog */
+		insert into tbl_obstacle(raise_time, obs_query)
+		values (#{raise_time}::timestamp, #{sql})
+	</insert>
+
+	<!-- 반대편 DB 장애 입력 insertObstacleDb -->
+	<insert id="insertObstacleDb" parameterType="map">
+		/* 반대편 DB 장애 입력 insertObstacleDb */
+		<selectKey resultType="int" keyProperty="obsDbCnt" order="BEFORE">
+			select count(*) obsDbCnt from tbl_obstacle_db where db_repair_yn = 'n'
+		</selectKey>
+		<if test='obsDbCnt==0'>
+			insert into tbl_obstacle_db(
+				db_raise_time, db_repair_yn, db_repair_time
+			)values(
+				#{db_raise_time}::timestamp, 'n', null
+			)
+		</if>
+		<if test='obsDbCnt!=0'>
+			update tbl_obstacle_db set db_repair_yn='' where 1=0
+		</if>
+	</insert>
+	
+	<!-- 테스트 -->
+	<insert id="test" parameterType="String">
+		<selectKey resultType="string" keyProperty="sheet_code" order="BEFORE">
+			select lpad(cast(coalesce(max(cast(sheet_code as int)), 0) + 1 as varchar), 4, '0000') as sheet_code
+			from tbl_eval_sheet
+		</selectKey>
+		insert into z_test(f2) values (#{sheet_code}+' :: '+coalesce(#{arg},''))
+	</insert>	
+	
+	<!-- 반대편 DB 장애 완료 처리 : 미사용 (프로시저에서 사용) updateObstacleDbRepairEnd -->
+	<update id="updateObstacleDbRepairEnd" parameterType="String">
+		/* 반대편 DB 장애 완료 처리 updateObstacleDbRepairEnd */
+		update tbl_obstacle_db
+		set db_repair_yn = 'y'
+			,db_repair_time = #{db_repair_time}::timestamp
+		where db_repair_yn = 'n'
+	</update>
+
+</mapper>

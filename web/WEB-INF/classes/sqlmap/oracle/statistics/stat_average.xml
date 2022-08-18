@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="stat_average">
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 월 통계 > 평가점수(차수가로) 이벤트코드 + 사용자ID + 차수 = 유일하다  selectListAverage -->
+	<select id="selectListAverage" parameterType="map" resultType="lowerKeyHashMap">
+		/* 부서별 항목별 통계 - 평가점수 selectListAverage*/
+		with user_count as (
+			select 
+				AA.bpart_code
+				,AA.mpart_code
+				,count(AA.user_id) as eval_cnt
+				,AA.eval_order
+			from
+			(
+				select 
+					A.bpart_code
+					,A.mpart_code
+					,A.user_id
+					,max(A.eval_order) as eval_order
+				from tbl_eval_event_result_list A 
+				inner join tbl_eval_event_result_item B on A.rec_filename = B.rec_filename 
+															and A.event_code = B.event_code 
+															and A.sheet_code = B.sheet_code
+				left outer join tbl_eval_event_result_comment E on A.rec_filename = E.rec_filename 
+																and A.event_code = E.event_code 
+																and A.sheet_code = E.sheet_code 
+																and B.cate_code = E.cate_code 
+																and B.item_code = E.item_code
+				where (select event_status from tbl_eval_event 
+						where event_code = A.event_code) = '2'
+				and A.eval_status = '9'
+				and A.event_code = #{event_code}
+				<if test='eval_date1!=null and eval_date1!=""'>
+				and A.regi_datm >= to_date(#{eval_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
+				</if>
+				<if test='eval_date2!=null and eval_date2!=""'>
+				and to_date(#{eval_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') >=  A.regi_datm
+				</if>
+				<if test='bpart_code!=null and bpart_code!=""'>
+				and A.bpart_code = #{bpart_code}
+				</if>
+				<if test='mpart_code!=null and mpart_code!=""'>
+				and A.mpart_code = #{mpart_code}
+				</if>
+				group by A.bpart_code, A.mpart_code, A.user_id
+			) AA
+			group by AA.bpart_code, AA.mpart_code, AA.eval_order
+		)
+		select 
+			AA.bpart_code
+			,AA.mpart_code
+			,AA.bpart_name
+			,AA.mpart_name
+			,sum(AA.exam_score) as exam_score
+			,sum(AA.add_score) as add_score
+			,AA.item_code
+			,BB.eval_cnt
+			,BB.eval_order
+			,sum(AA.exam_score+AA.add_score) as tot_score
+		from
+		(
+			select 
+				A.user_id
+				,A.bpart_code
+				,A.mpart_code
+				,A.bpart_name
+				,A.mpart_name
+				,B.exam_score
+				,B.add_score
+				,B.cate_code
+				,B.item_code
+				,B.exam_code
+			from tbl_eval_event_result_list A 
+			inner join tbl_eval_event_result_item B on A.rec_filename = B.rec_filename 
+													and A.event_code = B.event_code 
+													and A.sheet_code = B.sheet_code
+			left outer join tbl_eval_event_result_comment E on A.rec_filename = E.rec_filename 
+															and A.event_code = E.event_code 
+															and A.sheet_code = E.sheet_code 
+															and B.cate_code = E.cate_code 
+															and B.item_code = E.item_code
+			where (select event_status from tbl_eval_event 
+					where event_code = A.event_code) = '2'
+			and A.eval_status = '9'
+			and A.event_code = #{event_code}
+			<if test='eval_date1!=null and eval_date1!=""'>
+			and A.regi_datm >= to_date(#{eval_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')
+			</if>
+			<if test='eval_date2!=null and eval_date2!=""'>
+			and to_date(#{eval_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') >= A.regi_datm
+			</if>
+			<if test='bpart_code!=null and bpart_code!=""'>
+			and A.bpart_code = #{bpart_code}
+			</if>
+			<if test='mpart_code!=null and mpart_code!=""'>
+			and A.mpart_code = #{mpart_code}
+			</if>
+		) AA 
+		inner join user_count BB on AA.bpart_code = BB.bpart_code
+									and AA.mpart_code = BB.mpart_code
+		group by AA.bpart_code, AA.mpart_code, AA.bpart_name, AA.mpart_name
+				,AA.item_code, BB.eval_cnt, BB.eval_order
+		order by AA.bpart_code, AA.mpart_code
+	</select>
+	
+	<!-- 상담원별 통계 > 평가항목 타이틀 구하기 getItem -->
+	<select id="getItem" parameterType="map" resultType="lowerMap">
+		/* 상담원별 통계 - 평가항목 타이틀 구하기 getItem */
+		select 
+			B.*
+			,A.item_name
+		from tbl_eval_item A
+		,(
+			select 
+				item_code
+				,max(exam_score) as exam_score_max
+				,max(add_score) as add_score_max
+			from tbl_eval_sheet_item
+			where sheet_code = #{sheet_code}
+			group by item_code
+		) B
+		where A.item_code = B.item_code 
+		and A.use_yn = '1'
+	</select>
+	
+</mapper>

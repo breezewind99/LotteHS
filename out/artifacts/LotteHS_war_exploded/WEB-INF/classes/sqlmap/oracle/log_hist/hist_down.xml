@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_down">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 다운로드 이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="lowerMap">
+		/* 다운로드 이력 count selectCount */
+		select 
+			count(*) as tot_cnt
+			,ceil(count(*) / ${top_cnt}) as page_cnt
+		from tbl_down_hist
+		where 1=1
+		and down_datm between to_date(#{down_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{down_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='down_id!=null and down_id!=""'>
+		and down_id like #{down_id} || '%'
+		</if>
+		<if test='down_name!=null and down_name!=""'>
+		and down_name like #{down_name} || '%'
+		</if>
+		<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+		and rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and user_name like #{user_name} || '%'
+		</if>
+		<if test='reason_code!=null and reason_code!=""'>
+		and reason_code like #{reason_code} || '%'
+		</if>
+		<if test='down_src=="N"'>
+		and down_src != 'AP'
+		</if>
+	</select>
+	
+	<!-- 다운로드 이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 다운로드 이력 조회 selectList */
+		select
+			(${tot_cnt}-rnum+1) as idx
+			,X.*
+		from 
+		(
+			select
+				rownum as rnum
+				,XX.*
+			from 
+			(
+				select
+					to_char(tdh.down_datm, 'YYYY-MM-DD HH24:MI:SS') as down_datm
+					,tdh.down_id
+					,tdh.down_name
+					,tdh.down_ip
+					,to_char(tdh.rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+					,tdh.rec_keycode
+					,tdh.rec_filename
+					,tdh.user_id
+					,tdh.user_name
+					,tdh.local_no
+					,nvl(tdh.reason_code, '') as reason_code
+					,nvl(tdh.reason_text, '') as reason_text
+					,(case tdh.down_src when 'AP' then 'TA' 
+						else '' end) as down_src
+					,(case when nvl(tdh.reason_code, '') != '' then fn_GetCodeName('LD_REASON',tdh.reason_code) 
+						else '' end) as reason_code_desc
+					,(select part_name from tbl_user_group 
+						where part_depth = 1 
+						and bpart_code = tu.bpart_code) as bpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 2 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code) as mpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 3 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code 
+						and spart_code = tu.spart_code) as spart_name
+				from tbl_down_hist tdh
+				left join tbl_user tu on tdh.down_id = tu.user_id
+				where 1=1
+				and tdh.down_datm between to_date(#{down_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{down_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				<if test='down_id!=null and down_id!=""'>
+				and tdh.down_id like #{down_id} || '%'
+				</if>
+				<if test='down_name!=null and down_name!=""'>
+				and tdh.down_name like #{down_name} || '%'
+				</if>
+				<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+				and tdh.rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				</if>
+				<if test='user_id!=null and user_id!=""'>
+				and tdh.user_id like #{user_id} || '%'
+				</if>
+				<if test='user_name!=null and user_name!=""'>
+				and tdh.user_name like #{user_name} || '%'
+				</if>
+				<if test='reason_code!=null and reason_code!=""'>
+				and tdh.reason_code like #{reason_code} || '%'
+				</if>
+				<if test='down_src=="N"'>
+				and tdh.down_src != 'AP'
+				</if>
+				order by ${sort_idx} ${sort_dir}
+				
+			) XX
+		<![CDATA[
+			where rownum <= ${end_cnt}
+		) X
+		where X.rnum >= ${start_cnt}
+		]]>
+	</select>
+	
+	<!-- 다운로드 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="lowerMap">
+		/* 다운로드 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			to_char(tdh.down_datm, 'YYYY-MM-DD HH24:MI:SS') as down_datm
+			,tdh.down_id
+			,tdh.down_name
+			,tdh.down_ip
+			,to_char(tdh.rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,tdh.rec_keycode
+			,tdh.rec_filename
+			,tdh.user_id
+			,tdh.user_name
+			,tdh.local_no
+			,nvl(tdh.reason_code, '') as reason_code
+			,nvl(tdh.reason_text, '') as reason_text
+			,(case tdh.down_src when 'AP' then 'TA' 
+				else '' end) as down_src
+			,(case when nvl(tdh.reason_code, '') != '' then fn_GetCodeName('LD_REASON', tdh.reason_code) 
+				else '' end) as reason_code_desc
+			,(select part_name from tbl_user_group 
+				where part_depth = 1 
+				and bpart_code = tu.bpart_code) as bpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 2 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code) as mpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code 
+				and spart_code = tu.spart_code) as spart_name
+		from tbl_down_hist tdh
+		left join tbl_user tu on tdh.down_id = tu.user_id
+		where 1=1
+		and tdh.down_datm between to_date(#{down_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{down_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='down_id!=null and down_id!=""'>
+		and tdh.down_id like #{down_id} || '%'
+		</if>
+		<if test='down_name!=null and down_name!=""'>
+		and tdh.down_name like #{down_name} || '%'
+		</if>
+		<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+		and tdh.rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and tdh.user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and tdh.user_name like #{user_name} || '%'
+		</if>
+		<if test='reason_code!=null and reason_code!=""'>
+		and tdh.reason_code like #{reason_code} || '%'
+		</if>
+		<if test='down_src=="N"'>
+		and tdh.down_src != 'AP'
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- 다운로드 이력 저장 insertDownHist -->
+	<insert id="insertDownHist" parameterType="map">
+		insert into tbl_down_hist	/* 다운로드 이력 저장 insertDownHist */
+		(
+			down_datm
+			,down_id
+			,down_name
+			,down_ip
+			,rec_datm
+			,rec_keycode
+			,rec_filename
+			,user_id
+			,user_name
+			,local_no
+			,reason_code
+			,reason_text
+			,down_src
+		) 
+		values 
+		(
+			sysdate
+			,#{login_id}
+			,#{login_name}
+			,#{down_ip}
+			,to_date(#{rec_datm}, 'YYYY-MM-DD HH24:MI:SS')
+			,#{rec_keycode}
+			,#{rec_filename}
+			,#{user_id}
+			,#{user_name}
+			,#{local_no}
+			,#{reason_code}
+			,#{reason_text}
+			,#{down_src}
+		)
+	</insert>
+	
+</mapper>

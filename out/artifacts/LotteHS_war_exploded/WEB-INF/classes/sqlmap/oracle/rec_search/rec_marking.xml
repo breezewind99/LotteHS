@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rec_marking">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 마킹 리스트 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 마킹 리스트 조회 selectList */
+		select 
+			mk_seq
+			,regi_id
+			,mk_name
+			,mk_stime
+			,mk_etime
+			,to_char(regi_datm, 'YYYY-MM-DD HH24:MI:SS') as regi_datm
+			,regi_ip 
+		from tbl_record_marking
+		where rec_cls = #{rec_cls}
+		and rec_datm = to_date(#{rec_datm}, 'YYYY-MM-DD HH24:MI:SS')
+		and local_no = #{local_no} 
+		and rec_filename = #{rec_filename} 
+		<if test='regi_id!=null and regi_id!=""'> 
+		and regi_id = #{regi_id} 
+		</if>
+		order by mk_seq desc
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- 마킹 등록 insertMarking -->
+	<insert id="insertMarking" parameterType="map">
+		insert into tbl_record_marking	/* 마킹 등록 insertMarking */ 
+		(
+			mk_seq
+			,rec_datm
+			,local_no
+			,rec_filename
+			,regi_id
+			,mk_name
+			,mk_stime
+			,mk_etime
+			,regi_datm
+			,regi_ip
+			,rec_cls
+		)
+		values 
+		(
+			seq_mk.nextval
+			,to_date(#{rec_datm}, 'YYYY-MM-DD HH24:MI:SS')
+			,#{local_no}
+			,#{rec_filename}
+			,#{regi_id}
+			,#{mk_name}
+			,#{mk_stime}
+			,#{mk_etime}
+			,sysdate
+			,#{regi_ip}
+			,#{rec_cls}
+		)
+	</insert>
+	
+	<!-- 마킹 삭제 deleteMarking -->
+	<delete id="deleteMarking" parameterType="map">
+		/* 마킹 삭제 deleteMarking */
+		delete from tbl_record_marking 
+		where mk_seq = #{mk_seq}
+		and rec_cls = #{rec_cls}
+		and regi_id = #{regi_id}
+	</delete>
+</mapper>

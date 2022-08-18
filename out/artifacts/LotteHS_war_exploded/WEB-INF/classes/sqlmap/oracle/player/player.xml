@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="player">
+	<!-- 해당 녹취이력 조회 selectList -->	
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 해당 녹취이력 조회 selectList */
+		select 
+			rec_seq
+			,rec_date
+			,rec_datm
+			,rec_start_time
+			,rec_call_time
+			,user_id
+			,user_name
+			,local_no
+			,system_code
+			,web_url
+			,'D:/RECDATA/' || substr(rec_filename, 1, 8) || '/' || substr(rec_filename, 9, 2) || '/' || substr(rec_filename, 1, length(rec_filename)) as rec_filename
+		from tbl_record
+		where 1=1
+		<if test='rec_date!=null and from_date!=""'>
+			and rec_date = #{from_date}
+		</if>
+		<if test='rec_keycode!=null and rec_keycode!=""'>
+			and rec_keycode = #{rec_keycode}
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+			and local_no = #{local_no}
+		</if>
+		order by rec_date asc
+		limit 1
+	</select>
+	
+	<!-- 해당 녹취이력 조회 selectListBackup -->
+	<select id="selectListBackup" parameterType="map" resultType="map">
+		/* 해당 녹취이력 조회 selectListBackup */
+		select 
+			cust_tel as called_number
+			,local_no as agent_number
+			,'025859901' as caller_number
+			,'ivr' as call_type
+			,substr(rec_filename, 1, 8) || '/' || substr(rec_filename, 9, 2) || '/' || substr(rec_filename, 1, length(rec_filename)) as filename
+			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as insert_date
+		from tbl_record 
+		where 1=1
+		and rec_date = #{rec_date}
+		and rec_keycode = #{rec_keycode}
+		and local_no = #{local}	
+		limit 1
+	</select>
+</mapper>

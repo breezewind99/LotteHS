@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_user_change">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 사용자 변경 이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="lowerMap">
+		/* 사용자 변경 이력 count selectCount */
+		select 
+			count(*) as tot_cnt
+			,ceil(count(*) / ${top_cnt}) as page_cnt
+		from tbl_user_change_hist
+		where 1=1
+		and change_datm between to_date(#{change_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{change_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='change_id!=null and change_id!=""'>
+		and change_id like #{change_id} || '%'
+		</if>
+		<if test='change_name!=null and change_name!=""'>
+		and change_name like #{change_name} || '%'
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and user_name like #{user_name} || '%'
+		</if>
+		<if test='change_type!=null and change_type!=""'>
+		and change_type = #{change_type}
+		</if>
+	</select>
+	
+	<!-- 사용자 변경 이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 사용자 변경 이력 조회 selectList */
+		select
+			(${tot_cnt}-rnum+1) as idx
+			,X.*
+		from 
+		(
+			select
+				rownum as rnum
+				,XX.*
+			from 
+			(
+				select
+					to_char(change_datm, 'YYYY-MM-DD HH24:MI:SS') as change_datm
+					,change_type
+					,(case change_type when 'I' then '등록' 
+									   when 'U' then '수정' 
+									   when 'D' then '삭제'
+									   when 'L' then '잠금해제' 
+						else change_type end) as v_change_type
+					,user_id
+					,user_name
+					,change_id
+					,change_name
+					,change_ip
+					,nvl(origin_level, '') as origin_level
+					,nvl(change_level, '') as change_level
+					,fn_GetCodeName('USER_LEVEL', origin_level) as origin_level_desc
+					,fn_GetCodeName('USER_LEVEL', change_level) as change_level_desc
+				from tbl_user_change_hist
+				where 1=1
+				and change_datm between to_date(#{change_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{change_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				<if test='change_id!=null and change_id!=""'>
+				and change_id like #{change_id} || '%'
+				</if>
+				<if test='change_name!=null and change_name!=""'>
+				and change_name like #{change_name} || '%'
+				</if>
+				<if test='user_id!=null and user_id!=""'>
+				and user_id like #{user_id} || '%'
+				</if>
+				<if test='user_name!=null and user_name!=""'>
+				and user_name like #{user_name} || '%'
+				</if>
+				<if test='change_type!=null and change_type!=""'>
+				and change_type = #{change_type}
+				</if>
+				order by ${sort_idx} ${sort_dir}
+			) XX
+		<![CDATA[
+			where rownum <= ${end_cnt}
+		) X
+		where X.rnum >= ${start_cnt}
+		]]>
+	</select>
+	
+	<!-- 사용자 변경 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="lowerMap">
+		/* 사용자 변경 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			to_char(change_datm, 'YYYY-MM-DD HH24:MI:SS') as change_datm
+			,change_type
+			,(case change_type when 'I' then '등록' 
+							   when 'U' then '수정' 
+							   when 'D' then '삭제' 
+				else change_type end) as v_change_type
+			,user_id
+			,user_name
+			,change_id
+			,change_name
+			,change_ip
+			,nvl(origin_level, '') as origin_level
+			,nvl(change_level, '') as change_level
+			,fn_GetCodeName('USER_LEVEL', origin_level) as origin_level_desc
+			,fn_GetCodeName('USER_LEVEL', change_level) as change_level_desc
+		from tbl_user_change_hist
+		where 1=1
+		and change_datm between to_date(#{change_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{change_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='change_id!=null and change_id!=""'>
+		and change_id like #{change_id} || '%'
+		</if>
+		<if test='change_name!=null and change_name!=""'>
+		and change_name like #{change_name} || '%'
+		</if>			
+		<if test='user_id!=null and user_id!=""'>
+		and user_id like #{user_id} || '%'
+		</if>	
+		<if test='user_name!=null and user_name!=""'>
+		and user_name like #{user_name} || '%'
+		</if>
+		<if test='change_type!=null and change_type!=""'>
+		and change_type = #{change_type}
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+	
+	<!-- 사용자 변경 이력 저장 insertUserChangeHist -->
+	<insert id="insertUserChangeHist" parameterType="map">
+		insert into tbl_user_change_hist	/* 사용자 변경 이력 저장 insertUserChangeHist */ 
+		(
+			change_datm
+			,change_type
+			,user_id
+			,user_name
+			,change_id
+			,change_name
+			,change_ip
+			,origin_level
+			,change_level
+		)
+		values 
+		(
+			sysdate
+			,#{change_type}
+			,#{user_id}
+			,#{user_name}
+			,#{change_id}
+			,#{change_name}
+			,#{change_ip}
+			,#{origin_level}
+			,#{change_level}
+		)
+	</insert>
+	
+</mapper>

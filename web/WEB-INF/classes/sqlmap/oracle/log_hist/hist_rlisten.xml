@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_rlisten">
+
+	<!-- 감청 이력 갯수 selectCount -->
+	<select id="selectCount" parameterType="map" resultType="map">
+		/* 감청 이력 갯수 selectCount */
+		select 
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_rlisten_hist A 
+		left join tbl_system B on A.system_code = B.system_code
+		where A.rlisten_datm between (#{rlisten_date1} || ' 00:00:00.000')::timestamp and (#{rlisten_date2} || ' 23:59:59.997')::timestamp
+		<if test='rlisten_id!=null and rlisten_id!=""'>
+		and A.rlisten_id like #{rlisten_id} || '%'
+		</if>
+		<if test='rlisten_name!=null and rlisten_name!=""'>
+		and A.rlisten_name like #{rlisten_name} || '%'
+		</if>			
+		<if test='user_id!=null and user_id!=""'>
+		and A.user_id like #{user_id} || '%'
+		</if>	
+		<if test='user_name!=null and user_name!=""'>
+		and A.user_name like #{user_name} || '%'
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+		and A.local_no like #{local_no} || '%'
+		</if>
+		<if test='system_code!=null and system_code!=""'>
+		and A.system_code = #{system_code}
+		</if>
+	</select>
+	
+	<!-- 감청 이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 감청 이력 조회 selectList */
+		select 
+			(${tot_cnt}-rownum+1) as idx
+			,*
+		from (
+			select
+				ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as rownum
+				,to_char(A.rlisten_datm, 'YYYY-MM-DD HH24:MI:SS') as rlisten_datm
+				,A.system_code
+				,A.channel_no
+				,A.rlisten_id
+				,A.rlisten_name
+				,A.rlisten_ip
+				,A.user_id
+				,A.user_name
+				,A.local_no
+				,B.system_name
+			from tbl_rlisten_hist A
+			left join tbl_system B on A.system_code = B.system_code
+			where A.rlisten_datm between (#{rlisten_date1} || ' 00:00:00.000')::timestamp and (#{rlisten_date2} || ' 23:59:59.997')::timestamp
+			<if test='rlisten_id!=null and rlisten_id!=""'>
+			and A.rlisten_id like #{rlisten_id} || '%'
+			</if>
+			<if test='rlisten_name!=null and rlisten_name!=""'>
+			and A.rlisten_name like #{rlisten_name} || '%'
+			</if>			
+			<if test='user_id!=null and user_id!=""'>
+			and A.user_id like #{user_id} || '%'
+			</if>	
+			<if test='user_name!=null and user_name!=""'>
+			and A.user_name like #{user_name} || '%'
+			</if>
+			<if test='local_no!=null and local_no!=""'>
+			and A.local_no like #{local_no} || '%'
+			</if>
+			<if test='system_code!=null and system_code!=""'>
+			and A.system_code = #{system_code}
+			</if>
+			order by ${sort_idx} ${sort_dir}
+			limit ${top_cnt} offset (${start_cnt}-1)
+		) U
+	</select>
+	
+	<!-- 감청 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="map">
+		/* 감청 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			to_char(A.rlisten_datm, 'YYYY-MM-DD HH24:MI:SS') as rlisten_datm
+			,A.system_code
+			,A.channel_no
+			,A.rlisten_id
+			,A.rlisten_name
+			,A.rlisten_ip			
+			,A.user_id
+			,A.user_name		
+			,A.local_no
+			,B.system_name
+		from tbl_rlisten_hist A 
+		left join tbl_system B on A.system_code = B.system_code
+		where A.rlisten_datm between (#{rlisten_date1} || ' 00:00:00.000')::timestamp and (#{rlisten_date2} || ' 23:59:59.997')::timestamp
+		<if test='rlisten_id!=null and rlisten_id!=""'>
+		and A.rlisten_id like #{rlisten_id} || '%'
+		</if>
+		<if test='rlisten_name!=null and rlisten_name!=""'>
+		and A.rlisten_name like #{rlisten_name} || '%'
+		</if>			
+		<if test='user_id!=null and user_id!=""'>
+		and A.user_id like #{user_id} || '%'
+		</if>	
+		<if test='user_name!=null and user_name!=""'>
+		and A.user_name like #{user_name} || '%'
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+		and A.local_no like #{local_no} || '%'
+		</if>
+		<if test='system_code!=null and system_code!=""'>
+		and A.system_code = #{system_code}
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+	<!-- 감청 이력 등록 insertRlistenHist -->
+	<insert id="insertRlistenHist" parameterType="map">
+		/* 감청 이력 등록 insertRlistenHist */
+		insert into tbl_rlisten_hist (
+			rlisten_datm,system_code,channel_no,rlisten_id,rlisten_name,rlisten_ip,user_id,user_name,local_no
+		) values (
+			current_timestamp(3)::timestamp,#{system_code},#{channel_no},#{login_id},#{login_name},#{listen_ip},#{user_id},#{user_name},#{local_no}
+		)
+	</insert>
+</mapper>

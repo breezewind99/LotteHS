@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="channel">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 내선번호, 아이피 중복체크 selectDuplicateCheck -->
+	<select id="selectDuplicateCheck" parameterType="map" resultType="string">
+		/* 내선번호, 아이피 중복체크 selectDuplicateCheck */
+		<![CDATA[
+		select 
+			case when sum(dup_num_cnt) > 0 and sum(dup_ip_cnt) > 0 then 'DUP_PHONE_NUM_IP'
+				 when sum(dup_num_cnt) > 0 and sum(dup_ip_cnt) < 1 then 'DUP_PHONE_NUM'
+				 when sum(dup_num_cnt) < 1 and sum(dup_ip_cnt) > 0 then 'DUP_PHONE_IP'
+				 else 'OK'
+			end as result_code
+		from (
+			select 
+				count(*) as dup_num_cnt
+				,0 as dup_ip_cnt
+			from crec_ip_info
+			where phone_num = #{phone_num} 
+			and phone_num != #{ori_phone_num}
+			union all
+			select 
+				0 as dup_num_cnt
+				,count(*) as dup_ip_cnt
+			from crec_ip_info
+			where phone_num != #{ori_phone_num} 
+			and phone_ip = #{phone_ip}
+		) U
+		]]>
+	</select>
+	
+	<!-- 시스템별 사용 가능한 최소 채널번호 조회 selectUsableMinChannel -->
+	<select id="selectUsableMinChannel" parameterType="string" resultType="string">
+		/* 시스템별 사용 가능한 최소 채널번호 조회 selectUsableMinChannel */
+		select
+			min(dl.channel) as channel
+		from 
+		(
+			select lpad(level, 3, '0') as channel 
+			from dual
+	<![CDATA[			
+			connect by level <= (select license_cnt from tbl_system 
+									where system_code = #{system_code})
+	]]>
+		) dl
+		left join crec_ip_info cii on dl.channel = cii.channel
+									and cii.system_code = #{system_code}
+		where cii.phone_num is null
+	</select>
+	
+	<!-- 시스템별 사용 가능한 채널 목록 조회 selectUsableChannelList -->
+	<select id="selectUsableChannelList" parameterType="string" resultType="lowerMap">
+		/* 시스템별 사용 가능한 채널 목록 조회 selectUsableChannelList */
+		select
+			dl.channel
+		from 
+		(
+			select lpad(level, 3, '0') as channel 
+			from dual
+	<![CDATA[			
+			connect by level <= (select license_cnt from tbl_system 
+									where system_code = #{system_code})
+	]]>
+		) dl
+		left join crec_ip_info cii on dl.channel = cii.channel
+									and cii.system_code = #{system_code}
+		where cii.phone_num is null
+	</select>
+	
+	<!-- 채널 목록 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 채널 목록 selectList */
+		select
+			dl.system_code
+			,dl.channel
+			,nvl(cii.phone_num, '') as phone_num
+			,nvl(cii.phone_num, '') as ori_phone_num
+			,nvl(cii.phone_ip, '') as phone_ip
+			,nvl(cii.mac, '') as mac
+			,nvl(cii.tn_num, '') as tn_num
+			,nvl(cii.backup_code, '') as backup_code
+			,nvl(cii.backup_code, '') as ori_backup_code
+			,nvl(ts1.system_name, '') as system_name
+			,nvl(ts2.system_name, '') as backup_name
+			,(case when cii.phone_num is null then 'I' 
+				else 'U' end) as act_type
+		from 
+		(
+			select 
+				lpad(level, 3, '0') as channel
+				,#{system_code} as system_code 
+			from dual
+	<![CDATA[			
+			connect by level <= (select license_cnt from tbl_system 
+									where system_code = #{system_code})
+	]]>
+		) dl
+		left join crec_ip_info cii on dl.system_code = cii.system_code
+									and dl.channel = cii.channel
+									and cii.system_code = #{system_code}
+		left join tbl_system ts1 on cii.system_code = ts1.system_code
+									and ts1.system_code = #{system_code}
+		left join tbl_system ts2 on cii.backup_code = ts2.system_code
+		where 1=1
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+	<!-- 채널 검색 목록 selectSearchList -->
+	<select id="selectSearchList" parameterType="map" resultType="lowerMap">
+		/* 채널 검색 목록 selectSearchList */
+		select 
+			cii.system_code
+			,cii.channel
+			,cii.phone_num
+			,cii.phone_num as ori_phone_num
+			,cii.phone_ip
+			,cii.mac
+			,cii.tn_num
+			,nvl(cii.backup_code, '') as backup_code
+			,nvl(cii.backup_code,'') as ori_backup_code
+			,ts1.system_name
+			,ts2.system_name as backup_name
+			,'U' as act_type
+		from crec_ip_info cii 
+		inner join tbl_system ts1 on cii.system_code = ts1.system_code
+		left join tbl_system ts2 on cii.backup_code = ts2.system_code
+		where 1=1
+		<if test='phone_num!=null and phone_num!=""'>
+		and cii.phone_num = #{phone_num}
+		</if>
+		<if test='phone_ip!=null and phone_ip!=""'>
+		and cii.phone_ip = #{phone_ip}
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+	<!-- 채널정보 조회 (내선번호) selectItemByPhoneNum -->
+	<select id="selectItemByPhoneNum" parameterType="string" resultType="lowerMap">
+		/* 채널정보 조회 (내선번호) selectItemByPhoneNum */
+		select 
+			cii.phone_num
+			,cii.phone_ip
+			,cii.channel
+			,cii.system_code
+			,ts.system_ip
+			,nvl(ts.backup_ip, '') as backup_ip
+		 from crec_ip_info cii 
+		 inner join tbl_system ts on cii.system_code = ts.system_code
+		 where cii.phone_num = #{phone_num}
+		 and rownum = 1
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
+
+	<!-- 채널 등록 insertChannel -->
+	<insert id="insertChannel" parameterType="map">
+		insert into crec_ip_info	/* 채널 등록 insertChannel */ 
+		(
+			phone_num
+			,phone_ip
+			,channel
+			,system_code
+			,mac
+			,tn_num
+			,backup_code
+		) 
+		values 
+		(
+			#{phone_num}
+			,#{phone_ip}
+			,#{channel}
+			,#{system_code}
+			,#{mac}
+			,#{tn_num}
+			,#{backup_code}
+		)
+	</insert>
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: UPDATE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 채널 업데이트 updateChannel -->
+	<update id="updateChannel" parameterType="map">
+		/* 채널 업데이트 updateChannel */
+		update crec_ip_info
+		<set>
+			<if test='phone_num!=null and phone_num!=""'>phone_num = #{phone_num},</if>
+			<if test='phone_ip!=null and phone_ip!=""'>phone_ip = #{phone_ip},</if>
+			<if test='channel!=null and channel!=""'>channel = #{channel},</if>
+			<if test='mac!=null and mac!=""'>mac = #{mac},</if>
+			<if test='tn_num!=null and tn_num!=""'>tn_num = #{tn_num},</if>
+			<if test='backup_code!=null'>backup_code = #{backup_code},</if>
+		</set>
+		where phone_num = #{ori_phone_num}
+	</update>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: DELETE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
+
+	<!-- 채널 삭제 deleteChannel -->
+	<delete id="deleteChannel" parameterType="string">
+		/* 채널 삭제 deleteChannel */
+		delete from crec_ip_info 
+		where phone_num = #{phone_num}
+	</delete>
+
+</mapper>

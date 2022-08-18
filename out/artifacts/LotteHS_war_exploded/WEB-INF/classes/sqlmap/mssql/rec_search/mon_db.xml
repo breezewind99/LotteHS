@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mon_db">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 모니터링 리스트 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 모니터링 리스트 조회 selectList */
+		select 
+			A.state
+			,A.channel
+			,A.system_code
+			,A.login
+			,A.user_id
+			,A.user_name
+			,A.bpart_code
+			,A.mpart_code
+			,A.spart_code
+			,A.ani
+			,A.phone
+			,A.datetime
+			,convert(varchar,dateadd(s, DATEDIFF(s, cast(A.datetime as time), cast(GETDATE() as time)), ''),108) as call_time
+			,B.system_ip
+			,isnull(B.backup_ip,'') as backup_ip
+			,A.inout as rec_inout
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = A.bpart_code 
+				and mpart_code = A.mpart_code 
+				and spart_code = A.spart_code) as spart_name
+		from crec_monitoring A WITH(NOLOCK) 
+		inner join tbl_system B WITH(NOLOCK) on A.system_code = B.system_code
+		where 1=1
+		<if test='bpart_code!=null and bpart_code!=""'>
+			and A.bpart_code = #{bpart_code}
+		</if>
+		<if test='mpart_code!=null and mpart_code!=""'>
+			and A.mpart_code = #{mpart_code}
+		</if>
+		<if test='spart_code!=null and spart_code!=""'>
+			and A.spart_code = #{spart_code}
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+			and A.phone = #{local_no}
+		</if>
+		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
+			<choose>
+				<when test='_user_level=="B"'>
+					and A.bpart_code = #{_bpart_code}
+				</when>	
+				<when test='_user_level=="C"'>
+					and A.bpart_code = #{_bpart_code} 
+					and A.mpart_code = #{_mpart_code}
+				</when>
+				<when test='_user_level=="D"'>
+					and A.bpart_code = #{_bpart_code} 
+					and A.mpart_code = #{_mpart_code} 
+					and A.spart_code = #{_spart_code}
+				</when>
+				<when test='_user_level=="E"'>
+					and A.user_id = #{_user_id}
+				</when>
+			</choose>
+		</if>
+		order by 
+		<choose>
+			<when test='mon_order=="in"'>
+				A.state desc, A.inout asc
+			</when>
+			<when test='mon_order=="ot"'>
+				A.state desc, A.inout desc
+			</when>
+			<when test='mon_order=="tm"'>
+				A.state desc, A.datetime desc
+			</when>
+			<when test='mon_order=="ln"'>
+				A.phone asc
+			</when>
+			<when test='mon_order=="um"'>
+				A.user_name asc
+			</when>			
+			<otherwise>
+				cast(A.channel as int) asc
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 녹취전체 건수 및 진행중 건수 조회 selectCountList -->
+	<select id="selectCountList" parameterType="map" resultType="map">
+		/* 녹취전체 건수 및 진행중 건수 조회 selectCountList */
+		select
+			 (select count(*) as rec_count 
+			 	from tbl_record WITH(NOLOCK)
+			 	where rec_date = convert(varchar(8), getdate(), 112)) as rec_count
+			,(select count(*) as mon_count 
+				from crec_monitoring WITH(NOLOCK) 
+				where state='1') as mon_count
+			,convert(varchar, getdate(), 20) as time
+	</select>
+
+</mapper>

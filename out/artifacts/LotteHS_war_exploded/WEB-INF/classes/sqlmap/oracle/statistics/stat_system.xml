@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="stat_system">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 시스템 통계 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 시스템 통계 조회 selectList */
+		select 
+			t.* 
+		from 
+		(
+			select 
+				ts.rec_date,
+				<choose>
+					<when test='s.date_type=="DD"'>
+					substr(ts.rec_date, 1, 4) || '-' || substr(ts.rec_date, 5, 2) || '-' || substr(ts.rec_date, 7, 2)
+					</when>
+					<when test='s.date_type=="MM"'>
+					substr(ts.rec_date, 1, 4) || '-' || substr(ts.rec_date, 5, 2)
+					</when>
+					<when test='s.date_type=="YY"'>
+					ts.rec_date
+					</when>
+					<when test='s.date_type=="HH"'>
+					ts.rec_date || '시'
+					</when>
+					<when test='s.date_type=="WW"'>
+					substr(ts.rec_date, 1, 4) || '-' || substr(ts.rec_date, 5, 2) || '-' || substr(ts.rec_date, 7, 1) || '주차'
+					</when>
+					<when test='s.date_type=="WD"'>
+					case ts.rec_date when '1' then '일'
+									 when '2' then '월'
+									 when '3' then '화'
+									 when '4' then '수'
+									 when '5' then '목'
+									 when '6' then '금'
+									 when '7' then '토'
+					        else 'X' end
+					</when>
+				</choose> as v_rec_date
+				,ts.system_code
+				,(select system_name from tbl_system 
+					where system_code = ts.system_code) as system_name
+				,sum(ts.tot_cnt) as tot_cnt
+				,sum(ts.back_cnt) as back_cnt
+				,sum(ts.tot_call_time) as tot_call_time
+				,sum(ts.in_cnt) as in_cnt
+				,sum(ts.out_cnt) as out_cnt
+				,sum(ts.local_cnt) as local_cnt
+			from 
+			(
+				select
+				<choose>
+					<when test='s.date_type=="DD"'>
+					tss.rec_date
+					</when>
+					<when test='s.date_type=="MM"'>
+					substr(tss.rec_date, 1, 6)
+					</when>	
+					<when test='s.date_type=="YY"'>
+					substr(tss.rec_date, 1, 4)
+					</when>
+					<when test='s.date_type=="HH"'>
+					tss.rec_hour
+					</when>
+					<when test='s.date_type=="WW"'>
+					substr(tss.rec_date, 1, 6) || to_char(to_date(tss.rec_date), 'w')
+					</when>	
+					<when test='s.date_type=="WD"'>
+					to_char(to_date(tss.rec_date), 'd')
+					</when>
+				</choose> as rec_date
+					,tss.system_code
+					,tss.tot_cnt
+					,0 as back_cnt
+					,tss.tot_call_time
+					,tss.in_cnt
+					,tss.out_cnt
+					,tss.local_cnt
+				from tbl_stat_system tss 
+				where tss.rec_date between #{s.rec_date1} and #{s.rec_date2}
+				and tss.rec_hour between #{s.rec_hour1} and #{s.rec_hour2}
+				<if test='s.system_code!=null and s.system_code!=""'>
+				and tss.system_code = #{s.system_code}
+				</if>
+			) ts
+			group by ts.rec_date, ts.system_code
+		) t
+		order by
+		<foreach collection='o' index='idx' item='item' open='' close='' separator=','>
+			${idx} ${item}
+		</foreach>
+	</select>
+	
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_abort">
+
+	<!-- 필수중단 이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="map">
+		/* 필수중단 이력 count selectCount */
+		select 
+			count(*)::int as tot_cnt
+			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+		from tbl_abort_hist
+		where abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+		<if test='abort_id!=null and abort_id!=""'>
+		and abort_id like #{abort_id} || '%'
+		</if>
+		<if test='abort_name!=null and abort_name!=""'>
+		and abort_name like #{abort_name} || '%'
+		</if>
+		<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
+		and start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and end_rec_datm <![CDATA[<=]]> (#{end_rec_date} || ' 23:59:59.997')::timestamp
+		</if>
+	</select>
+
+	<!-- 필수중단 이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="map">
+		/* 필수중단 이력 조회 selectList */
+		select 
+			(${tot_cnt}-rownum+1) as idx
+			,*
+		from (
+			select
+				ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as rownum
+				,to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
+				,A.abort_id
+				,A.abort_name
+				,A.abort_ip
+				,A.abort_state
+				,to_char(A.start_rec_datm, 'YYYY-MM-DD HH24:MI:SS') as start_rec_datm
+				,to_char(A.end_rec_datm, 'YYYY-MM-DD HH24:MI:SS') as end_rec_datm
+				,(select part_name from tbl_user_group 
+					where part_depth = 1 
+					and bpart_code = B.bpart_code) as bpart_name
+				,(select part_name from tbl_user_group 
+					where part_depth = 2 
+					and bpart_code = B.bpart_code 
+					and mpart_code = B.mpart_code) as mpart_name
+				,(select part_name from tbl_user_group 
+					where part_depth = 3 
+					and bpart_code = B.bpart_code 
+					and mpart_code = B.mpart_code 
+					and spart_code = B.spart_code) as spart_name
+			from tbl_abort_hist A
+			left join tbl_user B on A.abort_id = B.user_id
+			where A.abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+			<if test='abort_id!=null and abort_id!=""'>
+			and A.abort_id like #{abort_id} || '%'
+			</if>
+			<if test='abort_name!=null and abort_name!=""'>
+			and A.abort_name like #{abort_name} || '%'
+			</if>
+			<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
+			and A.start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and A.end_rec_datm <![CDATA[<=]]> (#{end_rec_date} + ' 23:59:59.997')::timestamp
+			</if>
+			order by ${sort_idx} ${sort_dir}
+			limit ${top_cnt} offset (${start_cnt}-1)
+		) U
+	</select>
+
+	<!-- 필수중단 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="map">
+		/* 필수중단 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
+			,A.abort_id
+			,A.abort_name
+			,A.abort_ip
+			,A.abort_state
+			,to_char(A.start_rec_datm, 'YYYY-MM-DD HH24:MI:SS') as start_rec_datm
+			,to_char(A.end_rec_datm, 'YYYY-MM-DD HH24:MI:SS') as end_rec_datm
+			,(select part_name from tbl_user_group 
+				where part_depth = 1 
+				and bpart_code = B.bpart_code) as bpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 2 
+				and bpart_code = B.bpart_code 
+				and mpart_code = B.mpart_code) as mpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = B.bpart_code 
+				and mpart_code = B.mpart_code 
+				and spart_code = B.spart_code) as spart_name
+		from tbl_abort_hist A
+		left join tbl_user B on A.abort_id = B.user_id
+		where A.abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+		<if test='abort_id!=null and abort_id!=""'>
+		and A.abort_id like #{abort_id} || '%'
+		</if>
+		<if test='abort_name!=null and abort_name!=""'>
+		and A.abort_name like #{abort_name} || '%'
+		</if>
+		<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
+		and A.start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and A.end_rec_datm <![CDATA[<=]]> (#{end_rec_date} + ' 23:59:59.997')::timestamp
+		</if>
+		order by ${sort_idx} ${sort_dir}
+	</select>
+	
+	<!-- 필수중단 이력 등록/취소 저장 insertAbortHist -->
+	<insert id="insertAbortHist" parameterType="map">
+		/* 필수중단 이력 등록/취소 저장 insertAbortHist */
+		insert into tbl_abort_hist (
+			abort_datm,start_rec_datm,end_rec_datm,abort_state,abort_id,abort_name,abort_ip
+		) values (
+			current_timestamp(3)::timestamp,#{start_rec_datm},#{end_rec_datm},#{abort_state},#{abort_id},#{abort_name},#{abort_ip}
+		)
+	</insert>
+</mapper>

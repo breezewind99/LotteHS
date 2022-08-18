@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hist_listen">
+
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INCLUDE ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
+
+	<!-- 청취 이력 count selectCount -->
+	<select id="selectCount" parameterType="map" resultType="lowerMap">
+		/* 청취 이력 count selectCount */
+		select 
+			count(*) as tot_cnt
+			,ceil(count(*) / ${top_cnt}) as page_cnt
+		from tbl_listen_hist
+		where 1=1
+		and listen_datm between to_date(#{listen_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{listen_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='listen_id!=null and listen_id!=""'>
+		and listen_id like #{listen_id} || '%'
+		</if>
+		<if test='listen_name!=null and listen_name!=""'>
+		and listen_name like #{listen_name} || '%'
+		</if>
+		<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+		and rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and user_name like #{user_name} || '%'
+		</if>
+		<if test='reason_code!=null and reason_code!=""'>
+		and reason_code like #{reason_code} || '%'
+		</if>
+	</select>
+	
+	<!-- 청취 이력 조회 selectList -->
+	<select id="selectList" parameterType="map" resultType="lowerMap">
+		/* 청취 이력 조회 selectList */
+		select
+			(${tot_cnt}-rnum+1) as idx
+			,X.*
+		from 
+		(
+			select
+				rownum as rnum
+				,XX.*
+			from 
+			(
+				select
+					to_char(tlh.listen_datm, 'YYYY-MM-DD HH24:MI:SS') as listen_datm
+					,tlh.listen_id
+					,tlh.listen_name
+					,tlh.listen_ip
+					,to_char(tlh.rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+					,tlh.rec_keycode
+					,tlh.rec_filename
+					,tlh.user_id
+					,tlh.user_name
+					,tlh.local_no
+					,'link' as v_url
+					,nvl(tlh.reason_code, '') as reason_code
+					,nvl(tlh.reason_text, '') as reason_text
+					,(case when nvl(tlh.reason_code, '') != '' then fn_GetCodeName('LD_REASON', tlh.reason_code) 
+						else '' end) as reason_code_desc
+					,(select part_name from tbl_user_group 
+						where part_depth = 1 
+						and bpart_code = tu.bpart_code) as bpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 2 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code) as mpart_name
+					,(select part_name from tbl_user_group 
+						where part_depth = 3 
+						and bpart_code = tu.bpart_code 
+						and mpart_code = tu.mpart_code 
+						and spart_code = tu.spart_code) as spart_name
+				from tbl_listen_hist tlh
+				left join tbl_user tu on tlh.listen_id = tu.user_id
+				where 1=1
+				and tlh.listen_datm between to_date(#{listen_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{listen_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				<if test='listen_id!=null and listen_id!=""'>
+				and tlh.listen_id like #{listen_id} || '%'
+				</if>
+				<if test='listen_name!=null and listen_name!=""'>
+				and tlh.listen_name like #{listen_name} || '%'
+				</if>
+				<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+				and tlh.rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+				</if>
+				<if test='user_id!=null and user_id!=""'>
+				and tlh.user_id like #{user_id} || '%'
+				</if>
+				<if test='user_name!=null and user_name!=""'>
+				and tlh.user_name like #{user_name} || '%'
+				</if>
+				<if test='reason_code!=null and reason_code!=""'>
+				and tlh.reason_code like #{reason_code} || '%'
+				</if>
+				order by tlh.${sort_idx} ${sort_dir}
+				
+			) XX
+		<![CDATA[
+			where rownum <= ${end_cnt}
+		) X
+		where X.rnum >= ${start_cnt}
+		]]>
+	</select>
+	
+	<!-- 청취 이력 전체 조회 (엑셀다운로드) selectListAll -->
+	<select id="selectListAll" parameterType="map" resultType="lowerMap">
+		/* 청취 이력 전체 조회 (엑셀다운로드) selectListAll */
+		select 
+			to_char(tlh.listen_datm, 'YYYY-MM-DD HH24:MI:SS') as listen_datm
+			,tlh.listen_id
+			,tlh.listen_name
+			,tlh.listen_ip
+			,to_char(tlh.rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+			,tlh.rec_keycode
+			,tlh.rec_filename
+			,tlh.user_id
+			,tlh.user_name
+			,tlh.local_no
+			,nvl(tlh.reason_code,'') as reason_code
+			,nvl(tlh.reason_text,'') as reason_text
+			,(case when nvl(tlh.reason_code, '') != '' then fn_GetCodeName('LD_REASON', tlh.reason_code) 
+				else '' end) as reason_code_desc
+			,(select part_name from tbl_user_group 
+				where part_depth = 1 
+				and bpart_code = tu.bpart_code) as bpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 2 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code) as mpart_name
+			,(select part_name from tbl_user_group 
+				where part_depth = 3 
+				and bpart_code = tu.bpart_code 
+				and mpart_code = tu.mpart_code 
+				and spart_code = tu.spart_code) as spart_name
+		from tbl_listen_hist tlh
+		left join tbl_user tu on tlh.listen_id = tu.user_id
+		where 1=1
+		and tlh.listen_datm between to_date(#{listen_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{listen_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		<if test='listen_id!=null and listen_id!=""'>
+		and tlh.listen_id like #{listen_id} || '%'
+		</if>
+		<if test='listen_name!=null and listen_name!=""'>
+		and tlh.listen_name like #{listen_name} || '%'
+		</if>
+		<if test='rec_date1!=null and rec_date1!="" and rec_date2!=null and rec_date2!=""'>
+		and tlh.rec_datm between to_date(#{rec_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		</if>
+		<if test='user_id!=null and user_id!=""'>
+		and tlh.user_id like #{user_id} || '%'
+		</if>
+		<if test='user_name!=null and user_name!=""'>
+		and tlh.user_name like #{user_name} || '%'
+		</if>
+		<if test='reason_code!=null and reason_code!=""'>
+		and tlh.reason_code like #{reason_code} || '%'
+		</if>
+		order by tlh.${sort_idx} ${sort_dir}
+	</select>
+	
+<!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: INSERT :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
+	
+	<!-- 청취 이력 저장 insertListenHist -->
+	<insert id="insertListenHist" parameterType="map">
+		insert into tbl_listen_hist	/* 청취 이력 저장 insertListenHist */ 
+		(
+			listen_datm
+			,listen_id
+			,listen_name
+			,listen_ip
+			,rec_datm
+			,rec_keycode
+			,rec_filename
+			,user_id
+			,user_name
+			,local_no
+			,reason_code
+			,reason_text
+			,listen_src
+		) 
+		values 
+		(
+			sysdate
+			,#{login_id}
+			,#{login_name}
+			,#{listen_ip}
+			,to_date(#{rec_datm}, 'YYYY-MM-DD HH24:MI:SS')
+			,#{rec_keycode}
+			,#{rec_filename}
+			,#{user_id}
+			,#{user_name}
+			,#{local_no}
+			,#{reason_code}
+			,#{reason_text}
+			,#{listen_src}
+		)
+	</insert>
+</mapper>

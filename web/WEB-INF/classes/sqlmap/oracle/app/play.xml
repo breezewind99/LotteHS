@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="play">
+	<!-- 플레이 url -->
+	<select id="selectList" parameterType="string" resultType="map">
+		select rec_seq, rec_date, rec_datm, rec_start_time, rec_call_time, user_id, user_name, local_no, system_code, web_url, rec_filename
+			   , 'D:/RECDATA/' || substr(rec_filename, 1, 8) || '/' || substr(rec_filename, 9, 2) || '/' || substr(rec_filename, 1, length(rec_filename)) as filename
+		from tbl_record
+		where 1=1
+		<if test='rec_date!=null and rec_date!=""'>
+			and rec_date = #{rec_date}
+		</if>
+		<if test='rec_keycode!=null and rec_keycode!=""'>
+			and rec_keycode = #{rec_keycode}
+		</if>
+		<if test='local_no!=null and local_no!=""'>
+			and local_no = #{local_no}
+		</if>
+		order by rec_date asc
+		limit 1
+	</select>
+</mapper>
