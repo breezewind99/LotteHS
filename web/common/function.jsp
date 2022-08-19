@@ -10,6 +10,7 @@
 <%@ page import="java.net.SocketTimeoutException"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.cnet.crec.common.*"%>
+<%@ page import="java.net.URLEncoder"%>
 <%!
 	/**
 	 * 녹취파일 청취 URL 리턴
@@ -199,7 +200,7 @@
 				//원본 url
 				logger.debug("file_url 원본: " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "." + file_ext);
 			}
-
+			file_url = Finals.MEDIA_SERVER_URL + "/media/wave?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString() ;
 			//전송 url
 			logger.debug("file_url 암호화: " + file_url);
 		} 

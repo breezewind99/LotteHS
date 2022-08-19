@@ -44,13 +44,13 @@ $(function()
 					wave_data = eval("[" + data + "]");
 				} else {
 					alert("미디어 서버에 오류가 발생하였습니다.");
-					self.close();
+					//self.close();
 					return false;
 				}
 			},
 			error:function(req,status,err){
 				alert("미디어 서버 연결에 실패했습니다.");
-				self.close();
+				//self.close();
 				return false;
 			}
 		});

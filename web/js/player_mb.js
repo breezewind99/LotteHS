@@ -28,7 +28,7 @@ $(function () {
 //	var fft_url = file_url.replace(".wav","."+fft_ext);
 	
 	//mp3 확장명으로 변경 - CJM(20190627)
-	file_url = file_url.substring(0, file_url.lastIndexOf("."))+".mp3";
+	//file_url = file_url.substring(0, file_url.lastIndexOf("."))+".mp3";
 	var fft_url = file_url.substring(0, file_url.lastIndexOf("."))+"."+fft_ext;	
 	
 	//console.log("file_url : "+file_url);
@@ -64,7 +64,7 @@ $(function () {
 				else 
 				{
 					alert("미디어 서버에 오류가 발생하였습니다.");
-					self.close();
+					//self.close();
 					return false;
 				}
 			},
@@ -75,7 +75,7 @@ $(function () {
 				console.log("code:"+req.status+"\n"+"message:"+req.responseText+"\n"+"error:"+err);
 				*/
 				alert("미디어 서버 연결에 실패했습니다.");
-				self.close();
+				//self.close();
 				return false;
 			}
 		});
@@ -114,13 +114,13 @@ $(function () {
 					wave_data = eval("[" + data + "]");
 				} else {
 					alert("미디어 서버에 오류가 발생하였습니다.");
-					self.close();
+					//self.close();
 					return false;
 				}
 			},
 			error:function(req,status,err){
 				alert("미디어 서버 연결에 실패했습니다.");
-				self.close();
+				//self.close();
 				return false;
 			}
 		});
