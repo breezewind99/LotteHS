@@ -7,10 +7,10 @@
 	<select id="selectCount" parameterType="map" resultType="map">
 		/* 필수중단 이력 count selectCount */
 		select 
-			count(*)::int as tot_cnt
-			,ceil(count(*) / ${top_cnt}::float) as page_cnt
+			count(*) as tot_cnt
+			,ceil(count(*) / ${top_cnt}) as page_cnt
 		from tbl_abort_hist
-		where abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+		where abort_datm between to_date(#{abort_date1} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and to_date(#{abort_date2} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS')
 		<if test='abort_id!=null and abort_id!=""'>
 		and abort_id like #{abort_id} || '%'
 		</if>
@@ -18,7 +18,7 @@
 		and abort_name like #{abort_name} || '%'
 		</if>
 		<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
-		and start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and end_rec_datm <![CDATA[<=]]> (#{end_rec_date} || ' 23:59:59.997')::timestamp
+		and start_rec_datm <![CDATA[>=]]> (to_date(#{start_rec_date} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and end_rec_datm <![CDATA[<=]]> (to_date(#{end_rec_date} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS')
 		</if>
 	</select>
 
@@ -111,7 +111,7 @@
 		insert into tbl_abort_hist (
 			abort_datm,start_rec_datm,end_rec_datm,abort_state,abort_id,abort_name,abort_ip
 		) values (
-			current_timestamp(3)::timestamp,#{start_rec_datm},#{end_rec_datm},#{abort_state},#{abort_id},#{abort_name},#{abort_ip}
+			sysdate,to_date(#{start_rec_datm},'YYYY-MM-DD HH24:MI:SS'),to_date(#{end_rec_datm},'YYYY-MM-DD HH24:MI:SS'),#{abort_state},#{abort_id},#{abort_name},#{abort_ip}
 		)
 	</insert>
 </mapper>

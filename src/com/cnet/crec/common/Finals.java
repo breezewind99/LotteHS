@@ -87,7 +87,7 @@ public class Finals
 	public static final boolean		isExistEverlasting = false;
 
 	//필수중단
-	public static final boolean		isExistPilsooJungdan = false;
+	public static final boolean		isExistPilsooJungdan = true;
 
 	/* :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 녹취 이력 설정 END   ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 

@@ -29,7 +29,7 @@ $(function () {
 	
 	//mp3 확장명으로 변경 - CJM(20190627)
 	//file_url = file_url.substring(0, file_url.lastIndexOf("."))+".mp3";
-	var fft_url = file_url.substring(0, file_url.lastIndexOf("."))+"."+fft_ext;	
+	var fft_url = file_url.replace("/wave","/ffttext")
 	
 	//console.log("file_url : "+file_url);
 	//console.log("fft_url : "+fft_url);
@@ -108,8 +108,8 @@ $(function () {
 			url: fft_url,
 			async: false,
 			dataType: "text",
-			success:function(data){
-				//console.log(data);
+			success:function(data) {
+				console.log(data);
 				if(data.toLowerCase().indexOf("error")<0) {
 					wave_data = eval("[" + data + "]");
 				} else {
