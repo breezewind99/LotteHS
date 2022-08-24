@@ -4,13 +4,13 @@
 <mapper namespace="hist_abort">
 
 	<!-- 필수중단 이력 count selectCount -->
-	<select id="selectCount" parameterType="map" resultType="map">
+	<select id="selectCount" parameterType="map" resultType="lowerMap">
 		/* 필수중단 이력 count selectCount */
 		select 
 			count(*) as tot_cnt
 			,ceil(count(*) / ${top_cnt}) as page_cnt
 		from tbl_abort_hist
-		where abort_datm between to_date(#{abort_date1} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and to_date(#{abort_date2} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS')
+		where abort_datm between to_date(#{abort_date1} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and to_date(#{abort_date2} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS')
 		<if test='abort_id!=null and abort_id!=""'>
 		and abort_id like #{abort_id} || '%'
 		</if>
@@ -18,20 +18,25 @@
 		and abort_name like #{abort_name} || '%'
 		</if>
 		<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
-		and start_rec_datm <![CDATA[>=]]> (to_date(#{start_rec_date} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and end_rec_datm <![CDATA[<=]]> (to_date(#{end_rec_date} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS')
+		and start_rec_datm <![CDATA[>=]]> (to_date(#{start_rec_date} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS')) and end_rec_datm <![CDATA[<=]]> (to_date(#{end_rec_date} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS'))
 		</if>
 	</select>
 
 	<!-- 필수중단 이력 조회 selectList -->
-	<select id="selectList" parameterType="map" resultType="map">
+	<select id="selectList" parameterType="map" resultType="lowerMap">
 		/* 필수중단 이력 조회 selectList */
-		select 
-			(${tot_cnt}-rownum+1) as idx
-			,*
-		from (
+		select
+		(${tot_cnt}-rnum+1) as idx
+		,X.*
+		from
+		(
+		select
+		rownum as rnum
+		,XX.*
+		from
+		(
 			select
-				ROW_NUMBER() OVER(order by ${sort_idx} ${sort_dir}) as rownum
-				,to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
+				to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
 				,A.abort_id
 				,A.abort_name
 				,A.abort_ip
@@ -52,7 +57,7 @@
 					and spart_code = B.spart_code) as spart_name
 			from tbl_abort_hist A
 			left join tbl_user B on A.abort_id = B.user_id
-			where A.abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+			where A.abort_datm between to_date(#{abort_date1} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and to_date(#{abort_date2} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS')
 			<if test='abort_id!=null and abort_id!=""'>
 			and A.abort_id like #{abort_id} || '%'
 			</if>
@@ -60,15 +65,19 @@
 			and A.abort_name like #{abort_name} || '%'
 			</if>
 			<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
-			and A.start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and A.end_rec_datm <![CDATA[<=]]> (#{end_rec_date} + ' 23:59:59.997')::timestamp
+			and A.start_rec_datm <![CDATA[>=]]> (to_date(#{start_rec_date} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS')) and end_rec_datm <![CDATA[<=]]> (to_date(#{end_rec_date} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS'))
 			</if>
-			order by ${sort_idx} ${sort_dir}
-			limit ${top_cnt} offset (${start_cnt}-1)
-		) U
+		order by ${sort_idx} ${sort_dir}
+		) XX
+		<![CDATA[
+			where rownum <= ${end_cnt}
+		) X
+		where X.rnum >= ${start_cnt}
+		]]>
 	</select>
 
 	<!-- 필수중단 이력 전체 조회 (엑셀다운로드) selectListAll -->
-	<select id="selectListAll" parameterType="map" resultType="map">
+	<select id="selectListAll" parameterType="map" resultType="lowerMap">
 		/* 필수중단 이력 전체 조회 (엑셀다운로드) selectListAll */
 		select 
 			to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
@@ -92,7 +101,7 @@
 				and spart_code = B.spart_code) as spart_name
 		from tbl_abort_hist A
 		left join tbl_user B on A.abort_id = B.user_id
-		where A.abort_datm between (#{abort_date1} || ' 00:00:00.000')::timestamp and (#{abort_date2} || ' 23:59:59.997')::timestamp
+		where A.abort_datm between to_date(#{abort_date1} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and to_date(#{abort_date2} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS')
 		<if test='abort_id!=null and abort_id!=""'>
 		and A.abort_id like #{abort_id} || '%'
 		</if>
@@ -100,13 +109,13 @@
 		and A.abort_name like #{abort_name} || '%'
 		</if>
 		<if test='start_rec_date!=null and start_rec_date!="" and end_rec_date!=null and end_rec_date!=""'>
-		and A.start_rec_datm <![CDATA[>=]]> (#{start_rec_date} || ' 00:00:00.000')::timestamp and A.end_rec_datm <![CDATA[<=]]> (#{end_rec_date} + ' 23:59:59.997')::timestamp
+		and A.start_rec_datm <![CDATA[>=]]> (to_date(#{start_rec_date} || ' 00:00:00','YYYY-MM-DD HH24:MI:SS') and end_rec_datm <![CDATA[<=]]> (to_date(#{end_rec_date} || ' 23:59:59','YYYY-MM-DD HH24:MI:SS')
 		</if>
 		order by ${sort_idx} ${sort_dir}
 	</select>
 	
 	<!-- 필수중단 이력 등록/취소 저장 insertAbortHist -->
-	<insert id="insertAbortHist" parameterType="map">
+	<insert id="insertAbortHist" parameterType="lowerMap">
 		/* 필수중단 이력 등록/취소 저장 insertAbortHist */
 		insert into tbl_abort_hist (
 			abort_datm,start_rec_datm,end_rec_datm,abort_state,abort_id,abort_name,abort_ip
