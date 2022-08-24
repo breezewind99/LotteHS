@@ -1258,7 +1258,7 @@ var searchs = function()
 		//Validation 체크 기능 추가(메뉴별 구분) - CJM(20200728)
 		var fvId = this.location.pathname;
 		fvId = fvId.substring(fvId.lastIndexOf("/")+1, fvId.lastIndexOf("."));
-		//console.log("fvId : "+fvId);
+		console.log("fvId : "+fvId);
 		if(!fnValidation(fvId))	return;
 		
 		var isContinue = true;
