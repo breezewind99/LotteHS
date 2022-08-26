@@ -41,11 +41,11 @@
 				return;
 			}
 
-			String rec_datm1 = rec_date + " " + rec_shour + ":" + rec_smin + ":00.000";
-			String rec_datm2 = rec_date + " " + rec_ehour + ":" + rec_emin + ":00.997";
+			String rec_datm1 = rec_date + " " + rec_shour + ":" + rec_smin + ":00";
+			String rec_datm2 = rec_date + " " + rec_ehour + ":" + rec_emin + ":00";
 
-			String rec_start_time = "1900-01-01" + " " + rec_shour + ":" + rec_smin + ":00.000";
-			String rec_end_time = "1900-01-01" + " " + rec_ehour + ":" + rec_emin + ":59.997";
+			String rec_start_time = rec_shour + ":" + rec_smin + ":00";
+			String rec_end_time = rec_ehour + ":" + rec_emin + ":59";
 
 			//argMap.put("dateStr", CommonUtil.getRecordTableNm(rec_datm1));
 			argMap.put("dateStr", "");				
