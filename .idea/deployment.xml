@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="가산 WAS1" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false" showNewOnTargetInSync="false" showExcludedInSync="true">
     <serverData>
       <paths name="가산 WAS1">
         <serverdata>
@@ -12,21 +12,21 @@
       <paths name="가산 WAS2">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
         </serverdata>
       </paths>
       <paths name="용인 WAS1">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
         </serverdata>
       </paths>
       <paths name="용인 WAS2">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
         </serverdata>
       </paths>
