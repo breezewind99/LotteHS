@@ -45,8 +45,11 @@
 
 		// hist count
 		Map<String, Object> cntmap  = db.selectOne("hist_abort.selectCount", argMap);
-		tot_cnt = ((Integer)cntmap.get("tot_cnt")).intValue();
-		page_cnt = ((Double)cntmap.get("page_cnt")).intValue();
+		logger.info(cntmap.get("tot_cnt"));
+		tot_cnt = Integer.valueOf(cntmap.get("tot_cnt").toString()).intValue();
+		//tot_cnt = ((Integer)cntmap.get("tot_cnt")).intValue();
+		page_cnt = Double.valueOf(cntmap.get("page_cnt").toString()).intValue();
+		//page_cnt = ((Double)cntmap.get("page_cnt")).intValue();
 
 		json.put("totalRecords", tot_cnt);
 		json.put("totalPages", page_cnt);

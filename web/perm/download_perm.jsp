@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
 <%
-	if(!Site.isPmss(out,"menu_perm","")) return;
+	if(!Site.isPmss(out,"menu_perm","json")) return;
 
 	Db db = null;
 
@@ -39,55 +39,13 @@
 	$(function () 
 	{
 		var colModel = [
-			{ title: "메뉴명", width: 200, dataIndx: "menu_name",
+			{ title: "권한명", width: 200, dataIndx: "download_name",
 				validations: [
 					{ type: "minLen", value: "1", msg: "필수입력 사항입니다." },
 				],
 			},
-			{ title: "상위 메뉴", width: 200, dataIndx: "parent_name", editable: false},
-			{ title: "등급", width: 150, dataIndx: "user_level",
-				editor: {
-					type: 'select',
-					options: [<%=jsnUserLvList%>]
-				},
-				render: function(ui) {
-	
-					var options = ui.column.editor.options,
-						cellData = ui.cellData;
-					for(var i = 0; i < options.length; i++) 
-					{
-						var option = options[i];
-						if(option[cellData]) 
-						{
-							return option[cellData];
-						}
-					}
-	
-				},
-			},
-			{ title: "메뉴구분", dataIndx: "menu_depth", hidden: true },
-			{ title: "상위메뉴코드", dataIndx: "parent_code", hidden: true },
-			{ title: "노출순서", dataIndx: "order_no", hidden: true },
-			{ title: "사용여부", width: 100, dataIndx: "use_yn",
-				editor: {
-					type: 'select',
-					options: fn.usedCode.colModel
-				},
-				render: function(ui) {
-	
-					var options = ui.column.editor.options,
-						cellData = ui.cellData;
-					for(var i = 0; i < options.length; i++) 
-					{
-						var option = options[i];
-						if(option[cellData]) 
-						{
-							return option[cellData];
-						}
-					}
-	
-				},
-			}
+			{ title: "IP", width: 200, dataIndx: "download_ip", editable: true}
+
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
@@ -99,7 +57,7 @@
 		});
 	
 		// 페이지 id, 페이징 사용여부, 엑셀다운로드 사용여부, 신규등록 사용여부, 수정 사용여부
-		var baseObj = getBaseGridOption("menu_perm", "N", "N", "N", "Y");
+		var baseObj = getBaseGridOption("download_perm", "N", "N", "N", "Y");
 		var obj = $.extend({}, baseObj, {
 			colModel: colModel,
 			dataModel: dataModel,
@@ -129,10 +87,10 @@
 			<div class="panel-heading">
 				<div class="panel-options">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="menu_perm.jsp">메뉴 접근권한</a></li>
+						<li class=""><a href="menu_perm.jsp">메뉴 접근권한</a></li>
 						<li class=""><a href="search_perm.jsp">조회 접근권한</a></li>
 						<li class=""><a href="result_perm.jsp">리스트 접근권한</a></li>
-						<li class=""><a href="download_perm.jsp">다운로드 접근권한</a></li>
+						<li class="active"><a href="download_perm.jsp">다운로드 접근권한</a></li>
 					</ul>
 				</div>
 			</div>

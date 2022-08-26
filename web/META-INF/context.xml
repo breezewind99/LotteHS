@@ -9,17 +9,16 @@
               testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1"/>
     -->
 
-    <!-- ORACLE MASTER DB
+    <!-- ORACLE MASTER DB -->
     <Resource name="jdbc/crec_master" auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
               maxActive="100" maxIdle="30" maxWait="10000"  password="cnet2580" type="javax.sql.DataSource" url="jdbc:oracle:thin:@10.144.31.26:1521:RECDB" username="cnet"
               testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1 FROM DUAL"/>
--->
     <!-- ORACLE SLAVE DB -->
 
     <!-- ORACLE MASTER DB -->
-    <Resource name="jdbc/crec_master" auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
-              maxActive="100" maxIdle="30" maxWait="10000"  password="~!cnet2580!~" type="javax.sql.DataSource" url="jdbc:oracle:thin:@112.217.73.70:1521:ORCL" username="LOTTEHS"
-              testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1 FROM DUAL"/>
+<!--    <Resource name="jdbc/crec_master" auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"-->
+<!--              maxActive="100" maxIdle="30" maxWait="10000"  password="~!cnet2580!~" type="javax.sql.DataSource" url="jdbc:oracle:thin:@112.217.73.70:1521:ORCL" username="LOTTEHS"-->
+<!--              testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1 FROM DUAL"/>-->
 
     <!-- ORACLE SLAVE DB -->
 </Context>

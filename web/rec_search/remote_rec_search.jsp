@@ -212,6 +212,18 @@
 		{
 			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
 			//롯데 보안 이슈로 수정 요청
+			if(item.containsKey("n_cust_tel")){
+				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
+				item.put("n_cust_tel", temp);
+			}
+			if(item.containsKey("n_user_name") && item.get("n_user_name") != null){
+				String temp =  Mask.getMaskedName(item.get("n_user_name").toString().trim());
+				item.put("n_user_name", temp);
+			}
+			if(item.containsKey("user_name") && item.get("user_name") != null){
+				String temp =  Mask.getMaskedName(item.get("user_name").toString().trim());
+				item.put("user_name", temp);
+			}
 			/*
 			if(item.containsKey("v_cust_tel")) 
 			{

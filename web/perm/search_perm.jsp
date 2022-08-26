@@ -130,6 +130,7 @@
 						<li class=""><a href="menu_perm.jsp">메뉴 접근권한</a></li>
 						<li class="active"><a href="search_perm.jsp">조회 접근권한</a></li>
 						<li class=""><a href="result_perm.jsp">리스트 접근권한</a></li>
+						<li class=""><a href="download_perm.jsp">다운로드 접근권한</a></li>
 					</ul>
 				</div>
 			</div>
