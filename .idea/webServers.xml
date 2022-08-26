@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8ad343ac-09a3-45c9-a68a-473b305aaaa1" name="가산 WAS1">
+        <fileTransfer rootFolder="/data/cnet" accessType="SFTP" host="10.144.32.129" port="22" sshConfigId="5eb70acb-7641-4b8b-bd34-fddac61722b8" sshConfig="root@10.144.32.129:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="863341e5-dcc2-4f7a-9bb3-c97b227d8c0b" name="가산 WAS2">
+        <fileTransfer rootFolder="/data/cnet" accessType="SFTP" host="10.144.32.130" port="22" sshConfigId="c97e16cd-26c6-4172-9fbf-6866536a7836" sshConfig="root@10.144.32.130:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="0e4e5007-0170-418f-a016-68623ff59830" name="용인 WAS1">
+        <fileTransfer rootFolder="/data/cnet" accessType="SFTP" host="10.144.36.137" port="22" sshConfigId="4d6ced55-e4a6-41d4-8c3c-83364dd476aa" sshConfig="root@10.144.36.137:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="579824c3-0981-4279-8540-363b96346bbc" name="용인 WAS2">
+        <fileTransfer rootFolder="/data/cnet" accessType="SFTP" host="10.144.36.138" port="22" sshConfigId="d46dc94b-3bf4-435e-8d50-eeea04aa16c5" sshConfig="root@10.144.36.138:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

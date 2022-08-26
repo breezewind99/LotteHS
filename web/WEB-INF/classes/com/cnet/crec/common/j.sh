@@ -1,0 +1,1 @@
+javac -Xlint -cp /data/cnet/www/WEB-INF/classes/ Finals.java -encoding UTF-8
