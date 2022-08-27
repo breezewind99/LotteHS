@@ -1,49 +1,65 @@
 package com.cnet.crec.common;
 
 import java.util.HashMap;
+import java.util.Properties;
 
 public class Finals
 {
+
+	private static Properties pros = Propertie.getProperties();
+
 	//개발 여부 (개발에 필요한 여러 세팅을 한다) 운영 false
-	public static boolean 			isDev = true;
+	public static boolean 			isDev = Boolean.parseBoolean(pros.getProperty("isDev"));
 
 	//프로그램 메인 타이틀
-	public static final String		MAIN_TITLE_LOGIN = "<img alt='image' src='img/logo/main_title_login.png' />";
-	public static final String		MAIN_TITLE_TOP   = "<img alt='image' src='../img/logo/main_tile_top.png' />";
+	//public static final String		MAIN_TITLE_LOGIN = "<img alt='image' src='img/logo/main_title_login.png' />";
+	//public static final String		MAIN_TITLE_TOP   = "<img alt='image' src='../img/logo/main_tile_top.png' />";
+
+	public static final String		MAIN_TITLE_LOGIN = pros.getProperty("MAIN_TITLE_LOGIN");
+	public static final String		MAIN_TITLE_TOP   = pros.getProperty("MAIN_TITLE_TOP");
+
 	//public static final String	MAIN_TITLE_TOP   = "<span style='font-size:24px;font-weight:bold;'>CNETTECH</span>";
 
 	//백업 DB 존재 유무
-	public static final boolean		isExistBackupServer = false;
+//	public static final boolean		isExistBackupServer = false;
+	public static final boolean		isExistBackupServer = Boolean.parseBoolean(pros.getProperty("isExistBackupServer"));
 	//서버 URL
-	public static String 			SERVER_URL = (!isDev) ? "http://10.144.32.129" : "http://192.168.0.222"; //운영 : 개발
+	//public static String 			SERVER_URL = (!isDev) ? "http://10.144.32.129" : "http://192.168.0.222"; //운영 : 개발
+	public static String 			SERVER_URL = (!isDev) ? pros.getProperty("SERVER_URL.Operate") : pros.getProperty("SERVER_URL.Develop"); //운영 : 개발
+
 
 	/* :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 녹취 이력 설정 START ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
 	//미디어 서버 URL
-	public static String 			MEDIA_SERVER_URL = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
+	//public static String 			MEDIA_SERVER_URL = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
+	public static String 			MEDIA_SERVER_URL = (!isDev) ? pros.getProperty("MEDIA_SERVER_URL.Operate") : pros.getProperty("MEDIA_SERVER_URL.Develop"); //운영 : 개발
 
 	/**
 	 * HTTPS 일 경우 문제 발생
 	 * 미디어 서버 URL 다운로드
 	 */
-	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
+	//public static String 			MEDIA_SERVER_URL_D = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
+	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? pros.getProperty("MEDIA_SERVER_URL_D.Operate") : pros.getProperty("MEDIA_SERVER_URL_D.Develop"); //운영 : 개발
 
 	/**
 	 * 청취/다운 사유 입력 유무
 	 * 사유 입력 팝업 미노출	: false
 	 * 사유 입력 팝업 노출		: true
 	 */
-	public static final boolean		isExistPlayDownReason = false;
+	//public static final boolean		isExistPlayDownReason = false;
+	public static final boolean		isExistPlayDownReason = Boolean.parseBoolean(pros.getProperty("isExistPlayDownReason"));
 
 	/**
 	 * 다운로드 확장자 선택 유무
 	 * 팝업 미노출	: false
 	 * 팝업 노출		: true
 	 */
-	public static final boolean		isDownloadExt = false;
+	//public static final boolean		isDownloadExt = false;
+	public static final boolean		isDownloadExt = Boolean.parseBoolean(pros.getProperty("isDownloadExt"));
 
 	//다중다운로드
-	public static final boolean		isExistMultiDownload = false;
+	//public static final boolean		isExistMultiDownload = false;
+	public static final boolean		isExistMultiDownload = Boolean.parseBoolean(pros.getProperty("isExistMultiDownload"));
 
 	/**
 	 * 녹취 다운로드 여부 미노출 및 기능 사용 여부
@@ -52,7 +68,8 @@ public class Finals
 	 * 녹취 다운로드 선택 창 미노출	: true
 	 * 녹취 다운로드 선택 창 노출	: false
 	 */
-	public static final boolean		isRecDownload = true;
+	//public static final boolean		isRecDownload = true;
+	public static final boolean		isRecDownload = Boolean.parseBoolean(pros.getProperty("isRecDownload"));
 
 	/**
 	 * 부분 녹취 기능 사용 여부 설정
@@ -60,7 +77,8 @@ public class Finals
 	 * 부분 녹취 버튼 미노출	: false
 	 * 부분 녹취 버튼 노출		: true
 	 */
-	public static final boolean		isExistPartRecord = false;
+//	public static final boolean		isExistPartRecord = false;
+	public static final boolean		isExistPartRecord = Boolean.parseBoolean(pros.getProperty("isExistPartRecord"));
 
 	/**
 	 * 고객 정보 수정 기능 사용 여부 설정
@@ -68,7 +86,8 @@ public class Finals
 	 * 고객정보수정 버튼 미노출	: false
 	 * 고객정보수정 버튼 노출	: true
 	 */
-	public static final boolean		isExistRegiPart = false;
+//	public static final boolean		isExistRegiPart = false;
+	public static final boolean		isExistRegiPart =  Boolean.parseBoolean(pros.getProperty("isExistRegiPart"));
 
 	/**
 	 * 마킹 기능 사용 여부 설정
@@ -76,7 +95,8 @@ public class Finals
 	 * 마킹 버튼 노출		: true
 	 * 마킹 버튼 미노출	: false
 	 */
-	public static final boolean		isExistMarking = true;
+//	public static final boolean		isExistMarking = true;
+	public static final boolean		isExistMarking = Boolean.parseBoolean(pros.getProperty("isExistMarking"));
 
 	/**
 	 * 영구 녹취 기능 사용 여부 설정
@@ -84,10 +104,12 @@ public class Finals
 	 * 영구 버튼 미노출	: false
 	 * 영구 녹취 버튼 노출	: true
 	 */
-	public static final boolean		isExistEverlasting = false;
+//	public static final boolean		isExistEverlasting = false;
+	public static final boolean		isExistEverlasting = Boolean.parseBoolean(pros.getProperty("isExistEverlasting"));
 
 	//필수중단
-	public static final boolean		isExistPilsooJungdan = true;
+//	public static final boolean		isExistPilsooJungdan = true;
+	public static final boolean		isExistPilsooJungdan = Boolean.parseBoolean(pros.getProperty("isExistPilsooJungdan"));
 
 	/* :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 녹취 이력 설정 END   ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
@@ -95,7 +117,8 @@ public class Finals
 
 	//녹취파일 보관일수 미노출 여부
 	//미노출 : true 노출 : false
-	public static final boolean		isRecFileKeep = true;
+//	public static final boolean		isRecFileKeep = true;
+	public static final boolean		isRecFileKeep = Boolean.parseBoolean(pros.getProperty("isRecFileKeep"));
 
 	/**
 	 * 채널 노출 여부
@@ -105,7 +128,8 @@ public class Finals
 	 * 채널 입력창 미 활성화(IP) : true
 	 * 채널 입력창 활성화(TDM)  : false
 	 */
-	public static final boolean		isChannel = true;
+//	public static final boolean		isChannel = true;
+	public static final boolean		isChannel = Boolean.parseBoolean(pros.getProperty("isChannel"));
 
 	/**
 	 * 비밀번호 사용 기간 미노출 및 기능 사용 여부
@@ -113,7 +137,8 @@ public class Finals
 	 * 비밀번호 사용 기간 미노출	: true
 	 * 비밀번호 사용 기간 노출	: false
 	 */
-	public static final boolean		isPassChgTerm = true;
+//	public static final boolean		isPassChgTerm = true;
+	public static final boolean		isPassChgTerm = Boolean.parseBoolean(pros.getProperty("isPassChgTerm"));
 
 	/* :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 기본관리 설정 END    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
@@ -122,7 +147,8 @@ public class Finals
 	//TA 유무 미노출 여부
 	//외부에 다운로드시 다운로드 이력 요청시 필요
 	//미노출 : false 노출 : true
-	public static final boolean		isTa = false;
+//	public static final boolean		isTa = false;
+	public static final boolean		isTa = Boolean.parseBoolean(pros.getProperty("isTa"));
 
 	/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   이력 설정 END      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
@@ -130,13 +156,17 @@ public class Finals
 
 	//평가관리 관련 기능 미노출 여부
 	//미노출 : true 노출 : false
-	public static final boolean		isEval = true;
+//	public static final boolean		isEval = true;
+	public static final boolean		isEval = Boolean.parseBoolean(pros.getProperty("isEval"));
 	//평가 최대 차수
-	public static int 				EVAL_ORDER_MAX = 16;
+//	public static int 				EVAL_ORDER_MAX = 16;
+	public static int 				EVAL_ORDER_MAX = Integer.parseInt(pros.getProperty("EVAL_ORDER_MAX"));
 	//평가수행 프로그램명 (평가자가 아니면 평가수행 메뉴 안보이게 하기 위함 (top.jsp)
-	public static final String		EVAL_PROGRAM = "/eval.jsp";
+//	public static final String		EVAL_PROGRAM = "/eval.jsp";
+	public static final String		EVAL_PROGRAM = pros.getProperty("EVAL_PROGRAM");
 	//평가 완료하기 버튼
-	public static final boolean		isExistEvalFinish = false;
+//	public static final boolean		isExistEvalFinish = false;
+	public static final boolean		isExistEvalFinish = Boolean.parseBoolean(pros.getProperty("isExistEvalFinish"));
 	//평가 상태 정보
 	public static HashMap<String, String> hEvalStatus			= new HashMap<String, String>();
 	public static HashMap<String, String> hEvalStatusHtml		= new HashMap<String, String>();

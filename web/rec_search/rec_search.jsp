@@ -387,44 +387,44 @@
 		});
 	
 		// 필수 중단 팝업 오픈
-		$("button[name=btn_abort]").click(function() {
-			$("#modalAbort").modal("toggle");
-		});
+		// $("button[name=btn_abort]").click(function() {
+		// 	$("#modalAbort").modal("toggle");
+		// });
 	
 		// 필수 중단 등록 버튼 클릭
-		$("#modalAbort button[name=modal_regi]").click(function() {
-			if(!$("#abort input[name=rec_date]").val().trim()) 
-			{
-				alert("날짜를 선택해 주십시오.");
-				$("#abort input[name=rec_date]").focus();
-				return false;
-			}
-	
-			$.ajax({
-				type: "POST",
-				url: "remote_rec_abort_proc.jsp",
-				async: false,
-				data: "step=abort&"+$("#abort").serialize(),
-				dataType: "json",
-				success:function(dataJSON){
-					if(dataJSON.code == "OK") 
-					{
-						alert("정상적으로 업데이트 되었습니다.");
-						$("#modalAbort").modal("hide");
-						$grid.pqGrid("refreshDataAndView");
-					} 
-					else 
-					{
-						alert(dataJSON.msg);
-						return false;
-					}
-				},
-				error:function(req,status,err){
-					alertJsonErr(req,status,err);
-					return false;
-				}
-			});
-		});
+		// $("#modalAbort button[name=modal_regi]").click(function() {
+		// 	if(!$("#abort input[name=rec_date]").val().trim())
+		// 	{
+		// 		alert("날짜를 선택해 주십시오.");
+		// 		$("#abort input[name=rec_date]").focus();
+		// 		return false;
+		// 	}
+		//
+		// 	$.ajax({
+		// 		type: "POST",
+		// 		url: "remote_rec_abort_proc.jsp",
+		// 		async: false,
+		// 		data: "step=abort&"+$("#abort").serialize(),
+		// 		dataType: "json",
+		// 		success:function(dataJSON){
+		// 			if(dataJSON.code == "OK")
+		// 			{
+		// 				alert("정상적으로 업데이트 되었습니다.");
+		// 				$("#modalAbort").modal("hide");
+		// 				$grid.pqGrid("refreshDataAndView");
+		// 			}
+		// 			else
+		// 			{
+		// 				alert(dataJSON.msg);
+		// 				return false;
+		// 			}
+		// 		},
+		// 		error:function(req,status,err){
+		// 			alertJsonErr(req,status,err);
+		// 			return false;
+		// 		}
+		// 	});
+		// });
 		
 		//달력 수동 입력시 - 자동 입력 CJM(20181204)
 		//$(".rec_form1").on("change paste keyup select", function()
@@ -755,7 +755,7 @@
 				<div class="ibox-tools">
 					<button type="button" name="btn_search_config" class="btn btn-default btn-sm" data-toggle='modal'><i class="fa fa-cog"></i> 설정</button>
 					<button type="button" name="btn_tree_view" class="btn btn-default btn-sm"><i class="fa fa-sitemap"></i> 조직도</button>
-					<button type="button" name="btn_abort" class="btn btn-default btn-sm" style='display:<%=ComLib.getCssDisplayStr(Finals.isExistPilsooJungdan)%>'><i class="fa fa-ban"></i> 필수중단</button>
+<%--					<button type="button" name="btn_abort" class="btn btn-default btn-sm" style='display:<%=ComLib.getCssDisplayStr(Finals.isExistPilsooJungdan)%>'><i class="fa fa-ban"></i> 필수중단</button>--%>
 				</div>
 				<!--ibox 접히기, 설정버튼 영역 끝-->
 				<div style="float:right">
@@ -822,80 +822,80 @@
 			</div>
 			<!-- 조회/리스트 끝 -->
 			<!-- 필수 중단 콜 -->
-			<div class="modal inmodal" id="modalAbort" tabindex="-1" role="dialog"  aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content animated fadeIn">
-						<form id="abort">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-								<h4 class="modal-title">필수중단 업데이트</h4>
-							</div>
-							<div class="modal-body">
-								<table class="table top-line1 table-bordered2">
-								<thead>
-								<tr>
-									<td style="width:25%;" class="table-td">날짜 <span class="required">*</span></td>
-									<td style="width:75%; padding: 6px 9px;">
-										<div class="input-group" style="display:inline-block;">
-											<input type="text" name="rec_date" class="form-control datepicker" value="" style="z-index: 99999;">
-											<div class="input-group-btn" style="display:block;">
-												<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
-											</div>
-										</div>
-									</td>
-								</tr>
-								</thead>
-								<tr>
-									<td class="table-td">시간 <span class="required">*</span></td>
-									<td style="padding: 6px 9px;">
-										<select class="form-control" name="rec_shour" style="width: 60px;">
-<%
-										for(int i=0; i<=23; i++) 
-										{
-											String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-											out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");
-										}
-%>
-										</select> :
-										<select class="form-control" name="rec_smin" style="width: 60px;">
-<%
-										for(int i=0; i<=59; i++) 
-										{
-											String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");
-											out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");
-										}
-%>
-										</select> ~
-										<select class="form-control" name="rec_ehour" style="width: 60px;">
-<%
-										for(int i=0; i<=23; i++) 
-										{
-											String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-											out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");
-										}
-%>
-										</select> :
-										<select class="form-control" name="rec_emin" style="width: 60px;">
-<%
-										for(int i=0; i<=59; i++) 
-										{
-											String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");
-											out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");
-										}
-%>
-										</select>
-									</td>
-								</tr>
-								</table>
-							</div>
-							<div class="modal-footer">
-								<button type="button" name="modal_regi" class="btn btn-primary btn-sm" prop=""><i class="fa fa-pencil"></i> 등록</button>
-								<button type="button" name="modal_cancel" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 취소</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+<%--			<div class="modal inmodal" id="modalAbort" tabindex="-1" role="dialog"  aria-hidden="true">--%>
+<%--				<div class="modal-dialog">--%>
+<%--					<div class="modal-content animated fadeIn">--%>
+<%--						<form id="abort">--%>
+<%--							<div class="modal-header">--%>
+<%--								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>--%>
+<%--								<h4 class="modal-title">필수중단 업데이트</h4>--%>
+<%--							</div>--%>
+<%--							<div class="modal-body">--%>
+<%--								<table class="table top-line1 table-bordered2">--%>
+<%--								<thead>--%>
+<%--								<tr>--%>
+<%--									<td style="width:25%;" class="table-td">날짜 <span class="required">*</span></td>--%>
+<%--									<td style="width:75%; padding: 6px 9px;">--%>
+<%--										<div class="input-group" style="display:inline-block;">--%>
+<%--											<input type="text" name="rec_date" class="form-control datepicker" value="" style="z-index: 99999;">--%>
+<%--											<div class="input-group-btn" style="display:block;">--%>
+<%--												<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>--%>
+<%--											</div>--%>
+<%--										</div>--%>
+<%--									</td>--%>
+<%--								</tr>--%>
+<%--								</thead>--%>
+<%--								<tr>--%>
+<%--									<td class="table-td">시간 <span class="required">*</span></td>--%>
+<%--									<td style="padding: 6px 9px;">--%>
+<%--										<select class="form-control" name="rec_shour" style="width: 60px;">--%>
+<%--<%--%>
+<%--										for(int i=0; i<=23; i++) --%>
+<%--										{--%>
+<%--											String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");--%>
+<%--											out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");--%>
+<%--										}--%>
+<%--%>--%>
+<%--										</select> :--%>
+<%--										<select class="form-control" name="rec_smin" style="width: 60px;">--%>
+<%--<%--%>
+<%--										for(int i=0; i<=59; i++) --%>
+<%--										{--%>
+<%--											String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");--%>
+<%--											out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");--%>
+<%--										}--%>
+<%--%>--%>
+<%--										</select> ~--%>
+<%--										<select class="form-control" name="rec_ehour" style="width: 60px;">--%>
+<%--<%--%>
+<%--										for(int i=0; i<=23; i++) --%>
+<%--										{--%>
+<%--											String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");--%>
+<%--											out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");--%>
+<%--										}--%>
+<%--%>--%>
+<%--										</select> :--%>
+<%--										<select class="form-control" name="rec_emin" style="width: 60px;">--%>
+<%--<%--%>
+<%--										for(int i=0; i<=59; i++) --%>
+<%--										{--%>
+<%--											String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");--%>
+<%--											out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");--%>
+<%--										}--%>
+<%--%>--%>
+<%--										</select>--%>
+<%--									</td>--%>
+<%--								</tr>--%>
+<%--								</table>--%>
+<%--							</div>--%>
+<%--							<div class="modal-footer">--%>
+<%--								<button type="button" name="modal_regi" class="btn btn-primary btn-sm" prop=""><i class="fa fa-pencil"></i> 등록</button>--%>
+<%--								<button type="button" name="modal_cancel" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 취소</button>--%>
+<%--							</div>--%>
+<%--						</form>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
 			<!-- 필수 중단 콜 끝 -->
 			<!--팝업창 띠우기 끝-->
 		</div>
