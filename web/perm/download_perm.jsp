@@ -3,49 +3,20 @@
 <%
 	if(!Site.isPmss(out,"menu_perm","json")) return;
 
-	Db db = null;
 
 	try 
 	{
-		/*
-		db = new Db(true);
-
-		// user_level list
-		String _parent_code = "USER_LEVEL";
-
-		List<Map<String, Object>> user_level_list = db.selectList("code.selectCodeList", _parent_code);
-		String col_user_level = "";
-
-		if(user_level_list.size() > 0) 
-		{
-			for(Map<String, Object> item : user_level_list) 
-			{
-				col_user_level += ",{'" + item.get("comm_code") + "':'" + item.get("code_name") + "'}";
-			}
-			col_user_level = col_user_level.substring(1);
-		}
-		*/
-		Map<String,Object> argMap = new HashMap();
-		
-		//공통 코드 조회(등급)
-		argMap.clear();
-		argMap.put("tb_nm", "code");		//테이블 정보
-		argMap.put("_parent_code", "USER_LEVEL");
-		
-		String jsnUserLvList = Site.getCommComboHtml("j", argMap);
 %>
 <jsp:include page="/include/top.jsp" flush="false"/>
 <script type="text/javascript">
 	$(function () 
 	{
 		var colModel = [
-			{ title: "권한명", width: 200, dataIndx: "download_name",
-				validations: [
-					{ type: "minLen", value: "1", msg: "필수입력 사항입니다." },
-				],
-			},
-			{ title: "IP", width: 200, dataIndx: "download_ip", editable: true}
-
+			{ title: "IP", width: 400, dataIndx: "download_ip", editable: true},
+			{ title: "삭제", width: 40, editable: false, sortable: false, render: function (ui) {
+					return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
+				}
+			}
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
@@ -57,7 +28,7 @@
 		});
 	
 		// 페이지 id, 페이징 사용여부, 엑셀다운로드 사용여부, 신규등록 사용여부, 수정 사용여부
-		var baseObj = getBaseGridOption("download_perm", "N", "N", "N", "Y");
+		var baseObj = getBaseGridOption("download_perm", "N", "N", "Y", "Y");
 		var obj = $.extend({}, baseObj, {
 			colModel: colModel,
 			dataModel: dataModel,
@@ -66,7 +37,44 @@
 		});
 	
 		$grid = $("#grid").pqGrid(obj);
+
+		// 등록 저장
+		$("#regi button[name=modal_regi]").click(function() {
+			if(!$("input[name=download_ip]").val().trim())
+			{
+				alert("다운로드 권한을 부여할 Ip를 입력해 주십시오.");
+				$("input[name=download_ip]").focus();
+				return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				url: "remote_download_perm_proc.jsp",
+				async: false,
+				data: "step=insert&"+$("#regi").serialize(),
+				dataType: "json",
+				success:function(dataJSON){
+					if(dataJSON.code == "OK")
+					{
+						alert("정상적으로 등록되었습니다.");
+						$("#modalRegiForm").modal("hide");
+						$grid.pqGrid("refreshDataAndView");
+					}
+					else
+					{
+						alert(dataJSON.msg);
+						return false;
+					}
+				},
+				error:function(req,status,err){
+					alertJsonErr(req,status,err);
+					return false;
+				}
+			});
+		});
 	});
+
+
 </script>
 
 	<!--title 영역 -->
@@ -75,7 +83,7 @@
 		<ol class="breadcrumb" style="float:right;">
 			 <li><a href="#none"><i class="fa fa-home"></i> 관리</a></li>
 			 <li><a href="#none">접근보안 관리</a></li>
-			 <li class="active"><strong>메뉴 접근권한</strong></li>
+			 <li class="active"><strong>다운로드 접근권한</strong></li>
 		</ol>
 	</div>
 	<!--title 영역 끝 -->
@@ -102,6 +110,38 @@
 			<!--grid 영역-->
 			<div id="grid"></div>
 			<!--grid 영역 끝-->
+			<!--팝업창 띠우기-->
+			<div class="modal inmodal" id="modalRegiForm" tabindex="-1" role="dialog"  aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content animated fadeIn">
+						<form id="regi">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+								<h4 class="modal-title">다운로드 IP 등록</h4>
+							</div>
+							<div class="modal-body" >
+								<!--업무코드 table-->
+								<table class="table top-line1 table-bordered2">
+									<thead>
+									<tr>
+										<td style="width:40%;" class="table-td">다운로드 IP <span class="required">*</span></td>
+										<td style="width:60%;">
+											<input type="text" name="download_ip" class="form-control" id="" placeholder="">
+										</td>
+									</tr>
+									</thead>
+								</table>
+								<!--업무코드 table 끝-->
+							</div>
+							<div class="modal-footer">
+								<button type="button" name="modal_regi" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 등록</button>
+								<button type="button" name="modal_cancel" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 취소</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!--팝업창 띠우기 끝-->
 		</div>
 		<!--Data table 영역 끝-->
 	</div>
@@ -114,8 +154,4 @@
 	{
 		logger.error(e.getMessage());
 	} 
-	finally 
-	{
-		if(db != null)	db.close();
-	}
 %>

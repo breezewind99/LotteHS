@@ -14,10 +14,8 @@
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		argMap.put("business_code", _BUSINESS_CODE);
 		argMap.put("user_level", _LOGIN_LEVEL);
-		//상위메뉴 노출 요청 - CJM(20190715)
-		//argMap.put("menu_depth", "2");
 
-		List<Map<String, Object>> list = db.selectList("menu.selectList", argMap);
+		List<Map<String, Object>> list = db.selectList("download.selectList", argMap);
 
 		json.put("totalRecords", list.size());
 

@@ -168,7 +168,8 @@
 		<mapper resource="sqlmap/oracle/manage/search_config.xml"/>
 		<mapper resource="sqlmap/oracle/manage/business.xml"/>
 		<mapper resource="sqlmap/oracle/manage/code.xml"/>
-		
+		<mapper resource="sqlmap/oracle/manage/download.xml"/>
+
 		<mapper resource="sqlmap/oracle/rec_search/rec_search.xml"/>
 		<mapper resource="sqlmap/oracle/rec_search/rec_memo.xml"/>
 		<mapper resource="sqlmap/oracle/rec_search/rec_marking.xml"/>

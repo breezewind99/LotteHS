@@ -15,18 +15,18 @@ public class Finals
 	//백업 DB 존재 유무
 	public static final boolean		isExistBackupServer = false;
 	//서버 URL
-	public static String 			SERVER_URL = (!isDev) ? "http://10.144.32.129" : "http://10.144.32.129"; //운영 : 개발
+	public static String 			SERVER_URL = (!isDev) ? "http://10.144.32.129" : "http://192.168.0.222"; //운영 : 개발
 
 	/* :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 녹취 이력 설정 START ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 
 	//미디어 서버 URL
-	public static String 			MEDIA_SERVER_URL = (!isDev) ? "http://10.144.32.129:8888" : "http://10.144.32.129:8888"; //운영 : 개발
+	public static String 			MEDIA_SERVER_URL = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
 
 	/**
 	 * HTTPS 일 경우 문제 발생
 	 * 미디어 서버 URL 다운로드
 	 */
-	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? "http://10.144.32.129:8888" : "http://10.144.32.129:8888"; //운영 : 개발
+	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
 
 	/**
 	 * 청취/다운 사유 입력 유무

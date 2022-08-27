@@ -212,7 +212,7 @@
 		{
 			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
 			//롯데 보안 이슈로 수정 요청
-			if(item.containsKey("n_cust_tel")){
+			if(item.containsKey("n_cust_tel") && item.get("n_cust_tel") != null){
 				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
 				item.put("n_cust_tel", temp);
 			}
@@ -289,6 +289,7 @@
 		json.put("curPage", cur_page);
 		json.put("data", list);
 		out.print(json.toJSONString());
+		logger.info("Search Result");
 	} 
 	catch(Exception e) 
 	{

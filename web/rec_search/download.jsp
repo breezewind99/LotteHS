@@ -151,11 +151,11 @@
 		}*/
 		if("88".equals(system_code)) 
 		{
-			fft_url = file_url.replace(".wav", ".nmf");
+			fft_url = file_url.replace("download", "ffttext");
 		} 
 		else 
 		{
-			fft_url = file_url.replace(".wav", ".fft");
+			fft_url = file_url.replace("download", "ffttext");
 		}
 
 		// 녹취파형 HTTP 연결

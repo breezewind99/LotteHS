@@ -200,9 +200,11 @@
 				//원본 url
 				logger.debug("file_url 원본: " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "." + file_ext);
 			}
-			file_url = Finals.MEDIA_SERVER_URL + "/media/wave?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString() ;
+			file_url = Finals.MEDIA_SERVER_URL + "/media/mp3?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString() ;
 			//전송 url
-			logger.debug("file_url 암호화: " + file_url);
+			logger.debug("file_url AES 원본암호화: " + aes.Encrypt(file_prefix + "|" + file_path + ".mp3"));
+			logger.debug("file_url encode 암호화: " + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString());
+			logger.debug("file_url : " + file_url);
 		} 
 		catch (Exception e) 
 		{
@@ -415,8 +417,12 @@
 			//미디어 서버 전달 file_url ? 제거 - CJM(20181022)
 			//file_url = Finals.MEDIA_SERVER_URL_D + "/?refer=" + aes.Encrypt(file_prefix + "|" + file_path) + ".dwn";
 			//file_url = Finals.MEDIA_SERVER_URL_D + "/?refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
-			file_url = Finals.MEDIA_SERVER_URL + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
-			
+			//file_url = Finals.MEDIA_SERVER_URL + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
+			file_url = Finals.MEDIA_SERVER_URL + "/media/download?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".wav"),"UTF-8").toString() ;
+			//전송 url
+			logger.debug("file_url AES 원본암호화: " + aes.Encrypt(file_prefix + "|" + file_path + ".wav"));
+			logger.debug("file_url encode 암호화: " + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".wav"),"UTF-8").toString());
+			logger.debug("file_url : " + file_url);
 			/*
 			//원본 url
 			logger.debug("file_url : " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "." + file_ext);

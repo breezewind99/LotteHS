@@ -80,7 +80,7 @@
 					for(var i = 0; i < options.length; i++) 
 					{
 						var option = options[i];
-						if(option[cellData]) 
+						if(option[cellData])
 						{
 							return option[cellData];
 						}

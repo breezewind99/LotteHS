@@ -213,7 +213,7 @@
 		
 		//if(Finals.isDev) file_url = "http://192.168.0.115:8889/20170712132127_7858.wav";
 		//if(Finals.isDev) file_url = "http://192.168.0.115:8888/?refer=ZjPhCD9M55IRFodh0aYkZw/3dCsTdZRPdzB30xoe0ludKUEK7ydEhhUdQXOeh/7RHXYWgY+CF+V5/nH9rnXjIg==.wav";
-
+		//file_url = "http://127.0.0.1:8888/refer=01|20220827011836|20220823/19/20220823193748_19906.mp3";
 		String fft_ext = ("88".equals(curRec.get("system_code").toString())) ? "nmf" : "fft";
 		if(file_url == null || "".equals(file_url)) 
 		{

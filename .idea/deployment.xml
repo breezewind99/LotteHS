@@ -2,44 +2,25 @@
 <project version="4">
   <component name="PublishConfigData" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;" remoteFilesAllowedToDisappearOnAutoupload="false" showNewOnTargetInSync="false" showExcludedInSync="true">
     <serverData>
-      <paths name="가산 WAS1">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
-          </mappings>
-          <excludedPaths>
-            <excludedPath path="/www/WEB-INF/classes/com/cnet/crec/common/Finals.class" />
-          </excludedPaths>
-        </serverdata>
-      </paths>
       <paths name="가산 WAS2">
         <serverdata>
           <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath path="/www/WEB-INF/classes/com/cnet/crec/common/Finals.class" />
-          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="용인 WAS1">
         <serverdata>
           <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath path="/www/WEB-INF/classes/com/cnet/crec/common/Finals.class" />
-          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="용인 WAS2">
         <serverdata>
           <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$/Export" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath path="/www/WEB-INF/classes/com/cnet/crec/common/Finals.class" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
