@@ -22,5 +22,12 @@
       <jdbc-url>jdbc:oracle:thin:@10.144.35.26:1521:RECDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="WFMS" uuid="340a965f-861f-44b0-939d-3cc3948ae074">
+      <driver-ref>oracle.19</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@10.144.31.33:1521:EWMDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
