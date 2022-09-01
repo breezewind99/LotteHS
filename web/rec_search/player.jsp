@@ -23,11 +23,11 @@
 		String reason_code = CommonUtil.getParameter("reason_code");//사유입력에 사용
 		String reason_text = CommonUtil.getParameter("reason_text");//사유입력에 사용
 		String sType = CommonUtil.getParameter("setType");
-	
+
 		// 파라미터 체크
 		if(rec_seq.equals("") && (!CommonUtil.hasText(info) || (Finals.isExistPlayDownReason && !CommonUtil.hasText(reason_code)))) 
 		{
-			out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_PARAM"),"","close"));
+			//out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_PARAM"),"","close"));
 			return;
 		}
 	

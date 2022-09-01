@@ -12,7 +12,7 @@
 					<tr>
 						<td style="width:40%;" class="table-td">사유선택 <span class="required">*</span></td>
 						<td style="width:60%;">
-							<select name="reason_code" class="form-control">
+							<select id="reason_code" name="reason_code" class="form-control">
 								<option value="">사유 선택</option>
 							</select>
 						</td>
@@ -22,7 +22,7 @@
 					<tr>
 						<td class="table-td">기타</td>
 						<td>
-							<input type="text" name="reason_text" class="form-control" id="" placeholder="" disabled="disabled">
+							<input type="text" id="reason_text" name="reason_code" class="form-control" id="" placeholder="" disabled="disabled">
 						</td>
 					</tr>							
 					</tbody>					
@@ -58,6 +58,7 @@
 
 	// form check
 	function reasonFormChk() {
+
 		if(!$("#modalReasonForm select[name=reason_code]").val()) {
 			alert("사유코드를 선택해 주십시오.");
 			return false;
@@ -67,6 +68,7 @@
 			$("#modalReasonForm input[name=reason_text]").focus();
 			return false;
 		}
+
 		return true;
 	};
 </script>

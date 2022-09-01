@@ -16,11 +16,11 @@
 			,cm.system_code
 			,cm.login
 			,cm.user_id
-			,cm.user_name
-			,cm.bpart_code
-			,cm.mpart_code
-			,cm.spart_code
-			,cm.ani
+			,(SELECT user_name from tbl_user where user_id = cm.user_id) as user_name
+			,nvl(cm.bpart_code, ' ') as bpart_code
+			,nvl(cm.mpart_code, ' ') as mpart_code
+			,nvl(cm.spart_code, ' ') as spart_code
+			,nvl(cm.ani,' ') as ani
 			,cm.phone
 			,cm.datetime
 			,(lpad(trunc((to_date(to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') - to_date(cm.datetime, 'YYYY-MM-DD HH24:MI:SS'))*24), 2, '0')

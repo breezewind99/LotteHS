@@ -30,8 +30,9 @@
 
 	// part_code 자릿수 설정
 	String _PART_DEFAULT_CODE = "0000";
-	//String _PART_DEFAULT_CODE = "000000";
+
 	int _PART_CODE_SIZE = _PART_DEFAULT_CODE.length();
+
 
 	// 장기간 미사용 체크 일수
 	int _LOGIN_CHECK_TERM = 131;

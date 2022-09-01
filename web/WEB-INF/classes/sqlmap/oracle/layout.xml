@@ -17,7 +17,7 @@
 			,('depth' || part_depth) as type
 		from (
 			select 
-				(business_code || '${_default_code}' || '${_default_code}' || '${_default_code}') as part_code
+				(business_code || '_' || '${_default_code}' || '_' || '${_default_code}' || '_' || '${_default_code}') as part_code
 				,'#' as parent_code
 				,business_name as part_name
 				,0 as part_depth
@@ -27,12 +27,12 @@
 			and business_code = #{business_code}
 		</if>	
 			union all
-			select 
-				(business_code || bpart_code || mpart_code || spart_code) part_code
-				,(case part_depth when 1 then business_code || '${_default_code}' || '${_default_code}' || '${_default_code}'
-								  when 2 then business_code || bpart_code || '${_default_code}' || '${_default_code}'
-								  when 3 then business_code || bpart_code || mpart_code || '${_default_code}'
-					else business_code || bpart_code || mpart_code || spart_code
+			select
+				(business_code || '_' || bpart_code || '_' || mpart_code || '_' || spart_code)
+				,(case part_depth when 1 then business_code || '_' || '${_default_code}' || '_' || '${_default_code}' || '_' || '${_default_code}'
+								  when 2 then business_code || '_' || bpart_code || '_' || '${_default_code}' || '_' || '${_default_code}'
+								  when 3 then business_code || '_' || bpart_code || '_' || mpart_code || '_' || '${_default_code}'
+					else business_code || '_' || bpart_code || '_' || mpart_code || '_' || spart_code
 					end) as parent_code  
 				, part_name
 				, part_depth
@@ -72,7 +72,7 @@
 			,('depth' || part_depth) as type
 		from (
 			select 
-				(business_code || '${_default_code}' || '${_default_code}' || '${_default_code}') as part_code
+				(business_code || '_' || '${_default_code}' || '_' || '${_default_code}' || '_' || '${_default_code}') as part_code
 				,'#' as parent_code
 				,business_name as part_name
 				,0 as part_depth
@@ -82,12 +82,12 @@
 			and business_code = #{business_code}
 		</if>
 			union all
-			select 
-				(business_code || bpart_code || mpart_code || spart_code) as part_code
-				,(case part_depth when 1 then business_code || '${_default_code}' || '${_default_code}' || '${_default_code}'
-								  when 2 then business_code || bpart_code || '${_default_code}' || '${_default_code}'
-								  when 3 then business_code || bpart_code || mpart_code || '${_default_code}'
-					else business_code || bpart_code || mpart_code || spart_code
+			select
+				(business_code || '_' || bpart_code || '_' || mpart_code || '_' || spart_code)
+				,(case part_depth when 1 then business_code || '_' || '${_default_code}' || '_' || '${_default_code}' || '_' || '${_default_code}'
+								  when 2 then business_code || '_' || bpart_code || '_' || '${_default_code}' || '_' || '${_default_code}'
+								  when 3 then business_code || '_' || bpart_code || '_' || mpart_code || '_' || '${_default_code}'
+					else business_code || '_' || bpart_code || '_' || mpart_code || '_' || spart_code
 					end) as parent_code  
 				,part_name
 				,part_depth
@@ -122,7 +122,7 @@
 			union all
 			select 
 				A.user_id as part_code
-				,(A.business_code || A.bpart_code || A.mpart_code || A.spart_code) as parent_code
+				,(A.business_code || '_' || A.bpart_code || '_' || A.mpart_code || '_' || A.spart_code) as parent_code
 				, A.user_name as part_name
 				, 4 as part_depth
 			from tbl_user A 

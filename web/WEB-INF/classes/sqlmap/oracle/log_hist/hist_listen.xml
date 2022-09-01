@@ -63,8 +63,8 @@
 					,'link' as v_url
 					,nvl(tlh.reason_code, '') as reason_code
 					,nvl(tlh.reason_text, '') as reason_text
-					,(case when nvl(tlh.reason_code, '') != '' then fn_GetCodeName('LD_REASON', tlh.reason_code) 
-						else '' end) as reason_code_desc
+					,(case when nvl(tlh.reason_code, '') != ' ' then fn_GetCodeName('LD_REASON', tlh.reason_code)
+						else ' ' end) as reason_code_desc
 					,(select part_name from tbl_user_group 
 						where part_depth = 1 
 						and bpart_code = tu.bpart_code) as bpart_name
@@ -125,8 +125,8 @@
 			,tlh.local_no
 			,nvl(tlh.reason_code,'') as reason_code
 			,nvl(tlh.reason_text,'') as reason_text
-			,(case when nvl(tlh.reason_code, '') != '' then fn_GetCodeName('LD_REASON', tlh.reason_code) 
-				else '' end) as reason_code_desc
+			,(case when nvl(tlh.reason_code, ' ') != ' ' then fn_GetCodeName('LD_REASON', tlh.reason_code)
+				else ' ' end) as reason_code_desc
 			,(select part_name from tbl_user_group 
 				where part_depth = 1 
 				and bpart_code = tu.bpart_code) as bpart_name

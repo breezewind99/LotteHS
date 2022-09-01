@@ -36,13 +36,20 @@
 
 		if(CommonUtil.hasText(part_code)) 
 		{
-			business_code = CommonUtil.leftString(part_code, 2);
-			//bpart_code = part_code.substring(2, 7);
-			//mpart_code = part_code.substring(7, 12);
-			//spart_code = part_code.substring(12, 17);
-			bpart_code = part_code.substring(2, 2+(_PART_CODE_SIZE*1));
-			mpart_code = part_code.substring(2+(_PART_CODE_SIZE*1), 2+(_PART_CODE_SIZE*2));
-			spart_code = part_code.substring(2+(_PART_CODE_SIZE*2), 2+(_PART_CODE_SIZE*3));
+
+//			business_code = CommonUtil.leftString(part_code, 2);
+//			//bpart_code = part_code.substring(2, 7);
+//			//mpart_code = part_code.substring(7, 12);
+//			//spart_code = part_code.substring(12, 17);
+//			bpart_code = part_code.substring(2, 2+(_PART_CODE_SIZE*1));
+//			mpart_code = part_code.substring(2+(_PART_CODE_SIZE*1), 2+(_PART_CODE_SIZE*2));
+//			spart_code = part_code.substring(2+(_PART_CODE_SIZE*2), 2+(_PART_CODE_SIZE*3));
+
+			String[] temp = part_code.split("_");
+			business_code = temp[0];
+			bpart_code = temp[1];
+			mpart_code = temp[2];
+			spart_code = temp[3];
 		}
 
 		JSONObject json = new JSONObject();
