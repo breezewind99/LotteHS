@@ -78,8 +78,14 @@ public class Propertie {
                 PROGRAM_DIRECTORY = PROGRAM_DIRECTORY.substring(0, PROGRAM_DIRECTORY.lastIndexOf('!'));
             } catch (Exception e) {
             }
-            if (PROGRAM_DIRECTORY.startsWith("/"))
-                PROGRAM_DIRECTORY = PROGRAM_DIRECTORY.substring(1, PROGRAM_DIRECTORY.length());
+            String osName = System.getProperty("os.name").toLowerCase();
+            System.out.println(osName);
+            if (PROGRAM_DIRECTORY.startsWith("/")) {
+                if (osName.contains("mac")) {
+
+                } else
+                    PROGRAM_DIRECTORY = PROGRAM_DIRECTORY.substring(1, PROGRAM_DIRECTORY.length());
+            }
             if (PROGRAM_DIRECTORY.startsWith("file:/"))
                 PROGRAM_DIRECTORY = PROGRAM_DIRECTORY.substring(6, PROGRAM_DIRECTORY.length());
         } catch (Exception e) {
