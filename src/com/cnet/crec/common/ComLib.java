@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -2385,4 +2388,27 @@ public class ComLib
 		if(sBaseLen > len)	return sBase.substring(0, len-1) + "…";
 		else return sBase;
 	}
+
+	public static String getNowTime() {
+		// 현재 시간
+		LocalTime now = LocalTime.now();
+		// 포맷 정의하기
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		// 포맷 적용하기
+		String formatedNow = now.format(formatter);
+		// 포맷 적용된 현재 시간 출력
+		return formatedNow;
+	}
+
+	public static String getNowDate() {
+		LocalDate now = LocalDate.now();
+		// 포맷 정의
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// 포맷 적용
+		String formatedNow = now.format(formatter);
+		// 결과 출력
+		System.out.println(formatedNow);  // 2021/06/17
+		return formatedNow;
+	}
+
 }

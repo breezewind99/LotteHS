@@ -42,6 +42,12 @@ public class Finals
 	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? pros.getProperty("MEDIA_SERVER_URL_D.Operate") : pros.getProperty("MEDIA_SERVER_URL_D.Develop"); //운영 : 개발
 
 	/**
+	 * 관리자 기능 신규 / 편집 기능 가능여부
+	 */
+	//public static final boolean		isExistPlayDownReason = false;
+	public static final boolean		isManageModify = Boolean.parseBoolean(pros.getProperty("isManageModify"));
+
+	/**
 	 * 청취/다운 사유 입력 유무
 	 * 사유 입력 팝업 미노출	: false
 	 * 사유 입력 팝업 노출		: true

@@ -24,11 +24,13 @@
 		String business_code = CommonUtil.leftString(parent_code, 2);
 		int part_depth = Integer.parseInt(CommonUtil.rightString(type, 1)) + 1;
 
+		String[] tempValue = parent_code.split("_");
 		//String bpart_code = (part_depth>1) ? parent_code.substring(2, 7) : "";
 		//String mpart_code = (part_depth>2) ? parent_code.substring(7, 12) : "";
-		String bpart_code = (part_depth>1) ? parent_code.substring(2, 2+(_PART_CODE_SIZE*1)) : "";
-		String mpart_code = (part_depth>2) ? parent_code.substring(2+(_PART_CODE_SIZE*1), 2+(_PART_CODE_SIZE*2)) : "";
-
+//		String bpart_code = (part_depth>1) ? parent_code.substring(2, 2+(_PART_CODE_SIZE*1)) : "";
+//		String mpart_code = (part_depth>2) ? parent_code.substring(2+(_PART_CODE_SIZE*1), 2+(_PART_CODE_SIZE*2)) : "";
+		String bpart_code = (part_depth>1) ? tempValue[1] : "";
+		String mpart_code = (part_depth>2) ? tempValue[2] : "";
 		JSONObject json = new JSONObject();
 
 		Map<String, Object> argMap = new HashMap<String, Object>();

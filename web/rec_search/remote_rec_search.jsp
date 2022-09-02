@@ -132,8 +132,8 @@
 		argMap.put("top_cnt", top_cnt);
 		argMap.put("rec_date1",rec_date1);
 		argMap.put("rec_date2",rec_date2);
-		argMap.put("rec_start_time1",rec_start_hour1+":00:00");
-		argMap.put("rec_start_time2",("24".equals(rec_start_hour2)) ? "23:59:59" : rec_start_hour2+":00:00");
+		argMap.put("rec_start_time1",rec_start_hour1);
+		argMap.put("rec_start_time2",rec_start_hour2);
 		argMap.put("rec_call_time1",DateUtil.getHmsToSec(Integer.parseInt(rec_call_time1)));
 		argMap.put("rec_call_time2",DateUtil.getHmsToSec(Integer.parseInt(rec_call_time2)));
 		argMap.put("bpart_code", bpart_code);
@@ -214,7 +214,7 @@
 			//롯데 보안 이슈로 수정 요청
 			if(item.containsKey("n_cust_tel") && item.get("n_cust_tel") != null){
 				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
-				item.put("n_cust_tel", temp);
+				item.put("n_cust_tel", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_cust_tel").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
 			}
 			if(item.containsKey("n_user_name") && item.get("n_user_name") != null){
 				String temp =  Mask.getMaskedName(item.get("n_user_name").toString().trim());
@@ -267,6 +267,7 @@
 			{
 				item.put("v_memo", "<img src='../img/icon/ico_memo.png' onclick=\"memoRecData('" + row_indx + "');\" style='margin-left: 5px; cursor: pointer;'/>");
 			}
+
 /*			
 			if(item.containsKey("n_user_id")) 
 			{

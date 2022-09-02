@@ -262,9 +262,9 @@
 						return "";
 					}
 				}
-			},
-			
-			{ title: "수정", width: 40, editable: false, sortable: false, 
+			}
+			<%if(Finals.isManageModify) {%>
+			,{ title: "수정", width: 40, editable: false, sortable: false,
 				render: function (ui) {
 					//return "<img src='../img/icon/ico_edit.png' class='btn_edit' onclick='editUser("+ui.rowIndx+");' style='margin:0; padding:0px 1px 5px 2px; width:11.2px;height:auto;cursor: pointer;'/>";
 					// 이미지 영역 문제로 스크롤 이상 현상 - CJM(20180808)
@@ -279,6 +279,7 @@
 					return "<img src='../img/icon/ico_delete.png' class='btn_delete' style='position: absolute; padding: 0px 0px 0px 5px;'/>";
 				}
 			}
+			<%}%>
 		];
 		
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
@@ -289,8 +290,11 @@
 		});
 	
 		// 페이지 id, 페이징 사용여부, 엑셀다운로드 사용여부, 신규등록 사용여부, 수정 사용여부
-		
+		<%if(Finals.isManageModify) {%>
 		var baseObj = getBaseGridOption("user_list", "Y", "Y", "Y", "Y");
+		<%} else {%>
+		var baseObj = getBaseGridOption("user_list", "N", "N", "N", "N");
+		<%}%>
 		// grid 크기 조절 활성화 - CJM(20180808)
 		var obj = $.extend({}, baseObj, {
 			colModel: colModel,

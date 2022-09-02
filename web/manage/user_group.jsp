@@ -81,11 +81,13 @@
 						}
 	
 					},
-				},
-				{ title: "삭제", minWidth: 40, editable: false, sortable: false, render: function (ui) {
+				}
+				<%if(Finals.isManageModify) {%>
+				,{ title: "삭제", minWidth: 40, editable: false, sortable: false, render: function (ui) {
 						return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
 					}
 				}
+				<%}%>
 			];
 	
 		}
@@ -97,23 +99,31 @@
 					validations: [
 						{ type: "minLen", value: "1", msg: "필수입력 사항입니다." },
 					]
-				},
-				{ title: "삭제", minWidth: 40, editable: false, sortable: false, render: function (ui) {
+				}
+				<%if(Finals.isManageModify) {%>
+				,{ title: "삭제", minWidth: 40, editable: false, sortable: false, render: function (ui) {
 						return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
 					}
 				}
-			];
-		}
-		var baseDataModel = getBaseGridDM("<%=page_id%>");
+				<%}%>
+        ];
+    }
+    var baseDataModel = getBaseGridDM("<%=page_id%>");
 		var dataModel = $.extend({}, baseDataModel, {
 			sorting:"local",
 			//sortIndx: "part_code",
 			//sortDir: "up",
 			recIndx: "row_id"
 		});
-	
+
 		// 페이지 id, 페이징 사용여부, 엑셀다운로드 사용여부, 신규등록 사용여부, 수정 사용여부
+		<%if(Finals.isManageModify) {%>
 		var baseObj = getBaseGridOption("user_group", "N", "N", "Y", "Y");
+		<%} else {%>
+		var baseObj = getBaseGridOption("user_group", "N", "N", "N", "N");
+		<%}%>
+
+
 		var obj = $.extend({}, baseObj, {
 			colModel: colModel,
 			dataModel: dataModel,

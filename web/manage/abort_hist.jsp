@@ -20,6 +20,7 @@ $(function ()
 		{ title: "로그인ID", width: 80, dataIndx: "abort_id" },
 		{ title: "로그인명", width: 80, dataIndx: "abort_name" },
 		{ title: "로그인IP", width: 100, dataIndx: "abort_ip" },
+		{ title: "SEQ", width: 100, dataIndx: "abort_seq",hidden:true },
 		{ title: "취소", width: 40, editable: false, sortable: false, render: function (ui) {
 
 			return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
@@ -55,8 +56,8 @@ $(function ()
 				var rowIndx = $grid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
 
 				var rowData = $grid.pqGrid("getRowData", { rowIndxPage: rowIndx });
-				var start_rec_datm = rowData["start_rec_datm"].replace(/\s|-|:|\./gi,"");
-				var end_rec_datm = rowData["end_rec_datm"].replace(/\s|-|:|\./gi,"");
+				var abort_seq = rowData["abort_seq"];
+
 
 				var abort_state = rowData["abort_state"].replace(/\s|-|:|\./gi,"");
 
@@ -69,9 +70,9 @@ $(function ()
 				//cabort
 				$.ajax({
 					type: "POST",
-					url: "remote_abort_hist_proc.jsp",
+					url: "remote_rec_abort_proc.jsp",
 					async: false,
-					data: "step=abort&start_rec_datm="+start_rec_datm+"&end_rec_datm="+end_rec_datm,
+					data: "step=delete&abort_seq="+abort_seq,
 					dataType: "json",
 					success:function(dataJSON){
 						if(dataJSON.code=="OK") {
@@ -293,7 +294,7 @@ $(function ()
 										<td style="width:25%;" class="table-td">날짜 <span class="required">*</span></td>
 										<td style="width:75%; padding: 6px 9px;">
 											<div class="input-group" style="display:inline-block;">
-												<input type="text" name="rec_date" class="form-control datepicker" value="" style="z-index: 99999;">
+												<input type="text" name="rec_date" class="form-control datepicker" value="<%=ComLib.getNowDate()%>" style="z-index: 99999;">
 												<div class="input-group-btn" style="display:block;">
 													<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 												</div>
@@ -304,42 +305,7 @@ $(function ()
 									<tr>
 										<td class="table-td">시간 <span class="required">*</span></td>
 										<td style="padding: 6px 9px;">
-											<select class="form-control" name="rec_shour" style="width: 60px;">
-												<%
-													for(int i=0; i<=23; i++)
-													{
-														String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-														out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");
-													}
-												%>
-											</select> :
-											<select class="form-control" name="rec_smin" style="width: 60px;">
-												<%
-													for(int i=0; i<=59; i++)
-													{
-														String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");
-														out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");
-													}
-												%>
-											</select> ~
-											<select class="form-control" name="rec_ehour" style="width: 60px;">
-												<%
-													for(int i=0; i<=23; i++)
-													{
-														String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-														out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");
-													}
-												%>
-											</select> :
-											<select class="form-control" name="rec_emin" style="width: 60px;">
-												<%
-													for(int i=0; i<=59; i++)
-													{
-														String tmp_min = CommonUtil.getFormatString(Integer.toString(i), "00");
-														out.print("<option value='"+tmp_min+"'>"+tmp_min+"분</option>\n");
-													}
-												%>
-											</select>
+											<input class="form-control rec_form5" type="time" name="rec_start_time" value="<%=ComLib.getNowTime()%>"> ~ <input class="form-control rec_form5" type="time" name="rec_end_time" value="<%=ComLib.getNowTime()%>">
 										</td>
 									</tr>
 								</table>

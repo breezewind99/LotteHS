@@ -53,13 +53,15 @@
 					}
 	
 				},
-			},
-			{ title: "삭제", width: 40, editable: false, sortable: false, render: function (ui) {
+			}
+			<%if(Finals.isManageModify) {%>
+			,{ title: "삭제", width: 40, editable: false, sortable: false, render: function (ui) {
 					return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
 				}
 			}
+			<%}%>
 		];
-	
+
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
 		var dataModel = $.extend({}, baseDataModel, {
 			sorting:"local",
@@ -67,9 +69,13 @@
 			//sortDir: "up",
 			recIndx: "system_code"
 		});
-	
+
 	 	// 페이지 id, 페이징 사용여부, 엑셀다운로드 사용여부, 신규등록 사용여부, 수정 사용여부
+		<%if(Finals.isManageModify) {%>
 		var baseObj = getBaseGridOption("system_mgmt", "N", "N", "Y", "Y");
+		<%} else {%>
+		var baseObj = getBaseGridOption("system_mgmt", "N", "N", "N", "N");
+		<%}%>
 		var obj = $.extend({}, baseObj, {
 			colModel: colModel,
 			dataModel: dataModel,

@@ -80,7 +80,10 @@
 	tr.red td { background:#5f9bdb !important; }
 </style>
 <script type="text/javascript" src="../js/plugins/tree/jstree.min.js"></script>
+<script type="text/javascript" src="../js/clipboard.min.js"></script>
 <script type="text/javascript">
+
+	new ClipboardJS('.copy');
 
 	//청취/다운 사유입력 유무
 	var isExistPlayDownReason = <%=Finals.isExistPlayDownReason%>;
@@ -454,6 +457,18 @@
 		openPopup("memo.jsp?rec_datm="+rec_datm+"&local_no="+rowData["local_no"]+"&rec_filename="+rowData["rec_filename"],"_memo","478","590","yes","center");
 	};
 
+	function copyTel(rowIndx) {
+		var rowData = $grid.pqGrid("getRowData", { rowIndxPage: rowIndx });
+		var Tel = rowData["n_cust_tel"].replace(/\s|-|:|\./gi,"");
+		console.log(Tel);
+
+		var tempInput = document.createElement("input");
+		tempInput.setAttribute("type", "text");
+		tempInput.setAttribute("value", Tel);
+		tempInput.select();
+		document.execCommand( 'Copy' );
+		alert( 'URL 이 복사 되었습니다.' );
+	}
 	//다중다운로드
 	function getSelectedRows() 
 	{
@@ -517,12 +532,12 @@
 		<div class="ibox-content-util-buttons">
 			<div class="ibox-content contentRadius1 conSize" >
 				<!--1행 시작-->
-				<div id="recDiv1">
+				<div id="recDiv3">
 					<div id="labelDiv">
 						<label class="simple_tag">일자</label>
 						<!-- 달력 팝업 위치 시작-->
 						<div class="input-group" style="display:inline-block;">
-							<input type="text" name="rec_date1" class="form-control rec_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+							<input type="text" name="rec_date1" class="form-control rec_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 							<div class="input-group-btn">
 								<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 							</div>
@@ -531,7 +546,7 @@
 						<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 						<!-- 달력 팝업 위치 시작-->
 						<div class="input-group" style="display:inline-block;">
-							<input type="text" name="rec_date2" class="form-control rec_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+							<input type="text" name="rec_date2" class="form-control rec_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 							<div class="input-group-btn">
 								<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 							</div>
@@ -540,34 +555,17 @@
 					</div>
 				</div>
 
-				<div id="recDiv2">
+				<div id="recDiv3">
 					<div id="labelDiv">
 						<label class="simple_tag">녹취시간</label>
-						<select class="form-control rec_form3" name="rec_start_hour1">
-<%
-							for(int i=0; i<=23; i++) 
-							{
-								String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-								out.print("<option value='"+tmp_hour+"'>"+tmp_hour+"시</option>\n");
-							}
-%>
-						</select> ~
-						<select class="form-control rec_form3" name="rec_start_hour2">
-<%
-							for(int i=0; i<=24; i++) 
-							{
-								String tmp_hour = CommonUtil.getFormatString(Integer.toString(i), "00");
-								out.print("<option value='"+tmp_hour+"'"+((i==24) ? " selected='selected'" : "")+">"+tmp_hour+"시</option>\n");
-							}
-%>
-						</select>
+						<input class="form-control rec_combo_range_2" type="time" name="rec_start_hour1" value="00:00:00"> ~ <input class="form-control rec_combo_range_2" type="time" name="rec_start_hour2" value="23:59:59">
 					</div>
 				</div>
 
-				<div id="recDiv2">
+				<div id="recDiv3">
 					<div id="labelDiv">
 						<label class="simple_tag">통화시간</label>
-						<select class="form-control rec_form3" name="rec_call_time1">
+						<select class="form-control rec_combo_range_2" name="rec_call_time1">
 <%
 						for(int i=0; i<=59; i++) 
 						{
@@ -583,7 +581,7 @@
 							<option value="1800">30분</option>
 							<option value="3600">60분</option>
 						</select> ~
-						<select class="form-control rec_form3" name="rec_call_time2">
+						<select class="form-control rec_combo_range_2" name="rec_call_time2">
 <%
 						for(int i=0; i<=59; i++) 
 						{
@@ -618,19 +616,19 @@
 				String text_num = (n%3==0) ? "4" : "5";
 				String etc_num = (n%3==0) ? "2" : "3";
 	
-				sb.append("<div id='recDiv"+div_num+"'><div id='labelDiv'>\n");
+				sb.append("<div id='recDiv3'><div id='labelDiv'>\n");
 				sb.append("<label class='simple_tag'>"+conf_name+"</label>\n");
 	
 				if("local_no".equals(conf_value)) 
 				{
 					// 내선번호
-					sb.append("<input type='text' class='form-control rec_form"+etc_num+"' name='"+conf_field+"1' placeholder=''> ~");
-					sb.append(" <input type='text' class='form-control rec_form"+etc_num+"' name='"+conf_field+"2' placeholder=''>");
+					sb.append("<input type='text' class='form-control rec_combo_range_2' name='"+conf_field+"1' placeholder=''> ~");
+					sb.append(" <input type='text' class='form-control rec_combo_range_2' name='"+conf_field+"2' placeholder=''>");
 				} 
 				else if("rec_inout".equals(conf_value)) 
 				{
 					// 인아웃
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
+					sb.append("<select class='form-control rec_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
 					sb.append("	<option value='I'>인</option>\n");
 					sb.append("	<option value='O'>아웃</option>\n");
@@ -640,7 +638,7 @@
 				else if("system_code".equals(conf_value)) 
 				{
 					// 시스템
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
+					sb.append("<select class='form-control rec_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
 					if(system_list != null) 
 					{
@@ -654,13 +652,13 @@
 				else if("part_code".equals(conf_value)) 
 				{
 					// 조직도
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='bpart_code'>\n");
+					sb.append("<select class='form-control rec_combo_range_3' name='bpart_code'>\n");
 					sb.append(htm_bpart_list);
 					sb.append("</select> : \n");
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='mpart_code'>\n");
+					sb.append("<select class='form-control rec_combo_range_3' name='mpart_code'>\n");
 					sb.append(htm_mpart_list);
 					sb.append("</select> : \n");
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='spart_code'>\n");
+					sb.append("<select class='form-control rec_combo_range_3' name='spart_code'>\n");
 					sb.append(htm_spart_list);
 					sb.append("</select>\n");
 					sb.append("<input type='hidden' name='perm_check' value='1'/>\n");
@@ -735,7 +733,7 @@
 				*/ 
 				else 
 				{
-					sb.append("<input type='text' class='form-control rec_form"+text_num+"' name='"+conf_field+"' placeholder=''>\n");
+					sb.append("<input type='text' class='form-control rec_input' name='"+conf_field+"' placeholder=''>\n");
 				}
 	
 				sb.append("</div></div>\n\n");

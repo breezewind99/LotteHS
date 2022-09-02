@@ -36,6 +36,7 @@
 		from
 		(
 			select
+				abort_seq,
 				to_char(A.abort_datm, 'YYYY-MM-DD HH24:MI:SS') as abort_datm
 				,A.abort_id
 				,A.abort_name
@@ -123,4 +124,10 @@
 			sysdate,to_date(#{start_rec_datm},'YYYY-MM-DD HH24:MI:SS'),to_date(#{end_rec_datm},'YYYY-MM-DD HH24:MI:SS'),#{abort_state},#{abort_id},#{abort_name},#{abort_ip}
 		)
 	</insert>
+
+	<delete id="deleteAbortHist" parameterType="string">
+		/* 필수중단 이력 등록/취소 저장 insertAbortHist */
+		delete from tbl_abort_hist
+		where abort_seq = #{abort_seq}
+	</delete>
 </mapper>

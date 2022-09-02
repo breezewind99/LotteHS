@@ -2,6 +2,7 @@
 <%@ include file="/common/common.jsp" %>
 <%
 	if(!Site.isPmss(out,"user_mgmt","")) return;
+
 %>
 <jsp:include page="../include/top.jsp" flush="false"/>
 <link rel="stylesheet" href="../css/tree/default/style.css" />

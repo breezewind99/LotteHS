@@ -1865,11 +1865,31 @@ hr{
 }
 
 .rec_form4 {
-	width:145px;
+	width:283px;
 }
 
 .rec_form5 {
-   width:129px;
+   width:133px;
+}
+
+.rec_date {
+	width:107px;
+}
+
+.rec_time {
+	width:133px;
+}
+
+.rec_input {
+	width:283px;
+}
+
+.rec_combo_range_2 {
+	width:133px;
+}
+
+.rec_combo_range_3 {
+	width:87px;
 }
 
 /*03 이력*/
