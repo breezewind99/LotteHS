@@ -79,7 +79,7 @@ public class Propertie {
             } catch (Exception e) {
             }
             String osName = System.getProperty("os.name").toLowerCase();
-            System.out.println(osName);
+
             if (PROGRAM_DIRECTORY.startsWith("/")) {
                 if (osName.contains("mac")) {
 
