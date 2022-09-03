@@ -4,6 +4,9 @@
 <%@ include file="/common/common.jsp" %>
 <%@ include file="/common/function.jsp" %>
 <%
+	// 상담 APP 청취
+	// http://localhost:8080/app/player.jsp?date=2022-08-23&keycode=00001025271661214629
+
 	// DB Connection Object
 	Db db = null;
 
@@ -22,7 +25,7 @@
 		//logger.info("rec_keycode : "+rec_keycode);
 
 		// 파라미터 체크
-		if(!CommonUtil.hasText(rec_keycode) || !CommonUtil.hasText(seq_no)) 
+		if(!CommonUtil.hasText(rec_datm) || !CommonUtil.hasText(rec_keycode))
 		{
 			out.print(CommonUtil.getDocumentMsg(CommonUtil.getErrorMsg("NO_PARAM"),"","close"));
 			return;
@@ -79,7 +82,7 @@
 						"<td>" + item.get("rec_call_time") + "</td>"+
 						"<td>" + item.get("user_name") + "</td>"+
 						"<td>" + item.get("local_no") + "</td>"+
-						"<td>" + item.get("cust_tel") + "</td>"+
+						"<td>" + Mask.getMaskedPhoneNum(item.get("cust_tel").toString().trim()) + "</td>"+
 					"</tr>";
 			}
 		}
@@ -90,7 +93,7 @@
 		// E : 연관녹취이력 ===========================================		
 
 		// 청취 URL 생성
-		String file_url = getListenURL("LISTEN", curdata, logger);
+		String file_url = getListenURL2("LISTEN", curdata, logger,"");
 		//String file_url = getListenURL2("LISTEN", curdata, logger, "");
 		//waveform 사용시 필요 - CJM(20190101)
 		String file_url2 = getListenURL2("LISTEN", curdata, logger);
@@ -240,7 +243,7 @@
 				</tr>
 				<tr>
 					<td class="table-td">고객 전화번호</td>
-					<td><%=curdata.get("cust_tel") %></td>
+					<td><%=Mask.getMaskedPhoneNum(curdata.get("cust_tel").toString().trim()) %></td>
 				</tr>
 			</table>
 		</div>
