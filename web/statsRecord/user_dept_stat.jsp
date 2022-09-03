@@ -262,12 +262,12 @@
 			<!--검색조건 영역-->
 			<div class="ibox-content-util-buttons">
 				<div class="ibox-content contentRadius1 conSize">
-					<div id="deptDiv1">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">녹취일자</label>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date1" class="form-control dept_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="rec_date1" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -276,7 +276,7 @@
 							<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date2" class="form-control dept_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="rec_date2" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -285,10 +285,10 @@
 						</div>
 					</div>
 
-					<div id="deptDiv2">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">녹취시간</label>
-							<select class="form-control dept_form3" name="rec_hour1">
+							<select class="form-control search_time" name="rec_hour1">
 							<%
 								for(int i=0; i<=23; i++) 
 								{
@@ -297,7 +297,7 @@
 								}
 							%>
 							</select> ~
-							<select class="form-control dept_form3" name="rec_hour2">
+							<select class="form-control search_time" name="rec_hour2">
 							<%
 								for(int i=0; i<=23; i++) 
 								{
@@ -309,20 +309,20 @@
 						</div>
 					</div>
 
-					<div id="deptDiv3">
-						<div id="label_Div">
+					<div class="SearchDiv">
+						<div class="label_Div">
 							<label class="simple_tag">구분</label>
-							<select class="form-control dept_form3" name="stat_type">
+							<select class="form-control search_combo_range_2" name="stat_type">
 								<option value="US">상담사별</option>
 								<option value="DE">부서별</option>
 							</select>
 					 	</div>
 					</div>
 
-					<div id="deptDiv1">
-						<div id="label_div">
+					<div class="SearchDiv">
+						<div class="label_div">
 							<label class="simple_tag">일자구분</label>
-							<select class="form-control dept_form2" name="date_type">
+							<select class="form-control search_combo_range_2" name="date_type">
 								<option value="DD">일자별</option>
 								<option value="MM">월별</option>
 								<option value="YY">년도별</option>
@@ -333,26 +333,26 @@
 						</div>
 					</div>
 
-					<div id="deptDiv2">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">조직도</label>
-							<select class="form-control result_form2" name="bpart_code">
+							<select class="form-control search_combo_range_3" name="bpart_code">
 								<%=htm_bpart_list%>
 							</select> :
-							<select class="form-control result_form2" name="mpart_code">
+							<select class="form-control search_combo_range_3" name="mpart_code">
 								<%=htm_mpart_list%>
 							</select> :
-							<select class="form-control result_form2" name="spart_code">
+							<select class="form-control search_combo_range_3" name="spart_code">
 								<%=htm_spart_list%>
 							</select>
 							<input type="hidden" name="perm_check" value="1"/>
 						</div>
 					</div>
 
-					<div id="deptDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">상담사명</label>
-							<input type="text" class="form-control dept_form3" name="user_name" id="" placeholder="">
+							<input type="text" class="form-control search_input" name="user_name" id="" placeholder="">
 						</div>
 					</div>
 				</div>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ include file="/common/common.jsp" %><%
 	if(!Site.isPmss(out,"","")) return;
-	
+
 	// cookie 변수 선언
 	String _TEMPLATE_COLOR	= CommonUtil.getCookieValue("ck_template_color");
 	
@@ -94,6 +94,10 @@
 </head>
 <script>
 	var isDev = <%=Finals.isDev%>;
+	document.addEventListener('contextmenu', function() {
+		alert("보안상의 사유로 마우스 우측 버튼을 사용하실수 없습니다.");
+		event.preventDefault();
+	});
 </script>
 
 <body style="overflow-y: scroll;">

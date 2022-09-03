@@ -38,11 +38,11 @@
  				else 0 end ) as login_check_day
 			,(case when pass_expire_date is not null then trunc(to_date(pass_expire_date, 'YYYY-MM-DD HH24:MI:SS') - sysdate)
 			 	else 0 end ) as pass_check_day
-			,'' as down_ip
-			,rec_down_yn
-			,lock_yn
-			,resign_yn
-			,use_yn
+			,' ' as down_ip
+			,nvl(rec_down_yn, ' ') as rec_down_yn
+			,nvl(lock_yn, '0') as lock_yn
+			,nvl(resign_yn, '0') as resign_yn
+			,nvl(use_yn,' ') as use_yn
 		from tbl_user
 		where 1=1 
 		and user_id = #{login_id} 
@@ -50,25 +50,31 @@
 	</select>
 	
 	<!-- 사용자 아이디,비밀번호 체크 selectAutoLoginUser -->
-	<select id="selectAutoLoginUser" parameterType="map" resultType="map">
+	<select id="selectAutoLoginUser" parameterType="map" resultType="lowerMap">
 		/* 사용자 아이디,비밀번호 체크 selectAutoLoginUser */
-		select 
+		select
 			user_id
-			,user_name
-			,business_code
-			,bpart_code
-			,mpart_code
-			,spart_code
-			,user_level
-			,nvl(pass_expire_date,'') as pass_expire_date
-			,nvl(pass_upd_date,'') as pass_upd_date
-			,to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') as login_datm
-			,fn_GetCodeName('USER_LEVEL', user_level) as level_name
-			,nvl(user_ip,'') as user_ip
-			,(case when login_chk_datm is not null then trunc(sysdate - login_chk_datm)
- 				else 0 end ) as login_check_day
-			,(case when pass_expire_date is not null then trunc(to_date(pass_expire_date, 'YYYY-MM-DD HH24:MI:SS') - sysdate)
-			 	else 0 end ) as pass_check_day
+			 ,user_name
+			 ,business_code
+			 ,bpart_code
+			 ,mpart_code
+			 ,spart_code
+			 ,user_level
+			 ,eval_yn
+			 ,nvl(pass_expire_date, ' ') as pass_expire_date
+			 ,nvl(pass_upd_date, ' ') as pass_upd_date
+			 ,to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') as login_datm
+			 ,fn_GetCodeName('USER_LEVEL', user_level) as level_name
+			 ,nvl(user_ip, ' ') as user_ip
+			 ,(case when login_chk_datm is not null then trunc(sysdate - login_chk_datm)
+					else 0 end ) as login_check_day
+			 ,(case when pass_expire_date is not null then trunc(to_date(pass_expire_date, 'YYYY-MM-DD HH24:MI:SS') - sysdate)
+					else 0 end ) as pass_check_day
+			 ,' ' as down_ip
+			 ,nvl(rec_down_yn, ' ') as rec_down_yn
+			 ,nvl(lock_yn, '0') as lock_yn
+			 ,nvl(resign_yn, '0') as resign_yn
+			 ,nvl(use_yn,' ') as use_yn
 		from tbl_user
 		where user_id = #{login_id} 
 		and lock_yn = '0' 

@@ -5,43 +5,66 @@
 <%@ page import="com.cnet.crec.util.SessionListener"%>
 <%@ page import="com.cnet.crec.util.RSA"%>
 <%@ page import="java.security.PrivateKey"%>
+<%@ page import="com.cnet.crec.wfms.AES256Cipher" %>
 <%
 	// DB Connection Object
 	Db db = null;
 
 	try 
 	{
-		String login_id = CommonUtil.getParameter("login_id", "");
-		String login_pass = CommonUtil.ifNull(request.getParameter("login_pass"));
-		
-		PrivateKey pKey = (PrivateKey) request.getSession().getAttribute("__rsaPrivateKey__");
+		// admin 계정 로그인 테스트
+		// http://localhost:8080/login_app.jsp?info=Y0JZbsGclgUIIma3R6i3OPrTLCccbSXGeDbRboxPpxE=
 
-		/*
-			RSA key 체크
-			session 무효화 현상 발생으로 처리 - CJM(20191112)
+		// 오류 계정
+		// http://localhost:8080/login_app.jsp?info=3WCAAZliax+fwuu48WumQw==
 
-		if(pKey == null) 
-		{
-			out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("ERR_WRONG"),"../index.jsp","url"));
+		// 없는 계정
+		// http://localhost:8080/login_app.jsp?info=mjxfPHh5q5%2BVlMMd73dJ0klwVAz8nEmMiIGyv8wvo5g%3D
+
+		AES256Cipher wfms = AES256Cipher.getInstance("lotte-wfms-cipher@20160622-qwer1");
+
+		System.out.println(wfms.encrypt("admin|20220623171255941"));
+		String info="";
+		try {
+			info = wfms.decrypt(CommonUtil.getParameter("info", ""));
+		} catch (Exception e) {
+			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
+			e.printStackTrace();
 			return;
 		}
-		*/
-		
-		//로그인 아이디 대소문자 구분없이 DB에서 조회 된다. (모두 대문자로 변경)
-		//login_id = RSA.decryptRsa(pKey, login_id).toUpperCase();
-		login_id = RSA.decryptRsa(pKey, login_id);
-		login_pass = RSA.decryptRsa(pKey, login_pass);
 
-		String id_save = CommonUtil.getParameter("id_save", "");
+		if(!CommonUtil.hasText(info))
+		{
+			//Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
+			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
+			return;
+		}
+
+		String[] temp = info.split("\\|");
+
+		String login_id = temp[0];
+		String login_time = temp[1];
+
+
+
+		PrivateKey pKey = (PrivateKey) request.getSession().getAttribute("__rsaPrivateKey__");
+
+
+		//login_id = RSA.decryptRsa(pKey, login_id).toUpperCase();
+		//login_id = RSA.decryptRsa(pKey, login_id);
+
+		//String id_save = CommonUtil.getParameter("id_save", "");
 		String login_ip = request.getRemoteAddr();
 
 		//파라미터 체크
-		if(!CommonUtil.hasText(login_id) || !CommonUtil.hasText(login_pass)) 
+		if(!CommonUtil.hasText(login_id))
 		{
-			Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
+			//Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
+			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
 			return;
 		}
 
+		//return;
 		// DB Connection
 		db = new Db(true);
 
@@ -53,7 +76,8 @@
 		int idUse = db.selectOne("login.selectIdCheck", login_id);
 		if(idUse == 0) 
 		{
-			Site.writeJsonResult(out, false, "해당 아이디가 존재하지 않아 로그인 할 수 없습니다.");
+//			Site.writeJsonResult(out, false, "해당 아이디가 존재하지 않아 로그인 할 수 없습니다.");
+			out.print("<script>alert('사용자 정보를 확인할수 없어 로그인 하실 수 없습니다.');</script>");
 			return;
 		}
 
@@ -68,13 +92,14 @@
 			argMap.put("lock_yn", "1");
 			db.update("user.updateUser", argMap);
 			
-			Site.writeJsonResult(out, false, "해당 아이디는 잠금 처리되어 로그인 할 수 없습니다.");
+			//Site.writeJsonResult(out, false, "해당 아이디는 잠금 처리되어 로그인 할 수 없습니다.");
+			out.print("<script>alert('해당 아이디는 잠금 처리되어 로그인 할 수 없습니다.');</script>");
 			return;
 		}
 
 		// 비밀번호 암호화
 		CNCrypto sha256 = new CNCrypto("HASH",CommonUtil.getEncKey());
-		String enc_login_pass = sha256.Encrypt(login_pass);
+		//String enc_login_pass = sha256.Encrypt(login_pass);
 
 		/*
 			3. 로그인 결과 신규 등록 (금일)
@@ -87,7 +112,7 @@
 
 		argMap.put("login_id", login_id);
 		argMap.put("login_name", "");
-		argMap.put("login_pass", enc_login_pass);
+		//argMap.put("login_pass", enc_login_pass);
 		argMap.put("login_ip", login_ip);
 		argMap.put("login_type", "I");
 		argMap.put("login_result", "");
@@ -95,7 +120,7 @@
 		/*
 			4. 아이디. 비밀번호 체크 및 사용자 정보 조회
 		*/
-		Map<String, Object> data  = db.selectOne("login.selectLoginUser", argMap);
+		Map<String, Object> data  = db.selectOne("login.selectAutoLoginUser", argMap);
 		
 		int passCheckDay = 0;
 		
@@ -113,11 +138,19 @@
 			db.insert("hist_login.insertLoginHist", argMap);
 
 			//Site.writeJsonResult(out, false, "로그인에 실패했습니다.");
-			Site.writeJsonResult(out, false, "비밀번호를 잘못 입력하여 로그인 하실 수 없습니다.");
+			//Site.writeJsonResult(out, false, "비밀번호를 잘못 입력하여 로그인 하실 수 없습니다.");
+			out.print("<script>alert('사용자 정보를 확인할수 없어 로그인 하실 수 없습니다.');</script>");
 			return;
 		}
 		else
 		{
+			if(data.get("user_level").toString().equals("0"))
+			{
+				//Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
+				out.print("<script>alert('시스템 관리자 계정은 접근하실수 없습니다.');</script>");
+				return;
+			}
+
 			//상담원 수정 기본 정보 - CJM(20190516)
 			argMap.put("user_ip", data.get("user_ip"));
 			argMap.put("upd_id", login_id);
@@ -129,7 +162,8 @@
 			lockCnt = Integer.parseInt(data.get("lock_yn").toString());
 			if(lockCnt > 0) 
 			{
-				Site.writeJsonResult(out, false, "해당 아이디는 잠금 처리되어 로그인 하실 수 없습니다.");
+				//Site.writeJsonResult(out, false, "해당 아이디는 잠금 처리되어 로그인 하실 수 없습니다.");
+				out.print("<script>alert('해당 아이디는 잠금 처리되어 로그인 하실 수 없습니다.');</script>");
 				return;
 			}
 
@@ -139,7 +173,8 @@
 			int resignCnt = Integer.parseInt(data.get("resign_yn").toString());
 			if(resignCnt > 0) 
 			{
-				Site.writeJsonResult(out, false, "해당 아이디는 퇴사 처리되어 로그인 할 수 없습니다.");
+				//Site.writeJsonResult(out, false, "해당 아이디는 퇴사 처리되어 로그인 할 수 없습니다.");
+				out.print("<script>alert('해당 아이디는 퇴사 처리되어 로그인 할 수 없습니다.');</script>");
 				return;
 			}
 
@@ -149,7 +184,8 @@
 			int useCnt = Integer.parseInt(data.get("use_yn").toString());
 			if(useCnt != 1) 
 			{
-				Site.writeJsonResult(out, false, "해당 아이디는 미사용 처리되어 로그인 할 수 없습니다.");
+				//Site.writeJsonResult(out, false, "해당 아이디는 미사용 처리되어 로그인 할 수 없습니다.");
+				out.print("<script>alert('해당 아이디는 미사용 처리되어 로그인 할 수 없습니다.');</script>");
 				return;
 			}
 			
@@ -164,7 +200,8 @@
 				argMap.put("lock_yn", "1");
 				db.update("user.updateUser", argMap);
 
-				Site.writeJsonResult(out, false, "장기간 로그인하지 않아 잠금 처리되었습니다.");
+//				Site.writeJsonResult(out, false, "장기간 로그인하지 않아 잠금 처리되었습니다.");
+				out.print("<script>alert('장기간 로그인하지 않아 잠금 처리되었습니다.');</script>");
 				return;
 			}
 
@@ -173,22 +210,22 @@
 			*/
 			//oracle 사용자 정보 없을 경우 null 체크 - CJM(20190823)
 			//String pass_upd_date = data.get("pass_upd_date").toString();
-			String passUpdDate = CommonUtil.ifNull(data.get("pass_upd_date")+"");
-			if(!CommonUtil.hasText(passUpdDate))
-			{
-				out.print("{\"code\":\"PASS\", \"msg\":\"최초 로그인하시는 경우 비밀번호 변경 후 로그인이 가능합니다.\"}");
-				return;
-			}
+//			String passUpdDate = CommonUtil.ifNull(data.get("pass_upd_date")+"");
+//			if(!CommonUtil.hasText(passUpdDate))
+//			{
+//				out.print("{\"code\":\"PASS\", \"msg\":\"최초 로그인하시는 경우 비밀번호 변경 후 로그인이 가능합니다.\"}");
+//				return;
+//			}
 
 			/*
 				12. 비밀번호 만료
 			*/
-			passCheckDay = Integer.parseInt(data.get("pass_check_day").toString());
-			if(passCheckDay < 0) 
-			{
-				out.print("{\"code\":\"PASS\", \"msg\":\"비밀번호 사용일이 만료되었습니다.\"}");
-				return;
-			}
+//			passCheckDay = Integer.parseInt(data.get("pass_check_day").toString());
+//			if(passCheckDay < 0)
+//			{
+//				out.print("{\"code\":\"PASS\", \"msg\":\"비밀번호 사용일이 만료되었습니다.\"}");
+//				return;
+//			}
 		}
 		
 		/*
@@ -229,7 +266,7 @@
 		List<Map<String, Object>> menuList = db.selectList("menu.selectMenuPerm", argMap);
 		if(menuList.size() < 1) 
 		{
-			Site.writeJsonResult(out, false, "접근 가능한 메뉴가 없습니다.");
+			out.print("<script>alert('접근 가능한 메뉴가 없습니다.');</script>");
 			return;
 		}
 		
@@ -286,12 +323,12 @@
 			20. 비밀번호 만료일 노출(만료일 임박시 15일 기준)
 				로그인은 정상적으로 알림 메시지 노출 필요.
 		*/
-		String passExpireDate = CommonUtil.ifNull(data.get("pass_expire_date")+"");
-		if(passCheckDay < 16 )
-		{
-			out.print("{\"code\":\"PASSCHK\",\"msg\":\"비밀번호 만료일이 [" + passExpireDate + "] 입니다.\\n비밀번호를 변경하시기 바랍니다\"}");
-			return;
-		}
+//		String passExpireDate = CommonUtil.ifNull(data.get("pass_expire_date")+"");
+//		if(passCheckDay < 16 )
+//		{
+//			out.print("{\"code\":\"PASSCHK\",\"msg\":\"비밀번호 만료일이 [" + passExpireDate + "] 입니다.\\n비밀번호를 변경하시기 바랍니다\"}");
+//			return;
+//		}
 		
 		if(Finals.isDev){session.setMaxInactiveInterval(60*60*24);}//초단위(24시간)
 
@@ -299,10 +336,11 @@
 		if(login_id.equals("admin")) Finals.setApplicationVariable(true);//강제로 변수 리로드
 		else						 Finals.setApplicationVariable();
 
-		Site.writeJsonResult(out,true);
+		out.print("<script>location.href = '/rec_search/rec_search.jsp';</script>");
 	} 
 	catch(Exception e) 
 	{
+		out.print("<script>alert('로그인 처리중 오류가 발생하였습니다.');</script>");
 		logger.error(e.getMessage());
 	} 
 	finally 

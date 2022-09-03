@@ -176,34 +176,34 @@
 			<div class="ibox-content-util-buttons">
 				<div class="ibox-content contentRadius1 conSize">
 					<!--1행 시작-->
-					<div id="recDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">조직도</label>
-							<select class="form-control rec_form2" name="bpart_code">
+							<select class="form-control search_combo_range_3" name="bpart_code">
 								<%=htm_bpart_list%>
 							</select> :
-							<select class="form-control rec_form2" name="mpart_code">
+							<select class="form-control search_combo_range_3" name="mpart_code">
 								<option value="">중분류</option>
 								<%=htm_mpart_list%>
 							</select> :
-							<select class="form-control result_form2" name="spart_code">
+							<select class="form-control search_combo_range_3" name="spart_code">
 								<%=htm_spart_list%>
 							</select>
 							<input type="hidden" name="perm_check" value="1"/>
 						</div>
 					</div>
 
-					<div id="recDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">내선번호</label>
-							<input type="text" name="local_no" class="form-control rec_form5" value="">
+							<input type="text" name="local_no" class="form-control search_input" value="">
 						</div>
 					</div>
 
-					<div id="recDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">조회간격</label>
-							<select class="form-control rec_form5" name="mon_sec">
+							<select class="form-control search_combo_range_2" name="mon_sec">
 								<option value="5">5초</option>
 								<option value="10" selected="selected">10초</option>
 								<option value="20">20초</option>
@@ -217,10 +217,10 @@
 					<!--1행 끝-->
 
 					<!--2행 시작-->
-					<div id="recDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">조회조건</label>
-							<select class="form-control rec_form5" name="mon_order">
+							<select class="form-control search_combo_range_2" name="mon_order">
 								<option value="ch" selected="selected">채널</option>
 								<option value="in">IN</option>
 								<option value="ot">OUT</option>
@@ -231,10 +231,10 @@
 						</div>
 					</div>
 					
-					<div id="recDiv3">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">상태</label>
-							<input type="text" name="mon_status" class="form-control rec_form5" value="시작" readonly="readonly">
+							<input type="text" name="mon_status" class="form-control search_input" value="시작" readonly="readonly">
 							&nbsp; <span id="timer"></span>
 						</div>
 					</div>

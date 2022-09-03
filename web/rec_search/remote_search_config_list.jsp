@@ -20,7 +20,7 @@
 		confmap.put("business_code", _BUSINESS_CODE);
 		confmap.put("user_id", _LOGIN_ID);
 		confmap.put("user_level", _LOGIN_LEVEL);
-
+		confmap.put("login_ip", _LOGIN_IP);
 		// config select
 		String query = "S".equals(conf_type) ? "rec_search.selectSearchConfig" : "rec_search.selectResultConfig";
 		List<Map<String, Object>> conf_list = db.selectList(query, confmap);

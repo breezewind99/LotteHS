@@ -543,16 +543,13 @@
 						<div class="p-body">
 							<div class="cc">
 								<form id="part">
-									<input type="hidden" name="rec_datm" value="" /> <input
-										type="hidden" name="local_no" value="" /> <input type="hidden"
-										name="rec_filename" value="" /> <span>구간 &nbsp;</span> <input
-										type="text" class="form-control play-form" id=""
-										name="pa_stime" placeholder="00:00:00"> ~ <input
-										type="text" class="form-control play-form" id=""
-										name="pa_etime" placeholder="00:00:00">
-									<button type="button" name="btn_part"
-										class="btn btn-primary btn-sm" onclick="regiPart();">정보
-										수정/추출</button>
+									<input type="hidden" name="rec_datm" value="" />
+									<input type="hidden" name="local_no" value="" />
+									<input type="hidden" name="rec_filename" value="" />
+									<span>구간 &nbsp;</span>
+									<input type="text" class="form-control play-form" name="pa_stime" placeholder="00:00:00"> ~
+									<input type="text" class="form-control play-form" name="pa_etime" placeholder="00:00:00">
+									<button type="button" name="btn_part" class="btn btn-primary btn-sm" onclick="regiPart();">정보 수정/추출</button>
 								</form>
 							</div>
 						</div>
@@ -591,6 +588,10 @@
 					<tr>
 						<td class="table-td">내선번호</td>
 						<td><%=curRec.get("local_no") %></td>
+					</tr>
+					<tr>
+						<td class="table-td">녹취파일명</td>
+						<td><%=curRec.get("rec_filename") %></td>
 					</tr>
 				</table>
 			</div>

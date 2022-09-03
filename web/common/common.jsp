@@ -23,6 +23,7 @@
 	String _LOGIN_ID 		= ComLib.getSessionValue(session, "login_id");
 	String _LOGIN_NAME 		= ComLib.getSessionValue(session, "login_name");
 	String _LOGIN_LEVEL 	= ComLib.getSessionValue(session, "login_level");
+	String _LOGIN_IP 		= ComLib.getSessionValue(session, "login_ip");
 	String _BUSINESS_CODE 	= ComLib.getSessionValue(session, "login_business_code");
 	String _BPART_CODE 		= ComLib.getSessionValue(session, "login_bpart");
 	String _MPART_CODE 		= ComLib.getSessionValue(session, "login_mpart");

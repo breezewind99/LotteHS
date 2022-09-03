@@ -78,12 +78,12 @@
 			<div class="ibox-content-util-buttons">
 				<div class="ibox-content contentRadius1 conSize">
 					<!--1행 시작-->
-					<div id="logDiv1">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">다운일자</label>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="down_date1" class="form-control log_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="down_date1" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -92,7 +92,7 @@
 							<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="down_date2" class="form-control log_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="down_date2" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -101,26 +101,26 @@
 						</div>
 					</div>
 
-					<div id="logDiv2">
-						<div id="labelDiv">
-							<label class="simple_tag">로그인ID</label><input type="text" name="login_id" class="form-control log_form2" id="" placeholder="">
+					<div class="SearchDiv">
+						<div class="labelDiv">
+							<label class="simple_tag">로그인ID</label><input type="text" name="login_id" class="form-control search_input" placeholder="">
 						</div>
 					</div>
 
-					<div id="logDiv2">
-						<div id="label_Div">
-							<label class="simple_tag">로그인명</label><input type="text" name="login_name" class="form-control log_form2" id="" placeholder="">
+					<div class="SearchDiv">
+						<div class="labelDiv">
+							<label class="simple_tag">로그인명</label><input type="text" name="login_name" class="form-control search_input" placeholder="">
 					 	</div>
 					</div>
 					<!--1행 끝-->
 
 					<!--2행 시작-->
-					<div id="logDiv1">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">녹취일자</label>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date1" class="form-control log_form1 datepicker" value="">
+								<input type="text" name="rec_date1" class="form-control search_date datepicker" value="">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -129,7 +129,7 @@
 							<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date2" class="form-control log_form1 datepicker" value="">
+								<input type="text" name="rec_date2" class="form-control search_date datepicker" value="">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -138,15 +138,15 @@
 						</div>
 					</div>
 
-					<div id="logDiv2">
-						<div id="labelDiv">
-							<label class="simple_tag">상담사ID</label><input type="text" name="user_id" class="form-control log_form2" id="" placeholder="">
+					<div class="SearchDiv">
+						<div class="labelDiv">
+							<label class="simple_tag">상담사ID</label><input type="text" name="user_id" class="form-control search_input" placeholder="">
 						</div>
 					</div>
 
-					<div id="logDiv2">
-						<div id="label_Div">
-							<label class="simple_tag">상담사명</label><input type="text" name="user_name" class="form-control log_form2" id="" placeholder="">
+					<div class="SearchDiv">
+						<div class="labelDiv">
+							<label class="simple_tag">상담사명</label><input type="text" name="user_name" class="form-control search_input" placeholder="">
 						</div>
 					</div>
 					<!--1행 끝-->
@@ -158,10 +158,10 @@
 	{
 %>
 					
-					<div id="logDiv1">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">다운사유</label>
-							<select class="form-control log_form3" name="reason_code">
+							<select class="form-control search_combo_range_2" name="reason_code">
 							</select>
 						</div>
 					</div>
@@ -173,7 +173,7 @@
 	{
 %>					
 					<div id="logDiv2">
-						<div id="labelDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">TA유무</label>
 							<select class="form-control rec_form5" name="down_src">
 								<option value="Y" selected="selected">포함</option>

@@ -198,12 +198,12 @@
 			<!--검색조건 영역-->
 			<div class="ibox-content-util-buttons">
 				<div class="ibox-content contentRadius1 conSize">
-					<div id="systemDiv1">
-						<div id="labelDiv">
+					<div class="SearchDiv">
+						<div class="labelDiv">
 							<label class="simple_tag">녹취일자</label>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date1" class="form-control system_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="rec_date1" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -212,7 +212,7 @@
 							<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 							<!-- 달력 팝업 위치 시작-->
 							<div class="input-group" style="display:inline-block;">
-								<input type="text" name="rec_date2" class="form-control system_form1 datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+								<input type="text" name="rec_date2" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 								<div class="input-group-btn">
 									<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 								</div>
@@ -221,10 +221,10 @@
 						</div>
 					</div>
 
-					<div id="systemDiv2">
+					<div class="SearchDiv">
 						<div id="labelDiv">
 							<label class="simple_tag">녹취시간</label>
-							<select class="form-control system_form3" name="rec_hour1">
+							<select class="form-control search_combo_range_2" name="rec_hour1">
 							<%
 								for(int i=0; i<=23; i++) 
 								{
@@ -233,7 +233,7 @@
 								}
 							%>
 							</select> ~
-							<select class="form-control system_form3" name="rec_hour2">
+							<select class="form-control search_combo_range_2" name="rec_hour2">
 							<%
 								for(int i=0; i<=23; i++) 
 								{
@@ -245,10 +245,10 @@
 						</div>
 					</div>
 
-					<div id="systemDiv3">
+					<div class="SearchDiv">
 						<div id="label_Div">
 							<label class="simple_tag">시스템</label>
-							<select class="form-control system_form3" name="system_code">
+							<select class="form-control search_combo_range_2" name="system_code">
 								<option value="">전체</option>
 	<%
 							/*
@@ -263,10 +263,10 @@
 					 	</div>
 					</div>
 
-					<div id="systemDiv1">
-						<div id="label_div">
+					<div class="SearchDiv">
+						<div class="label_div">
 							<label class="simple_tag">일자구분</label>
-							<select class="form-control system_form2" name="date_type">
+							<select class="form-control search_combo_range_2" name="date_type">
 								<option value="DD">일자별</option>
 								<option value="MM">월별</option>
 								<option value="YY">년도별</option>

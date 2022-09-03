@@ -53,7 +53,7 @@
 	<!-- session config -->
 	<session-config>  
 		<!-- Default to 30 minute session timeouts -->  
-		<session-timeout>180</session-timeout>  
+		<session-timeout>10</session-timeout>
 	</session-config>
 	
 	<!-- log4j -->
@@ -104,22 +104,7 @@
 		<filter-name>CrossDomainFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<!-- Protected Context 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Protected Context</web-resource-name>
-			<url-pattern>/*</url-pattern>
-			<http-method>PUT</http-method>
-			<http-method>DELETE</http-method>
-			<http-method>HEAD</http-method>
-			<http-method>TRACE</http-method>
-			<http-method>OPTIONS</http-method>
-		</web-resource-collection>
-		<auth-constraint />
-	</security-constraint>
-	-->
-	
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Servlet Security Setting</web-resource-name>
@@ -133,48 +118,4 @@
 			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-
-  <!-- mybatis 
-  <context-param>
-	<param-name>mybatisConfigLocation</param-name>
-	<param-value>WEB-INF/config/mybatis-config.xml</param-value>
-  </context-param>
-  -->
-  
-  <!-- ajax cross domain issue solution -->
-  <!--
-  <filter>
-    <filter-name>CrossDomainFilter</filter-name>
-    <filter-class>com.cnet.crec.util.CrossDomainFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>CrossDomainFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  -->  
-  
-	<!-- https redirect http or https  
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>https only</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-	 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>http or https</web-resource-name>
-			<url-pattern>/css/*</url-pattern>
-			<url-pattern>/fonts/*</url-pattern>
-			<url-pattern>/img/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-	    </user-data-constraint>
-	</security-constraint> 
-	-->   
 </web-app>

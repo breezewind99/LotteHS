@@ -77,7 +77,7 @@
 
 			int ins_cnt = db.insert("hist_abort.insertAbortHist", selmap2);
 
-		} if("delete".equals(step)) {
+		} else if("delete".equals(step)) {
 			String abort_seq = CommonUtil.getParameter("abort_seq");
 			if(!CommonUtil.hasText(step) || !CommonUtil.hasText(abort_seq))
 			{
@@ -87,9 +87,7 @@
 			argMap.put("dateStr", "");
 			argMap.put("abort_seq", abort_seq);
 			int del_cnt = db.insert("hist_abort.deleteAbortHist", argMap);
-		}
-		else 
-		{
+		} else	{
 			Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
 			return;
 		}

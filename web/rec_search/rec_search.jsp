@@ -16,6 +16,7 @@
 		confmap.put("business_code", _BUSINESS_CODE);
 		confmap.put("user_id", _LOGIN_ID);
 		confmap.put("user_level", _LOGIN_LEVEL);
+		confmap.put("login_ip", _LOGIN_IP);
 		confmap.put("default_used", "1");
 		
 		/*
@@ -533,11 +534,11 @@
 			<div class="ibox-content contentRadius1 conSize" >
 				<!--1행 시작-->
 				<div id="recDiv3">
-					<div id="labelDiv">
+					<div class="labelDiv" >
 						<label class="simple_tag">일자</label>
 						<!-- 달력 팝업 위치 시작-->
 						<div class="input-group" style="display:inline-block;">
-							<input type="text" name="rec_date1" class="form-control rec_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+							<input type="text" name="rec_date1" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 							<div class="input-group-btn">
 								<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 							</div>
@@ -546,7 +547,7 @@
 						<div class="input-group" style="display:inline-block;"><span class="form-control" style="padding: 3px 0px;border: 0px">~</span></div>
 						<!-- 달력 팝업 위치 시작-->
 						<div class="input-group" style="display:inline-block;">
-							<input type="text" name="rec_date2" class="form-control rec_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
+							<input type="text" name="rec_date2" class="form-control search_date datepicker" value="<%=DateUtil.getToday("")%>" maxlength="10">
 							<div class="input-group-btn">
 								<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 							</div>
@@ -556,16 +557,16 @@
 				</div>
 
 				<div id="recDiv3">
-					<div id="labelDiv">
+					<div class="labelDiv">
 						<label class="simple_tag">녹취시간</label>
-						<input class="form-control rec_combo_range_2" type="time" name="rec_start_hour1" value="00:00:00"> ~ <input class="form-control rec_combo_range_2" type="time" name="rec_start_hour2" value="23:59:59">
+						<input class="form-control search_time" type="time" name="rec_start_hour1" value="00:00:00"> ~ <input class="form-control search_time" type="time" name="rec_start_hour2" value="23:59:59">
 					</div>
 				</div>
 
 				<div id="recDiv3">
-					<div id="labelDiv">
+					<div class="labelDiv">
 						<label class="simple_tag">통화시간</label>
-						<select class="form-control rec_combo_range_2" name="rec_call_time1">
+						<select class="form-control search_combo_range_2" name="rec_call_time1">
 <%
 						for(int i=0; i<=59; i++) 
 						{
@@ -581,7 +582,7 @@
 							<option value="1800">30분</option>
 							<option value="3600">60분</option>
 						</select> ~
-						<select class="form-control rec_combo_range_2" name="rec_call_time2">
+						<select class="form-control search_combo_range_2" name="rec_call_time2">
 <%
 						for(int i=0; i<=59; i++) 
 						{
@@ -622,13 +623,13 @@
 				if("local_no".equals(conf_value)) 
 				{
 					// 내선번호
-					sb.append("<input type='text' class='form-control rec_combo_range_2' name='"+conf_field+"1' placeholder=''> ~");
-					sb.append(" <input type='text' class='form-control rec_combo_range_2' name='"+conf_field+"2' placeholder=''>");
+					sb.append("<input type='text' class='form-control search_combo_range_2' name='"+conf_field+"1' placeholder=''> ~");
+					sb.append(" <input type='text' class='form-control search_combo_range_2' name='"+conf_field+"2' placeholder=''>");
 				} 
 				else if("rec_inout".equals(conf_value)) 
 				{
 					// 인아웃
-					sb.append("<select class='form-control rec_combo_range_2' name='"+conf_field+"'>\n");
+					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
 					sb.append("	<option value='I'>인</option>\n");
 					sb.append("	<option value='O'>아웃</option>\n");
@@ -638,7 +639,7 @@
 				else if("system_code".equals(conf_value)) 
 				{
 					// 시스템
-					sb.append("<select class='form-control rec_combo_range_2' name='"+conf_field+"'>\n");
+					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
 					if(system_list != null) 
 					{
@@ -652,13 +653,13 @@
 				else if("part_code".equals(conf_value)) 
 				{
 					// 조직도
-					sb.append("<select class='form-control rec_combo_range_3' name='bpart_code'>\n");
+					sb.append("<select class='form-control search_combo_range_3' name='bpart_code'>\n");
 					sb.append(htm_bpart_list);
 					sb.append("</select> : \n");
-					sb.append("<select class='form-control rec_combo_range_3' name='mpart_code'>\n");
+					sb.append("<select class='form-control search_combo_range_3' name='mpart_code'>\n");
 					sb.append(htm_mpart_list);
 					sb.append("</select> : \n");
-					sb.append("<select class='form-control rec_combo_range_3' name='spart_code'>\n");
+					sb.append("<select class='form-control search_combo_range_3' name='spart_code'>\n");
 					sb.append(htm_spart_list);
 					sb.append("</select>\n");
 					sb.append("<input type='hidden' name='perm_check' value='1'/>\n");
@@ -673,17 +674,18 @@
 					//sb.append("	<option value='0'>미연결</option>\n");
 					//sb.append("	<option value='3'>부분녹취</option>\n");
 					sb.append("</select>");
-				} 
-				/* 
-				else if ("rec_abort_code".equals(conf_value)) 
+				}
+				else if ("rec_gubun".equals(conf_value))
 				{
-					// 필수 중단
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
+					// 영구 보관
+					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
-					sb.append("	<option value='1'>필수중단</option>\n");
+					sb.append("	<option value='0'>일반녹취</option>\n");
+					sb.append("	<option value='1'>영구보관</option>\n");
 					sb.append("</select>");
-				} 
-				else if ("rec_store_code".equals(conf_value)) 
+				}
+				/*
+				else if ("rec_store_code".equals(conf_value))
 				{
 					// 영구 보관
 					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
@@ -691,8 +693,16 @@
 					sb.append("	<option value='1'>영구보관</option>\n");
 					sb.append("	<option value='2'>백업완료</option>\n");
 					sb.append("</select>");
-				} 
-				else if ("rec_mystery_code".equals(conf_value)) 
+				}
+				else if ("rec_abort_code".equals(conf_value))
+				{
+					// 필수 중단
+					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
+					sb.append("	<option value=''>전체</option>\n");
+					sb.append("	<option value='1'>필수중단</option>\n");
+					sb.append("</select>");
+				}
+				else if ("rec_mystery_code".equals(conf_value))
 				{
 					// 미스테리콜
 					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
@@ -733,7 +743,7 @@
 				*/ 
 				else 
 				{
-					sb.append("<input type='text' class='form-control rec_input' name='"+conf_field+"' placeholder=''>\n");
+					sb.append("<input type='text' class='form-control search_input' name='"+conf_field+"' placeholder=''>\n");
 				}
 	
 				sb.append("</div></div>\n\n");
@@ -902,7 +912,12 @@
 	<!--Data table 영역 끝-->
 </div>
 <!--wrapper-content영역 끝-->
-
+<script>
+	document.querySelector('input[name="cust_tel"]').addEventListener('input', function(e){
+		// e.value = e.value.replace('/[^0-9]/g','');
+		this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\.*)\./g, '$1');
+	});
+</script>
 <jsp:include page="/include/bottom.jsp"/>
 <%
 	} 

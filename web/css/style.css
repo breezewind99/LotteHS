@@ -1853,6 +1853,17 @@ hr{
 	width: 33%;
 }
 
+.SearchDiv {
+	display: inline-block;
+	vertical-align:top;
+	width: 33%;
+}
+
+.labelDiv {
+	width: 100%;
+	float:left;
+}
+
 .rec_form1{
 	width:78.5px;
 }
@@ -1872,23 +1883,23 @@ hr{
    width:133px;
 }
 
-.rec_date {
+.search_date {
 	width:107px;
 }
 
-.rec_time {
+.search_time {
 	width:133px;
 }
 
-.rec_input {
+.search_input {
 	width:283px;
 }
 
-.rec_combo_range_2 {
+.search_combo_range_2 {
 	width:133px;
 }
 
-.rec_combo_range_3 {
+.search_combo_range_3 {
 	width:87px;
 }
 

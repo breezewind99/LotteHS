@@ -81,6 +81,7 @@ try {
 	confmap.put("user_id", _LOGIN_ID);
 	confmap.put("user_level", _LOGIN_LEVEL);
 	confmap.put("default_used", "1");
+	confmap.put("login_ip", _LOGIN_IP);
 
 	// config select
 	List<Map<String, Object>> conf_list = db.selectList("rec_search.selectResultConfig", confmap);

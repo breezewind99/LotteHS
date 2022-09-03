@@ -113,7 +113,7 @@
 			db.insert("hist_login.insertLoginHist", argMap);
 
 			//Site.writeJsonResult(out, false, "로그인에 실패했습니다.");
-			Site.writeJsonResult(out, false, "비밀번호를 잘못 입력하여 로그인 하실 수 없습니다.");
+			Site.writeJsonResult(out, false, "사용자 정보를 확인할수 없어 로그인 하실 수 없습니다.");
 			return;
 		}
 		else

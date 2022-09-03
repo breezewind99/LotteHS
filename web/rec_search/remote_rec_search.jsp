@@ -38,6 +38,7 @@
 		String rec_succ_code = CommonUtil.getParameter("rec_succ_code");
 		String rec_abort_code = CommonUtil.getParameter("rec_abort_code");
 		String rec_store_code = CommonUtil.getParameter("rec_store_code");
+		String rec_gubun = CommonUtil.getParameter("rec_gubun");
 		String rec_mystery_code = CommonUtil.getParameter("rec_mystery_code");
 		String custom_fld_01 = CommonUtil.getParameter("custom_fld_01");
 		String custom_fld_02 = CommonUtil.getParameter("custom_fld_02");
@@ -113,7 +114,7 @@
 		confMap.put("user_id", _LOGIN_ID);
 		confMap.put("user_level", _LOGIN_LEVEL);
 		confMap.put("default_used", "1");
-
+		confMap.put("login_ip", _LOGIN_IP);
 		// config select
 		List<Map<String, Object>> conf_list = db.selectList("rec_search.selectResultConfig", confMap);
 
@@ -153,6 +154,7 @@
 		argMap.put("rec_succ_code", rec_succ_code);
 		argMap.put("rec_abort_code", rec_abort_code);
 		argMap.put("rec_store_code", rec_store_code);
+		argMap.put("rec_gubun", rec_gubun);
 		argMap.put("rec_mystery_code", rec_mystery_code);
 		argMap.put("user_list", user_list);
 		argMap.put("custom_fld_01", custom_fld_01);
@@ -216,10 +218,10 @@
 				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
 				item.put("n_cust_tel", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_cust_tel").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
 			}
-			if(item.containsKey("n_rec_keycode") && item.get("n_rec_keycode") != null){
-				String temp =  item.get("n_rec_keycode").toString().trim();
-				item.put("n_rec_keycode", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_rec_keycode").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
-			}
+//			if(item.containsKey("n_rec_keycode") && item.get("n_rec_keycode") != null){
+//				String temp =  item.get("n_rec_keycode").toString().trim();
+//				item.put("n_rec_keycode", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_rec_keycode").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
+//			}
 			if(item.containsKey("n_user_name") && item.get("n_user_name") != null){
 				String temp =  Mask.getMaskedName(item.get("n_user_name").toString().trim());
 				item.put("n_user_name", temp);
