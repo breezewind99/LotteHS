@@ -22,7 +22,7 @@
 					<tr>
 						<td class="table-td">기타</td>
 						<td>
-							<input type="text" id="reason_text" name="reason_code" class="form-control" id="" placeholder="" disabled="disabled">
+							<input type="text" id="reason_text" name="reason_text" class="form-control" id="" placeholder="" disabled="disabled">
 						</td>
 					</tr>							
 					</tbody>					
@@ -44,8 +44,11 @@
 		});
 		
 		// 사유코드 변경시
-		$("#modalReasonForm select[name=reason_code]").change(function(){		
+		$("#modalReasonForm select[name=reason_code]").change(function(){
+
 			if($(this).val()=="99") {
+				console.log(this);
+				console.log($(this).val());
 				$("#modalReasonForm input[name=reason_text]").attr("disabled", false);
 				$("#modalReasonForm input[name=reason_text]").focus();
 			} else {

@@ -211,8 +211,8 @@
 								<input type="text" class="form-control play-form" id="" name="mk_name" placeholder=""> -->
 								<span style="padding-right: 20px;"></span>
 								<span>구간 &nbsp;</span>
-								<input type="text" class="form-control play-form" id="" name="mk_stime" placeholder="00:00:00"></li> ~
-								<input type="text" class="form-control play-form" id="" name="mk_etime" placeholder="00:00:00"></li>
+								<input type="text" class="form-control play-form" name="mk_stime" placeholder="00:00:00"></li> ~
+								<input type="text" class="form-control play-form" name="mk_etime" placeholder="00:00:00"></li>
 								<button type="button" name="btn_marking" class="btn btn-primary btn-sm" onclick="regiMarking();">마킹</button>
 							</form>
 						</div>

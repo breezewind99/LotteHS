@@ -3,6 +3,7 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/web/app/player.jsp" value="file://$PROJECT_DIR$/web/app" />
         <entry key="file://$PROJECT_DIR$/web/index.jsp" value="file://$PROJECT_DIR$/web" />
         <entry key="file://$PROJECT_DIR$/web/log_hist/login_hist.jsp" value="file://$PROJECT_DIR$/web/log_hist" />
         <entry key="file://$PROJECT_DIR$/web/login.jsp" value="file://$PROJECT_DIR$/web" />
