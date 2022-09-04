@@ -21,14 +21,11 @@
 	console.log("test");
 	$(function()
 	{
-
-
-
 		// 등록 버튼 클릭
 		$("button[name=modal_regi]").click(function(){
 			if(reasonFormChk()) {
 				$('#reason_regi input[name="reason_code"]').val($("#modalReasonForm select[name=reason_code]").val());
-				$('#reason_regi input[name="reason_text"]').val($("#modalReasonForm select[name=reason_text]").val());
+				$('#reason_regi input[name="reason_text"]').val($("#modalReasonForm input[name=reason_text]").val());
 				$("#reason_regi").attr("action", "player.jsp");
 				$("#reason_regi").submit();
 			}

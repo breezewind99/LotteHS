@@ -14,20 +14,26 @@ public class Mask {
         //String regex = "(\\d{2,3})-?(\\d{3,4})-?(\\d{4})$";		//휴대폰번호 '-' 포함
         Matcher matcher = Pattern.compile(regex).matcher(phoneNum);
         if (matcher.find()) {
-            String replaceTarget = matcher.group(2);
-            char[] c = new char[replaceTarget.length()];
-            Arrays.fill(c, '*');
+            String replaceTarget1 = matcher.group(1);
+            String replaceTarget2 = matcher.group(2).substring(0,2) + "**";
+            String replaceTarget3 = matcher.group(3).substring(0,2) + "**";
 
-            return phoneNum.replace(replaceTarget, String.valueOf(c));
+
+            return replaceTarget1 + replaceTarget2 + replaceTarget3;
         }
         regex = "(\\d{1,4})(\\d{4})$";
         matcher = Pattern.compile(regex).matcher(phoneNum);
         if (matcher.find()) {
-            String replaceTarget = matcher.group(1);
-            char[] c = new char[replaceTarget.length()];
-            Arrays.fill(c, '*');
-
-            return phoneNum.replace(replaceTarget, String.valueOf(c));
+            String replaceTarget1 = "";
+            if (matcher.group(1).length() == 4) {
+                replaceTarget1 = matcher.group(1).substring(0,2) + "**";
+            } else if (matcher.group(1).length() == 3) {
+                replaceTarget1 = matcher.group(1).charAt(0) + "**";
+            } else {
+                replaceTarget1 = matcher.group(1);
+            }
+            String replaceTarget2 = matcher.group(2).substring(0,2) + "**";
+            return replaceTarget1 + replaceTarget2;
         }
         return phoneNum;
     }

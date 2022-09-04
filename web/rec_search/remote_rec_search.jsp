@@ -216,12 +216,18 @@
 			//롯데 보안 이슈로 수정 요청
 			if(item.containsKey("n_cust_tel") && item.get("n_cust_tel") != null){
 				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
-				item.put("n_cust_tel", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_cust_tel").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
+				if (_LOGIN_LEVEL.equals("E"))
+					item.put("n_cust_tel", temp);
+				else
+					item.put("n_cust_tel", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_cust_tel").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
 			}
-//			if(item.containsKey("n_rec_keycode") && item.get("n_rec_keycode") != null){
-//				String temp =  item.get("n_rec_keycode").toString().trim();
-//				item.put("n_rec_keycode", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_rec_keycode").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
-//			}
+			if(item.containsKey("n_rec_keycode") && item.get("n_rec_keycode") != null){
+				String temp =  item.get("n_rec_keycode").toString().trim();
+				if (_LOGIN_LEVEL.equals("E"))
+					item.put("n_rec_keycode", temp);
+				else
+					item.put("n_rec_keycode", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_rec_keycode").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
+			}
 			if(item.containsKey("n_user_name") && item.get("n_user_name") != null){
 				String temp =  Mask.getMaskedName(item.get("n_user_name").toString().trim());
 				item.put("n_user_name", temp);
@@ -230,37 +236,7 @@
 				String temp =  Mask.getMaskedName(item.get("user_name").toString().trim());
 				item.put("user_name", temp);
 			}
-			/*
-			if(item.containsKey("v_cust_tel")) 
-			{
-				custTel = item.get("v_cust_tel").toString().trim();
-				
-				if(custTel.length() > 4)	vCustTel = custTel.substring(0,custTel.length()-4)+"****";
-				else						vCustTel = custTel;
-				
-				//logger.info("custTel : "+custTel);
-				//logger.info("vCustTel : "+vCustTel);
-								 
-				item.put("v_cust_tel", "<span title='"+custTel+"'>"+vCustTel+"</span>");
-			}
-			if(item.containsKey("n_cust_tel")) 
-			{
-				custTel = item.get("n_cust_tel").toString().trim();
-				
-				vCustTel = ComLib.getPhoneFormatHideHtml2(custTel);
-								 
-				item.put("n_cust_tel", vCustTel);
-			}			
-			*/
-			
-			/*
-				청취시 표시 요청 - CJM(20200120)
-				청취한 정보에 대한 표시 요청에 따른 수정
-				
-				if("1".equals(item.get("rec_stt_code")))	item.put("pq_rowcls", "red");
-			*/
-			
-			if(item.containsKey("v_url")) 
+			if(item.containsKey("v_url"))
 			{
 				// 듣기
 				item.put("v_url", "<img src='../img/icon/ico_player.png' onclick=\"playRecFileByIdx('" + row_indx + "','rec'); f_chg_background(this);\" style='margin-left: 5px; cursor: pointer;'/>");
@@ -273,21 +249,6 @@
 			{
 				item.put("v_memo", "<img src='../img/icon/ico_memo.png' onclick=\"memoRecData('" + row_indx + "');\" style='margin-left: 5px; cursor: pointer;'/>");
 			}
-
-/*			
-			if(item.containsKey("n_user_id")) 
-			{
-				item.put("n_user_id", "<span onclick=\"fvClickChk('" + row_indx + "',this);\" style='margin-left: 5px; cursor: pointer;'>"+item.get("n_user_id").toString().trim()+"</span>");
-			}			
-			if(item.containsKey("n_cust_tel")) 
-			{
-				custTel = item.get("n_cust_tel").toString().trim();
-				
-				vCustTel = ComLib.getPhoneFormatHideHtml2(custTel);
-								 
-				item.put("n_cust_tel", "<span onclick=\"fvClickChk('" + row_indx + "',this);\" style='margin-left: 5px; cursor: pointer;'>"+vCustTel+"</span>");
-			}
-*/
 			row_indx++;
 		}
 		

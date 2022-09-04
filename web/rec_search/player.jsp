@@ -593,6 +593,10 @@
 						<td class="table-td">녹취파일명</td>
 						<td><%=curRec.get("rec_filename") %></td>
 					</tr>
+					<tr>
+						<td class="table-td">UCID</td>
+						<td><%=curRec.get("rec_keycode") %></td>
+					</tr>
 				</table>
 			</div>
 			<!--녹취 이력 정보 table 끝-->

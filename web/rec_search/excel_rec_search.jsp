@@ -113,8 +113,8 @@ try {
 	argMap.put("top_cnt", top_cnt);
 	argMap.put("rec_date1",rec_date1);
 	argMap.put("rec_date2",rec_date2);
-	argMap.put("rec_start_time1",rec_start_hour1+":00:00");
-	argMap.put("rec_start_time2",("24".equals(rec_start_hour2)) ? "23:59:59" : rec_start_hour2+":00:00");
+	argMap.put("rec_start_time1",rec_start_hour1);
+	argMap.put("rec_start_time2",rec_start_hour2);
 	argMap.put("rec_call_time1",DateUtil.getHmsToSec(Integer.parseInt(rec_call_time1)));
 	argMap.put("rec_call_time2",DateUtil.getHmsToSec(Integer.parseInt(rec_call_time2)));
 	argMap.put("bpart_code", bpart_code);
@@ -186,7 +186,10 @@ try {
 		for(Map<String, Object> item : list) {
 			sb.append("<tr>");
 			for(int i=0;i<resarr.size();i++){
-				sb.append("<td>" + item.get(resarr.get(i)) + "</td>");
+				if (resarr.get(i).equals("n_cust_tel"))
+					sb.append("<td>" + Mask.getMaskedPhoneNum(item.get(resarr.get(i)).toString()) + "</td>");
+				else
+					sb.append("<td>" + item.get(resarr.get(i)) + "</td>");
 			}
 			sb.append("</tr>");
 		}
