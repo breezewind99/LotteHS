@@ -1,3 +1,4 @@
+<%@ page import="static com.cnet.crec.util.CommonUtil.getClientIP" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
 <%
@@ -9,7 +10,7 @@
 	try 
 	{
 		db = new Db(true);
-	
+
 		Map<String, Object> confmap = new HashMap<String, Object>();
 	
 		// config (session value mapping)

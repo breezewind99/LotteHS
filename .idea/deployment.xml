@@ -16,6 +16,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="사무실">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="용인 WAS1">
         <serverdata>
           <mappings>
@@ -33,7 +40,7 @@
       <paths name="집">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

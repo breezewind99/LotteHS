@@ -19,6 +19,7 @@
 	{
 		db = new Db(true);
 
+
 		// get parameter
 		String info = CommonUtil.ifNull(request.getParameter("info"));
 		String reason_code = CommonUtil.getParameter("reason_code");
