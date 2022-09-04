@@ -19,7 +19,7 @@ public class Mask {
             String replaceTarget3 = matcher.group(3).substring(0,2) + "**";
 
 
-            return replaceTarget1 + replaceTarget2 + replaceTarget3;
+            return replaceTarget1 + "-" + replaceTarget2 + "-" + replaceTarget3;
         }
         regex = "(\\d{1,4})(\\d{4})$";
         matcher = Pattern.compile(regex).matcher(phoneNum);
@@ -33,7 +33,7 @@ public class Mask {
                 replaceTarget1 = matcher.group(1);
             }
             String replaceTarget2 = matcher.group(2).substring(0,2) + "**";
-            return replaceTarget1 + replaceTarget2;
+            return replaceTarget1 + "-" + replaceTarget2;
         }
         return phoneNum;
     }
