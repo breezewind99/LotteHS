@@ -15,28 +15,17 @@
 			return;
 		}
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="-1" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<jsp:include page="/include/popup.jsp" flush="false"/>
 <title>다운로드 사유 등록</title>
-<link href="../css/bootstrap.css" rel="stylesheet">
-<link href="../css/font-awesome.css" rel="stylesheet">
-<link href="../css/animate.css" rel="stylesheet">
-<link href="../css/style.css" rel="stylesheet">
-
-<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="../js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="../js/bootstrap.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
-	$(function(){
+	console.log("test");
+	$(function()
+	{
 		// 등록 버튼 클릭
 		$("button[name=modal_regi]").click(function(){
 			if(reasonFormChk()) {
+				$('#reason_regi input[name="reason_code"]').val($("#modalReasonForm select[name=reason_code]").val());
+				$('#reason_regi input[name="reason_text"]').val($("#modalReasonForm input[name=reason_text]").val());
 				$("#reason_regi").attr("action", "download.jsp");
 				$("#reason_regi").attr("target", "hiddenFrame");
 				$("#reason_regi").submit();
@@ -46,12 +35,15 @@
 </script>
 </head>
 
+
+
 <body class="white-bg">
 <div id="container" style="width: 556px">
 	<div class="memo-body">
 		<form id="reason_regi" method="post">
 			<input type="hidden" name="info" value="<%=info %>"/>
-
+			<input type="hidden" name="reason_code" value="">
+			<input type="hidden" name="reason_text" value="">
 			<jsp:include page="/include/reason_inc.jsp" flush="false"/>
 		</form>
 	</div>
