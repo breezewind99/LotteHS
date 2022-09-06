@@ -266,7 +266,7 @@ $(function ()
 										<td style="width:25%;" class="table-td">날짜 <span class="required">*</span></td>
 										<td style="width:75%; padding: 6px 9px;">
 											<div class="input-group" style="display:inline-block;">
-												<input type="text" name="rec_date" class="form-control datepicker" value="<%=ComLib.getNowDate()%>" style="z-index: 99999;">
+												<input type="text" name="rec_date" class="form-control search_date datepicker" value="<%=ComLib.getNowDate()%>" style="z-index: 99999;">
 												<div class="input-group-btn" style="display:block;">
 													<button class="btn btn-default btn-datepicker" type="button"><i class="fa fa-calendar"></i></button>
 												</div>
@@ -277,7 +277,7 @@ $(function ()
 									<tr>
 										<td class="table-td">시간 <span class="required">*</span></td>
 										<td style="padding: 6px 9px;">
-											<input class="form-control rec_form5" type="time" name="rec_start_time" value="<%=ComLib.getNowTime()%>"> ~ <input class="form-control rec_form5" type="time" name="rec_end_time" value="<%=ComLib.getNowTime()%>">
+											<input class="form-control search_time" type="time" name="rec_start_time" value="<%=ComLib.getNowTime()%>"> ~ <input class="form-control search_time" type="time" name="rec_end_time" value="<%=ComLib.getNowTime()%>">
 										</td>
 									</tr>
 								</table>
