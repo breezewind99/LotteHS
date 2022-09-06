@@ -93,11 +93,11 @@
 				sb.append("<td>" + ComLib.toNN(item.get("spart_name")) + "</td>");
 	
 				sb.append("<td>" + item.get("listen_id") + "</td>");
-				sb.append("<td>" + item.get("listen_name") + "</td>");
+				sb.append("<td>" + Mask.getMaskedName(item.get("listen_name").toString()) + "</td>");
 				sb.append("<td>" + item.get("listen_ip") + "</td>");
 				sb.append("<td>" + item.get("rec_datm") + "</td>");
 				sb.append("<td>" + item.get("user_id") + "</td>");
-				sb.append("<td>" + item.get("user_name") + "</td>");
+				sb.append("<td>" + Mask.getMaskedName(item.get("user_name").toString()) + "</td>");
 				sb.append("<td>" + item.get("rec_filename") + "</td>");
 				if(Finals.isExistPlayDownReason)
 				{

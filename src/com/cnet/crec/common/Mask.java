@@ -40,13 +40,14 @@ public class Mask {
 
     // 이름 중간 마스킹
     public static String getMaskedName(String name) {
+
         String maskedName = "";     // 마스킹 이름
         String firstName = "";      // 성
         String middleName = "";     // 이름 중간
         String lastName = "";       //이름 끝
         int lastNameStartPoint;     // 이름 시작 포인터
 
-        if(!name.equals("") || name != null){
+        if(!name.equals("") || name != null || name.equals("null")){
             if(name.length() > 1){
                 firstName = name.substring(0, 1);
                 lastNameStartPoint = name.indexOf(firstName);

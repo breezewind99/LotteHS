@@ -75,10 +75,10 @@
 				sb.append("<td>" + item.get("change_datm") + "</td>");
 				sb.append("<td>" + item.get("v_change_type") + "</td>");
 				sb.append("<td>" + item.get("change_id") + "</td>");
-				sb.append("<td>" + item.get("change_name") + "</td>");
+				sb.append("<td>" + Mask.getMaskedName(item.get("change_name").toString()) + "</td>");
 				sb.append("<td>" + item.get("change_ip") + "</td>");
 				sb.append("<td>" + item.get("user_id") + "</td>");
-				sb.append("<td>" + item.get("user_name") + "</td>");
+				sb.append("<td>" + Mask.getMaskedName(item.get("user_name").toString()) + "</td>");
 				sb.append("<td>" + item.get("origin_level_desc") + "</td>");
 				sb.append("<td>" + item.get("change_level_desc") + "</td>");
 				sb.append("</tr>");

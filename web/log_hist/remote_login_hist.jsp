@@ -77,6 +77,15 @@
 
 		List<Map<String, Object>> list = db.selectList("hist_login.selectList", argMap);
 
+		for(Map<String, Object> item : list) {
+			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
+			//롯데 보안 이슈로 수정 요청
+			if (item.containsKey("login_name") && item.get("login_name") != null) {
+				String temp = Mask.getMaskedName(item.get("login_name").toString().trim());
+				item.put("login_name", temp);
+			}
+		}
+
 		json.put("totalRecords", tot_cnt);
 		json.put("totalPages", page_cnt);
 		json.put("curPage", cur_page);

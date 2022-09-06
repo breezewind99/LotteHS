@@ -445,6 +445,9 @@
 		<if test='custom_fld_05!=null and custom_fld_05!=""'>
 		and custom_fld_05 = #{custom_fld_05}
 		</if>
+		<if test='rec_mode!=null and rec_mode!=""'>
+			and rec_mode = #{rec_mode}
+		</if>
 		<if test='rec_gubun!=null and rec_gubun!=""'>
 		and NVL(rec_store_code,'0') = #{rec_gubun}
 		</if>
@@ -536,6 +539,9 @@
 						</when>
 						<when test='idx=="v_rec_gubun"'>
 							(case REC_STORE_CODE when '1' then '영구녹취' else '일반' end) as ${idx}
+						</when>
+						<when test='idx=="v_rec_mode"'>
+							(case rec_mode when '1' then '백업' else '메인' end) as ${idx}
 						</when>
 						<when test='idx=="v_cust_tel"'>
 							${item} as ${idx}
@@ -636,6 +642,9 @@
 				</if>
 				<if test='s.custom_fld_05!=null and s.custom_fld_05!=""'>
 				 	and custom_fld_05 = #{s.custom_fld_05}
+				</if>
+				<if test='s.rec_mode!=null and s.rec_mode!=""'>
+					and rec_mode = #{s.rec_mode}
 				</if>
 				<if test='s.rec_gubun!=null and s.rec_gubun!=""'>
 					and NVL(rec_store_code,'0') = #{s.rec_gubun}

@@ -685,16 +685,17 @@
 					sb.append("	<option value='1'>영구보관</option>\n");
 					sb.append("</select>");
 				}
-				/*
-				else if ("rec_store_code".equals(conf_value))
+				else if ("rec_mode".equals(conf_value))
 				{
-					// 영구 보관
-					sb.append("<select class='form-control rec_form"+etc_num+"' name='"+conf_field+"'>\n");
+					// 메인 백업 구분
+					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
-					sb.append("	<option value='1'>영구보관</option>\n");
-					sb.append("	<option value='2'>백업완료</option>\n");
+					sb.append("	<option value='0'>메인</option>\n");
+					sb.append("	<option value='1'>백업</option>\n");
 					sb.append("</select>");
 				}
+
+				/*
 				else if ("rec_abort_code".equals(conf_value))
 				{
 					// 필수 중단
