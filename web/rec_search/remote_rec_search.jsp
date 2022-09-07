@@ -231,11 +231,11 @@
 					item.put("n_rec_keycode", temp + "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_rec_keycode").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/>");
 			}
 			if(item.containsKey("n_user_name") && item.get("n_user_name") != null){
-				String temp =  Mask.getMaskedName(item.get("n_user_name").toString().trim());
+				String temp =  Mask.getMaskedName(item.get("n_user_name"));
 				item.put("n_user_name", temp);
 			}
 			if(item.containsKey("user_name") && item.get("user_name") != null){
-				String temp =  Mask.getMaskedName(item.get("user_name").toString().trim());
+				String temp =  Mask.getMaskedName(item.get("user_name"));
 				item.put("user_name", temp);
 			}
 			if(item.containsKey("v_url"))

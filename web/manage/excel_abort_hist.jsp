@@ -87,7 +87,7 @@ try {
 
 
 			sb.append("<td>" + item.get("abort_id") + "</td>");
-			sb.append("<td>" + Mask.getMaskedName(item.get("abort_name").toString()) + "</td>");
+			sb.append("<td>" + Mask.getMaskedName(item.get("abort_name")) + "</td>");
 			sb.append("<td>" + item.get("abort_ip") + "</td>");
 
 			sb.append("</tr>");

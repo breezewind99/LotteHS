@@ -82,11 +82,11 @@
 			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
 			//롯데 보안 이슈로 수정 요청
 			if (item.containsKey("change_name") && item.get("change_name") != null) {
-				String temp = Mask.getMaskedName(item.get("change_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("change_name"));
 				item.put("change_name", temp);
 			}
 			if (item.containsKey("user_name") && item.get("user_name") != null) {
-				String temp = Mask.getMaskedName(item.get("user_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("user_name"));
 				item.put("user_name", temp);
 			}
 		}

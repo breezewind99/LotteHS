@@ -71,7 +71,7 @@
 			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
 			//롯데 보안 이슈로 수정 요청
 			if (item.containsKey("abort_name") && item.get("abort_name") != null) {
-				String temp = Mask.getMaskedName(item.get("abort_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("abort_name"));
 				item.put("abort_name", temp);
 			}
 		}

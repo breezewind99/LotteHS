@@ -92,11 +92,11 @@
 				item.put("v_url", "<img src='../img/icon/ico_player.png' onclick=\"playRecFileByIdx('" + row_indx + "');\" style='margin-left: 5px; cursor: pointer;'/>");
 			}
 			if (item.containsKey("listen_name") && item.get("listen_name") != null) {
-				String temp = Mask.getMaskedName(item.get("listen_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("listen_name"));
 				item.put("listen_name", temp);
 			}
 			if (item.containsKey("user_name") && item.get("user_name") != null) {
-				String temp = Mask.getMaskedName(item.get("user_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("user_name"));
 				item.put("user_name", temp);
 			}
 

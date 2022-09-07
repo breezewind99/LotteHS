@@ -88,11 +88,11 @@
 			//전화번호 마스킹 처리 및 Tooltip - CJM(20190213)
 			//롯데 보안 이슈로 수정 요청
 			if (item.containsKey("down_name") && item.get("down_name") != null) {
-				String temp = Mask.getMaskedName(item.get("down_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("down_name"));
 				item.put("down_name", temp);
 			}
 			if (item.containsKey("user_name") && item.get("user_name") != null) {
-				String temp = Mask.getMaskedName(item.get("user_name").toString().trim());
+				String temp = Mask.getMaskedName(item.get("user_name"));
 				item.put("user_name", temp);
 			}
 		}

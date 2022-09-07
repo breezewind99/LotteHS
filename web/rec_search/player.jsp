@@ -583,7 +583,7 @@
 					</tr>
 					<tr>
 						<td class="table-td">상담사명</td>
-						<td><%=Mask.getMaskedName(curRec.get("user_name").toString()) %></td>
+						<td><%=Mask.getMaskedName(curRec.get("user_name")) %></td>
 					</tr>
 					<tr>
 						<td class="table-td">내선번호</td>

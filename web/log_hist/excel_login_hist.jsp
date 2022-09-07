@@ -70,7 +70,7 @@
 				sb.append("<td>" + item.get("v_login_type") + "</td>");
 				sb.append("<td>" + item.get("login_datm") + "</td>");
 				sb.append("<td>" + item.get("login_id") + "</td>");
-				sb.append("<td>" + Mask.getMaskedName(item.get("login_name").toString()) + "</td>");
+				sb.append("<td>" + Mask.getMaskedName(item.get("login_name")) + "</td>");
 				sb.append("<td>" + item.get("login_ip") + "</td>");
 				sb.append("<td>" + item.get("v_login_result") + "</td>");
 				sb.append("</tr>");
