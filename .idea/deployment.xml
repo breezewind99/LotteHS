@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="가산 WAS1" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;" remoteFilesAllowedToDisappearOnAutoupload="false" showNewOnTargetInSync="false" showExcludedInSync="true">
+  <component name="PublishConfigData" serverName="가산 WAS1" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;" remoteFilesAllowedToDisappearOnAutoupload="false" showNewOnTargetInSync="false">
     <serverData>
       <paths name="가산 WAS1">
         <serverdata>
@@ -21,6 +21,9 @@
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/WEB-INF/classes/application.properties" />
+          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="용인 WAS1">

@@ -31,7 +31,7 @@
 			// get parameter
 			String part_code = CommonUtil.getParameter("part_code");
 			String user_id = CommonUtil.getParameter("user_id", "");
-			String user_pass = CommonUtil.ifNull(request.getParameter("user_pass"));
+			String user_pass = CommonUtil.getParameter("user_pass");
 			String user_name = CommonUtil.getParameter("user_name", "");
 			String local_no = CommonUtil.getParameter("local_no", "");
 			String system_code = CommonUtil.getParameter("system_code", "");

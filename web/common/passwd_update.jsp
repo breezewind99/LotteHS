@@ -28,9 +28,9 @@
 			//String new_pass = CommonUtil.ifNull(request.getParameter("new_pass"));
 			
 			//비밀번호 변경 암호화 요청으로 인하여 변경 - CJM(20190326)
-			String user_id = CommonUtil.ifNull(request.getParameter("en_user_id"));
-			String user_pass = CommonUtil.ifNull(request.getParameter("en_user_pass"));
-			String new_pass = CommonUtil.ifNull(request.getParameter("en_new_pass"));
+			String user_id = CommonUtil.getParameter("en_user_id");
+			String user_pass = CommonUtil.getParameter("en_user_pass");
+			String new_pass = CommonUtil.getParameter("en_new_pass");
 			
 			PrivateKey pKey = (PrivateKey) request.getSession().getAttribute("__rsaPrivateKey__");
 			

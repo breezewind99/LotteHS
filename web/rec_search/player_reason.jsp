@@ -6,7 +6,7 @@
 	try 
 	{
 		// get parameter
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info");
 		//out.print(info);
 		// 파라미터 체크
 		if(!CommonUtil.hasText(info)) 

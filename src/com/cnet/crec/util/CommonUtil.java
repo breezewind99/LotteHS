@@ -323,7 +323,10 @@ public class CommonUtil {
 	 * @return
 	 */
 	public static String getParameter(String argName) {
-		return ifNull(request.getParameter(argName),"");
+		String tempParam ;
+		tempParam = ifNull(request.getParameter(argName),"");
+		tempParam = cleanXSS(tempParam);
+		return tempParam;
 		//return toHTMLText(ifNull(request.getParameter(argName),""));
 	}
 
@@ -333,7 +336,10 @@ public class CommonUtil {
 	 * @return
 	 */
 	public static String getParameter(String argName, String rep) {
-		return ifNull(request.getParameter(argName),rep);
+		String tempParam ;
+		tempParam = ifNull(request.getParameter(argName),rep);
+		tempParam = cleanXSS(tempParam);
+		return tempParam;
 		//return toHTMLText(ifNull(request.getParameter(argName),rep));
 	}
 
@@ -935,5 +941,16 @@ public class CommonUtil {
 		logger.info("> Result : IP Address : "+ip);
 
 		return ip;
+	}
+
+	public static String cleanXSS(String value)
+	{
+		value = value.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
+		value = value.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
+		value = value.replaceAll("'", "&#39;");
+		value = value.replaceAll("eval\\((.*)\\)", "");
+		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+		value = value.replaceAll("script", "");
+		return value;
 	}
 }

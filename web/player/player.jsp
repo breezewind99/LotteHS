@@ -13,9 +13,9 @@
 		db = new Db(true);
 
 		// get parameter
-		String rec_datm = CommonUtil.ifNull(request.getParameter("rec_datm"));
-		String rec_keycode = CommonUtil.ifNull(request.getParameter("rec_keycode"));
-		String local_no = CommonUtil.ifNull(request.getParameter("local"));
+		String rec_datm = CommonUtil.getParameter("rec_datm");
+		String rec_keycode = CommonUtil.getParameter("rec_keycode");
+		String local_no = CommonUtil.getParameter("local");
 		//String info = CommonUtil.ifNull(request.getParameter("info"));
 		int rec_seq = CommonUtil.getParameterInt("rec_seq", "-1");
 

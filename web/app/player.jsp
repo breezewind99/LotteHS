@@ -16,9 +16,11 @@
 		db = new Db(true);
 
 		// get parameter
-		String rec_datm = CommonUtil.ifNull(request.getParameter("date"));
-		String rec_keycode = CommonUtil.ifNull(request.getParameter("keycode"));
-		String seq_no = CommonUtil.ifNull(request.getParameter("seq"));
+		String rec_datm = CommonUtil.getParameter("rec_datm");
+		String rec_keycode = CommonUtil.getParameter("rec_keycode");
+		String seq_no = CommonUtil.getParameter("seq");
+		String user_id = CommonUtil.getParameter("user_id");
+		String user_name = CommonUtil.getParameter("user_name");
 		//String info = CommonUtil.ifNull(request.getParameter("info"));
 		int rec_seq = CommonUtil.getParameterInt("rec_seq", "-1");
 		
@@ -80,7 +82,7 @@
 						"<td><a href='#none' "+
 							"onclick=\"playRecFileLink('"+item.get("rec_datm")+"', '" + item.get("local_no") + "', '" + item.get("rec_filename") + "', '" + rec_keycode + "','0','');\"><u>" + item.get("rec_datm") + "</u></a></td>"+
 						"<td>" + item.get("rec_call_time") + "</td>"+
-						"<td>" + item.get("user_name") + "</td>"+
+						"<td>" + Mask.getMaskedName(item.get("user_name")) + "</td>"+
 						"<td>" + item.get("local_no") + "</td>"+
 						"<td>" + Mask.getMaskedPhoneNum(item.get("cust_tel").toString().trim()) + "</td>"+
 					"</tr>";

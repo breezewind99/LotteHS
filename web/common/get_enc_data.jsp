@@ -5,7 +5,7 @@
 	try 
 	{
 		// get parameter
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info","");
 		String flag = CommonUtil.getParameter("flag", "1");
 
 		// 파라미터 체크

@@ -23,7 +23,7 @@
 
 		AES256Cipher wfms = AES256Cipher.getInstance("lotte-wfms-cipher@20160622-qwer1");
 
-		System.out.println(wfms.encrypt("admin|20220623171255941"));
+		//System.out.println(wfms.encrypt("admin|20220623171255941"));
 		String info="";
 		try {
 			info = wfms.decrypt(CommonUtil.getParameter("info", ""));

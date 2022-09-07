@@ -12,7 +12,7 @@
 		db = new Db(true);
 
 		// get parameter
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info");
 		int rec_seq = CommonUtil.getParameterInt("rec_seq", "-1");
 
 		// 파라미터 체크

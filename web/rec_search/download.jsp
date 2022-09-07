@@ -21,7 +21,7 @@
 
 
 		// get parameter
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info");
 		String reason_code = CommonUtil.getParameter("reason_code");
 		String reason_text = CommonUtil.getParameter("reason_text");
 		String extension = CommonUtil.getParameter("extension","WAV");	//확장자

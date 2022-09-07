@@ -15,7 +15,6 @@
 		db = new Db(true);
 		
 		// get parameter
-		//String info = CommonUtil.ifNull(request.getParameter("info"));
 		String info = CommonUtil.getParameter("info");
 		String cust_id = CommonUtil.getParameter("cust_id");
 		String rec_keycode = CommonUtil.getParameter("rec_keycode");

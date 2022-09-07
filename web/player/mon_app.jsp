@@ -10,7 +10,7 @@
 		db = new Db(true);
 
 		// get parameter
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info");
 
 
 		// 파라미터 체크

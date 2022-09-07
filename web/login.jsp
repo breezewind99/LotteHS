@@ -12,7 +12,7 @@
 	try 
 	{
 		String login_id = CommonUtil.getParameter("login_id", "");
-		String login_pass = CommonUtil.ifNull(request.getParameter("login_pass"));
+		String login_pass = CommonUtil.getParameter("login_pass");
 		
 		PrivateKey pKey = (PrivateKey) request.getSession().getAttribute("__rsaPrivateKey__");
 

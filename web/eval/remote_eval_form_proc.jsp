@@ -177,7 +177,7 @@
 	
 			if(eval_name.indexOf("exam_score_")>-1) {
 				//String tmp_eval_name = CommonUtil.getParameter(eval_name);
-				String tmp_eval_name = request.getParameter(eval_name);
+				String tmp_eval_name = CommonUtil.getParameter(eval_name);
 				//logger.debug("tmp_eval_name : " + eval_name + " = " + tmp_eval_name);
 				String examScore[] = tmp_eval_name.split(":");//0=rec_id
 				

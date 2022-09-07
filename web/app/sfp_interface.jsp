@@ -6,6 +6,7 @@
 	try
 	{
 		// get parameter
+		String rec_mode = CommonUtil.getParameter("rec_mode");
 		String rec_datm = CommonUtil.getParameter("rec_datm");
 		String local_no = CommonUtil.getParameter("local_no");
 		String rec_keycode = CommonUtil.getParameter("rec_keycode");
@@ -21,6 +22,7 @@
 			return;
 		}
 
+		logger.info("rec_mode : " + rec_mode);
 		logger.info("rec_datm : " + rec_datm);
 		logger.info("local_no : " + local_no);
 		logger.info("rec_keycode : " + rec_keycode);

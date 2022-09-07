@@ -4,12 +4,12 @@
 <%
 	try {
 		// get parameter
-		String rec_datm = CommonUtil.ifNull(request.getParameter("rec_datm"));
-		String rec_keycode = CommonUtil.ifNull(request.getParameter("rec_keycode"));
+		String rec_datm = CommonUtil.getParameter("rec_datm");
+		String rec_keycode = CommonUtil.getParameter("rec_keycode");
 		int rec_seq = CommonUtil.getParameterInt("rec_seq", "0");
 		//String rec_seq = CommonUtil.getParameter("req_seq", "0");
-		String user_id = CommonUtil.ifNull(request.getParameter("user_id"));
-		String user_name = CommonUtil.ifNull(request.getParameter("user_nm"));
+		String user_id = CommonUtil.getParameter("user_id");
+		String user_name = CommonUtil.getParameter("user_nm");
 		// 파라미터 체크
 		if(!CommonUtil.hasText(rec_datm) || !CommonUtil.hasText(rec_keycode)) {
 			out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_PARAM"),"","close"));

@@ -4,8 +4,8 @@
 <%
 	try {
 		// get parameter
-		String rec_datm = CommonUtil.ifNull(request.getParameter("rec_datm"));
-		String rec_filename = CommonUtil.ifNull(request.getParameter("rec_keycode2"));
+		String rec_datm = CommonUtil.getParameter("rec_datm");
+		String rec_filename = CommonUtil.getParameter("rec_keycode2");
 		
 		// 파라미터 체크
 		if(!CommonUtil.hasText(rec_datm) || !CommonUtil.hasText(rec_filename)) {

@@ -18,7 +18,7 @@
 		// get parameter
 		String loc = ComLib.getPSNN(request, "loc");
 		String rec_seq = ComLib.getPSNN(request, "rec_seq");
-		String info = CommonUtil.ifNull(request.getParameter("info"));
+		String info = CommonUtil.getParameter("info");
 		int curRecIdx = ComLib.getPI(request, "curRecIdx", 0);//다중청취시 현재 인덱스
 		String reason_code = CommonUtil.getParameter("reason_code");//사유입력에 사용
 		String reason_text = CommonUtil.getParameter("reason_text");//사유입력에 사용
