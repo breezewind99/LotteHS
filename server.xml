@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+
+	<Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+	<Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
+	<!--	<Listener className="org.apache.catalina.core.JasperListener"/> -->
+	<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+	<Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+	<Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+	<GlobalNamingResources>
+	 
+		<!-- ORACLE MASTER DB -->
+		<!--
+  		<Resource name="jdbc/crec_master" auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+      		maxActive="100" maxIdle="30" maxWait="10000"  password="cnet2580" type="javax.sql.DataSource" url="jdbc:oracle:thin:@10.144.31.26:1521:RECDB" username="cnet"
+		testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1 FROM DUAL"/>
+		-->
+	<!-- ORACLE SLAVE DB -->
+	<Resource name="jdbc/crec_master" auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+              maxActive="100" maxIdle="30" maxWait="10000"  password="~!cnet2580!~" type="javax.sql.DataSource" url="jdbc:oracle:thin:@112.217.73.70:1521:ORCL" username="LOTTEHS"
+              testOnBorrow="true" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1 FROM DUAL"/>
+
+		
+	</GlobalNamingResources>
+	<Service name="Catalina">
+		<Connector connectionTimeout="20000" port="80" protocol="HTTP/1.1" redirectPort="8433" URIEncoding="UTF-8" maxHttpHeaderSize="8192" maxThreads="250" minSpareThreads="25" acceptCount="100" enableLookups="false" disableUploadTimeout="true"/>
+
+
+		<Engine defaultHost="localhost" name="Catalina">
+			<Realm className="org.apache.catalina.realm.LockOutRealm">
+			<!-- <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/> -->
+			</Realm>
+			<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+				<!--<Context docBase="/usr/local/tomcat7/apache-tomcat-7.0.59/webapps/www" path="/" reloadable="true">-->
+					<Context docBase="/data/cnet/www" path="/" reloadable="true">
+				<ResourceLink global="jdbc/crec_master" name="jdbc/crec_master" type="javax.sql.DataSource"/>
+				<!--<ResourceLink global="jdbc/crec_slave" name="jdbc/crec_slave" type="javax.sql.DataSource"/> -->
+				</Context>
+			</Host>
+		</Engine>
+	</Service>
+	<Service name="MediaServer">
+		<Connector connectionTimeout="20000" port="8888" protocol="HTTP/1.1" redirectPort="8433" URIEncoding="UTF-8" maxHttpHeaderSize="8192" maxThreads="250" minSpareThreads="25" acceptCount="100" enableLookups="false" disableUploadTimeout="true"/>
+		<Engine defaultHost="localhost" name="MediaServer">
+			<Realm className="org.apache.catalina.realm.LockOutRealm">
+			<!-- <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/> -->
+			</Realm>
+			<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+				<Context docBase="/data/cnet/mediaserver" path="/" reloadable="true">
+					<!--
+						<ResourceLink global="jdbc/crec_master" name="jdbc/crec_master" type="javax.sql.DataSource"/>
+						<ResourceLink global="jdbc/crec_slave" name="jdbc/crec_slave" type="javax.sql.DataSource"/> 
+					-->
+				</Context>
+			</Host>
+		</Engine>
+	</Service>
+</Server>
