@@ -14,6 +14,8 @@ import com.cnet.crec.common.Site;
 
 import org.apache.log4j.Logger;
 
+import static com.cnet.crec.util.RequestWrapper.getString;
+
 public class CommonUtil {
 	private static final Logger logger = Logger.getLogger(CommonUtil.class);
 
@@ -945,12 +947,6 @@ public class CommonUtil {
 
 	public static String cleanXSS(String value)
 	{
-		value = value.replaceAll("\\<", "&lt;").replaceAll("\\>", "&gt;");
-		value = value.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
-		value = value.replaceAll("'", "&#39;");
-		value = value.replaceAll("eval\\((.*)\\)", "");
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-		value = value.replaceAll("script", "");
-		return value;
+		return getString(value);
 	}
 }
