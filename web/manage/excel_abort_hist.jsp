@@ -35,9 +35,9 @@ try {
 	sb.append("<td class=th>필수중단 시작 일시</td>");
 	sb.append("<td class=th>필수중단 종료 일시</td>");
 
-	sb.append("<td class=th>대분류</td>");
-	sb.append("<td class=th>중분류</td>");
-	sb.append("<td class=th>소분류</td>");
+//	sb.append("<td class=th>대분류</td>");
+//	sb.append("<td class=th>중분류</td>");
+//	sb.append("<td class=th>소분류</td>");
 
 	sb.append("<td class=th>로그인ID</td>");
 	sb.append("<td class=th>로그인명</td>");
@@ -81,9 +81,9 @@ try {
 			sb.append("<td>" + item.get("end_rec_datm") + "</td>");
 
 
-			sb.append("<td>" + item.get("bpart_name") + "</td>");
-			sb.append("<td>" + item.get("mpart_name") + "</td>");
-			sb.append("<td>" + item.get("spart_name") + "</td>");
+//			sb.append("<td>" + item.get("bpart_name") + "</td>");
+//			sb.append("<td>" + item.get("mpart_name") + "</td>");
+//			sb.append("<td>" + item.get("spart_name") + "</td>");
 
 
 			sb.append("<td>" + item.get("abort_id") + "</td>");

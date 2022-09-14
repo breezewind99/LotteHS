@@ -14,17 +14,15 @@ $(function ()
 		{ title: "상태", width: 130, dataIndx: "abort_state" },
 		{ title: "필수중단 시작 일시", width: 130, dataIndx: "start_rec_datm" },
 		{ title: "필수중단 종료 일시", width: 130, dataIndx: "end_rec_datm" },
-		{ title: "대분류", width: 80, dataIndx: "bpart_name" },
-		{ title: "중분류", width: 80, dataIndx: "mpart_name" },
-		{ title: "소분류", width: 80, dataIndx: "spart_name" },
+		// { title: "대분류", width: 80, dataIndx: "bpart_name" },
+		// { title: "중분류", width: 80, dataIndx: "mpart_name" },
+		// { title: "소분류", width: 80, dataIndx: "spart_name" },
 		{ title: "로그인ID", width: 80, dataIndx: "abort_id" },
 		{ title: "로그인명", width: 80, dataIndx: "abort_name" },
 		{ title: "로그인IP", width: 100, dataIndx: "abort_ip" },
 		{ title: "SEQ", width: 100, dataIndx: "abort_seq",hidden:true },
 		{ title: "취소", width: 40, editable: false, sortable: false, render: function (ui) {
-
 			return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
-
 			}
 		}
 
@@ -97,6 +95,9 @@ $(function ()
 	$("button[name=btn_abort]").click(function() {
 		$("#modalAbort").modal("toggle");
 	});
+
+	$("input[name=abort_date1]").mask("y999-m9-d9");
+	$("input[name=abort_date2]").mask("y999-m9-d9");
 
 	// 필수 중단 등록 버튼 클릭
 	$("#modalAbort button[name=modal_regi]").click(function() {

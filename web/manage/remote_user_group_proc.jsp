@@ -21,7 +21,7 @@
 			String parent_code = CommonUtil.getParameter("parent_code");
 			String part_code = CommonUtil.getParameter("part_code");
 			String part_name = CommonUtil.getParameter("part_name");
-			String delete_day = CommonUtil.getParameter("delete_day",null);
+			String delete_day = CommonUtil.getParameter("delete_day");
 
 			// 파라미터 체크
 			if(!CommonUtil.hasText(type) || !CommonUtil.hasText(parent_code) || !CommonUtil.hasText(part_code) || !CommonUtil.hasText(part_name)) {

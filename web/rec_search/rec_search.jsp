@@ -91,8 +91,13 @@
 	var isExistPlayDownReason = <%=Finals.isExistPlayDownReason%>;
 	//다운로드 확장자 선택 유무
 	var isDownloadExt = <%=Finals.isDownloadExt%>;
-	
+
+
+
 	$(function () {
+		$("input[name=rec_date1]").mask("y999-m9-d9");
+		$("input[name=rec_date2]").mask("y999-m9-d9");
+
 		//검색목록 필드
 		var colModel = [
 			{ title: "", dataIndx: "state", minWidth: 25, align: "center", type:"checkBoxSelection", cls: "ui-state-default", resizable: false, sortable:false },
@@ -511,7 +516,6 @@
 		
 		//$(th).attr("disabled",true);
 	}
-	
 </script>
 
 <!--title 영역 -->

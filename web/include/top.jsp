@@ -90,9 +90,14 @@
 	<script type="text/javascript" src="../js/site.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/commItemz.js"></script>
+	<script type="text/javascript" src="../js/jquery.maskedinput.js"></script>
 	<script type="text/javascript" src="../js/finals.js"></script>
 </head>
 <script>
+	$.mask.definitions['y'] = '[12]';
+	$.mask.definitions['m'] = '[01]';
+	$.mask.definitions['d'] = '[0-3]';
+
 	var isDev = <%=Finals.isDev%>;
 	document.addEventListener('contextmenu', function() {
 		alert("보안상의 사유로 마우스 우측 버튼을 사용하실수 없습니다.");
