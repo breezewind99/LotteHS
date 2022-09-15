@@ -2,20 +2,17 @@
 <%@page import="java.net.InetAddress"%>
 <%@page import="java.net.DatagramPacket"%>
 <%@page import="java.net.DatagramSocket"%>
+<%@ page import="static com.cnet.crec.common.Finals.*" %>
 <%@ include file="/common/common.jsp" %>
 <%
 	/* 소프트폰 로그인 */
 	DatagramSocket ds = null;
-
+	//http://localhost:8080/app/sfp_login.jsp?cti_id=1111&local_no=2222
 	try
 	{
 		// get parameter
 		String cti_id = CommonUtil.getParameter("cti_id");
 		String local_no = CommonUtil.getParameter("local_no");
-
-//		String toDay = DateUtil.getToday("yyyyMMddHHmmss");
-
-
 
 		if(!CommonUtil.hasText(cti_id) || !CommonUtil.hasText(local_no))
 		{
@@ -26,36 +23,43 @@
 		logger.info("cti_id : " + cti_id);
 		logger.info("local_no : " + local_no);
 
-		/*
-		String systemIp = "192.168.0.21";
-		int port = 8900;
-		*/
-		String systemIp = "127.0.0.1";
-		int port = 5050;
-		/*
-		logger.info("systemIp : "+systemIp);
-		logger.info("port : "+port);
-		*/
 		// UDP 통신 수신 전문
 		ds = new DatagramSocket();
 
 		// send data 설정
-		InetAddress address = InetAddress.getByName(systemIp);
-		String header = cti_id+"|"+local_no+"|";
+		InetAddress udp_main = InetAddress.getByName(UDP_MAIN);
+		InetAddress udp_backup = InetAddress.getByName(UDP_BACKUP);
+		String Mode = "";
 
-		logger.info("address : "+address);
-		logger.info("header : "+header);
-		/*
-		 */
-		byte[] buf = header.getBytes();
-		//byte[] buf = header.getBytes("UTF-8");
+		Mode = "REC0";
+
+
+		String msg;
+		msg = String.format("%s| |%s|%s|%s|%s|%s| | | |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (cti_id.equals("") ? " " : cti_id), " ", " ", " ", " ",
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " "),
+				("".equals("") ? " " : " ")
+		);
+
+		logger.info("main_address : "+udp_main);
+		logger.info("backup_address : "+udp_backup);
+		logger.info("msg : "+msg);
+
+		byte[] buf = msg.getBytes();
 
 		// send
-		DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-		ds.send(packet);
+		DatagramPacket packet_main = new DatagramPacket(buf, buf.length, udp_main, UDP_PORT);
+		ds.send(packet_main);
+		DatagramPacket packet_backup = new DatagramPacket(buf, buf.length, udp_backup, UDP_PORT);
+		ds.send(packet_backup);
 		out.print("OK");
-		//Site.writeJsonResult(out,true);
-
 	}
 	catch(Exception e)
 	{

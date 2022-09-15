@@ -41,6 +41,10 @@ public class Finals
 	//public static String 			MEDIA_SERVER_URL_D = (!isDev) ? "http://10.144.32.129:8888" : "http://192.168.0.222:8888"; //운영 : 개발
 	public static String 			MEDIA_SERVER_URL_D = (!isDev) ? pros.getProperty("MEDIA_SERVER_URL_D.Operate") : pros.getProperty("MEDIA_SERVER_URL_D.Develop"); //운영 : 개발
 
+	public static String 			UDP_MAIN = pros.getProperty("UDP.Main");
+	public static String 			UDP_BACKUP = pros.getProperty("UDP.Backup");
+	public static int 			UDP_PORT = Integer.parseInt(pros.getProperty("UDP.Port"));
+
 	/**
 	 * 관리자 기능 신규 / 편집 기능 가능여부
 	 */
