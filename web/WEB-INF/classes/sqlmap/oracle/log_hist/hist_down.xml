@@ -67,7 +67,7 @@
 					,nvl(tdh.reason_text, '') as reason_text
 					,(case tdh.down_src when 'AP' then 'TA' 
 						else '' end) as down_src
-					,(case when nvl(tdh.reason_code, '') != '' then fn_GetCodeName('LD_REASON',tdh.reason_code) 
+					,(case when nvl(tdh.reason_code, ' ') != ' ' then fn_GetCodeName('LD_REASON',tdh.reason_code)
 						else '' end) as reason_code_desc
 					,(select part_name from tbl_user_group 
 						where part_depth = 1 

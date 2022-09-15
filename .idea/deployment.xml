@@ -7,16 +7,13 @@
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/WEB-INF/classes/application.properties" />
+            <excludedPath path="/Setup/CnetLauncher.CAB" />
+          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="가산 WAS2">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="사무실">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
@@ -26,11 +23,21 @@
           </excludedPaths>
         </serverdata>
       </paths>
+      <paths name="사무실">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="용인 WAS1">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/WEB-INF/classes/application.properties" />
+          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="용인 WAS2">
@@ -38,6 +45,9 @@
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/WEB-INF/classes/application.properties" />
+          </excludedPaths>
         </serverdata>
       </paths>
       <paths name="집">

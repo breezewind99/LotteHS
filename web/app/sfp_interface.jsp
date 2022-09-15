@@ -13,6 +13,7 @@
 		String store_code = CommonUtil.getParameter("store_code");
 		String mystery_code = CommonUtil.getParameter("mystery_code");
 		String customer_code = CommonUtil.getParameter("customer_code");
+		String ani = CommonUtil.getParameter("ani");
 
 		if(!CommonUtil.hasText(rec_datm)
 				|| !CommonUtil.hasText(local_no)
@@ -29,6 +30,7 @@
 		logger.info("store_code : " + store_code);
 		logger.info("mystery_code : " + mystery_code);
 		logger.info("customer_code : " + customer_code);
+		logger.info("ani : " + ani);
 
 
 		out.print("OK");
