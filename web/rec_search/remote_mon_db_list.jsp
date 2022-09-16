@@ -67,11 +67,11 @@
 			<div class="colLeft"><span class="ext_squre03 colLeft"></span><span class="ext_text">녹취불량</span></div>
 			 -->
 			<div class="colLeft"><span class="ext_squre01_2 colLeft"></span><span class="ext_text">대기</span></div>
-			<div class="colLeft"><span class="ext_squre02_1 colLeft"></span><span class="ext_text">인바운드</span></div>
-			<div class="colLeft"><span class="ext_squre02_2 colLeft"></span><span class="ext_text">아웃바운드</span></div>
+			<div class="colLeft"><span class="ext_squre02_1 colLeft"></span><span class="ext_text">녹취중</span></div>
+<%--			<div class="colLeft"><span class="ext_squre02_2 colLeft"></span><span class="ext_text">아웃바운드</span></div>--%>
 			<div class="colLeft"><span class="ext_squre01_1 colLeft"></span><span class="ext_text">대기(10분이상)</span></div>
-			<div class="colLeft"><span class="ext_squre02_3 colLeft"></span><span class="ext_text">인바운드(10분이상)</span></div>
-			<div class="colLeft"><span class="ext_squre02_4 colLeft"></span><span class="ext_text">아웃바운드(10분이상)</span></div>
+			<div class="colLeft"><span class="ext_squre02_3 colLeft"></span><span class="ext_text">녹취중(10분이상)</span></div>
+<%--			<div class="colLeft"><span class="ext_squre02_4 colLeft"></span><span class="ext_text">아웃바운드(10분이상)</span></div>--%>
 			<div class="colLeft"><span class="ext_squre03 colLeft"></span><span class="ext_text">녹취불량</span></div>
 		</div>
 	</div>	
@@ -192,11 +192,11 @@
 		<div class="colLeft"><span class="ext_squre03 colLeft"></span><span class="ext_text">녹취불량</span></div>
 		 -->
 		<div class="colLeft"><span class="ext_squre01_2 colLeft"></span><span class="ext_text">대기</span></div>
-		<div class="colLeft"><span class="ext_squre02_1 colLeft"></span><span class="ext_text">인바운드</span></div>
-		<div class="colLeft"><span class="ext_squre02_2 colLeft"></span><span class="ext_text">아웃바운드</span></div>
+		<div class="colLeft"><span class="ext_squre02_1 colLeft"></span><span class="ext_text">녹취중</span></div>
+<%--		<div class="colLeft"><span class="ext_squre02_2 colLeft"></span><span class="ext_text">아웃바운드</span></div>--%>
 		<div class="colLeft"><span class="ext_squre01_1 colLeft"></span><span class="ext_text">대기(10분이상)</span></div>
-		<div class="colLeft"><span class="ext_squre02_3 colLeft"></span><span class="ext_text">인바운드(10분이상)</span></div>
-		<div class="colLeft"><span class="ext_squre02_4 colLeft"></span><span class="ext_text">아웃바운드(10분이상)</span></div>
+		<div class="colLeft"><span class="ext_squre02_3 colLeft"></span><span class="ext_text">녹취중(10분이상)</span></div>
+<%--		<div class="colLeft"><span class="ext_squre02_4 colLeft"></span><span class="ext_text">아웃바운드(10분이상)</span></div>--%>
 		<div class="colLeft"><span class="ext_squre03 colLeft"></span><span class="ext_text">녹취불량</span></div>
 	</div>
 <%

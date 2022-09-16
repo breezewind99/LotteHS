@@ -8,6 +8,7 @@
 	/* 소프트폰 로그인 */
 	DatagramSocket ds = null;
 	//http://localhost:8080/app/sfp_login.jsp?cti_id=1111&local_no=2222
+	//https://cs-rec.lotteimall.com/app/sfp_login.jsp?cti_id=29906&local_no=19906
 	try
 	{
 		// get parameter

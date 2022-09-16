@@ -8,6 +8,10 @@
 	/* 소프트폰 Interface */
 	//http://localhost:8080/app/sfp_interface.jsp?rec_mode=1&rec_datm=20220109&local_no=1111&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
 	//http://localhost:8080/app/sfp_interface.jsp?rec_mode=2&rec_datm=20220109&local_no=1111&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
+
+	//https://cs-rec.lotteimall.com/app/sfp_interface.jsp?rec_mode=1&rec_datm=20220109&local_no=19906&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
+	//https://cs-rec.lotteimall.com/app/sfp_interface.jsp?rec_mode=2&rec_datm=20220109&local_no=19906&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
+
 	DatagramSocket ds = null;
 	try
 	{
