@@ -65,7 +65,7 @@
 	catch(Exception e)
 	{
 		logger.error(e.getMessage());
-		out.print(e.getMessage());
+//		out.print(e.getMessage());
 	}
 	finally
 	{

@@ -550,4 +550,21 @@
 	
 		return file_url;
 	}
+
+	public static void UDPSocketApp(String ip, int port, String data, Logger logger) {
+		try {
+			InetAddress is = InetAddress.getByName(ip);
+			DatagramSocket ds = new DatagramSocket(port);
+
+			byte[] buffer = data.getBytes();
+
+			DatagramPacket dp = new DatagramPacket(buffer, buffer.length, is, port);
+
+			ds.send(dp);
+
+			ds.close();
+		} catch(IOException ioe) {
+			logger.error(ioe.getMessage());
+		}
+	}
 %>

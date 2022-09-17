@@ -1956,7 +1956,7 @@
 						$cell.attr("title", msg);
 						try {
 							$cell.tooltip("destroy")
-						} catch (ex) {}
+						} catch (ex) {console.log(ex.message);}
 						$cell.tooltip({
 							position: {
 								my: "left top",
@@ -4172,7 +4172,7 @@
 						var sel = window.getSelection();
 						sel.removeAllRanges();
 						sel.addRange(range)
-					} catch (ex) {}
+					} catch (ex) {console.log(ex.message);}
 				} else {
 					$focus.select()
 				}
@@ -7112,7 +7112,7 @@
 			if ($header.height() == 0) {
 				try {
 					$grid.pqGrid("refresh")
-				} catch (ex) {}
+				} catch (ex) {console.log(ex.message);}
 			}
 		}
 		this.refreshComplete = true;

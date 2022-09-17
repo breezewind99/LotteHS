@@ -29,7 +29,6 @@
 			info = wfms.decrypt(CommonUtil.getParameter("info", ""));
 		} catch (Exception e) {
 			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
-			e.printStackTrace();
 			return;
 		}
 

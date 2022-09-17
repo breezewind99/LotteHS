@@ -158,7 +158,7 @@
 	catch(Exception e) 
 	{
 		logger.error(e.getMessage());
-		out.println("ERROR :: "+e);
+		out.println("ERROR :: Excel File Make");
 	} 
 	finally 
 	{

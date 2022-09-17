@@ -64,7 +64,9 @@
 		} else {
 			Mode = "REC3";
 		}
-
+        /*
+        	헤더|날짜	|내선번호|상담원ID|상담원명|전화번호|IN/OUT|	SVC1|SVC2|SVC3|CTI Ref (Key Code)|데이터1|데이터2|데이터3|데이터4|데이터5|데이터6|데이터7|데이터8|데이터9
+		*/
 		String msg;
 		msg = String.format("%s| |%s|%s|%s|%s|%s| | | |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (user_id.equals("") ? " " : user_id), " ", ani, ani, rec_keycode,
 				(customer_code.equals("") ? " " : customer_code),
@@ -95,7 +97,6 @@
 	catch(Exception e)
 	{
 		logger.error(e.getMessage());
-		out.print(e.getMessage());
 	}
 	finally
 	{
