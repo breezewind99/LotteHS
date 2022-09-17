@@ -668,12 +668,16 @@
 						</when>
 					</choose>			
 				</if>
-				order by ${s.sort_idx} ${s.sort_dir}
+				order by ${s.sort_idx}
+				<choose>
+					<when test="s.sort_dir == 'asc'"> asc</when>
+					<otherwise> desc</otherwise>
+				</choose>
 			) XX
 		<![CDATA[
-			where rownum <= ${s.end_cnt}
+			where rownum <= #{s.end_cnt}
 		) X
-		where X.rnum >= ${s.start_cnt}
+		where X.rnum >= #{s.start_cnt}
 		]]>		
 	</select>
 
