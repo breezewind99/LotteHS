@@ -19,6 +19,9 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/mssql" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/postgre" />
+      <excludeFolder url="file://$MODULE_DIR$/web/META-INF" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

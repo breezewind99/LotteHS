@@ -65,10 +65,12 @@
 			Mode = "REC3";
 		}
         /*
-        	헤더|날짜	|내선번호|상담원ID|상담원명|전화번호|IN/OUT|	SVC1|SVC2|SVC3|CTI Ref (Key Code)|데이터1|데이터2|데이터3|데이터4|데이터5|데이터6|데이터7|데이터8|데이터9
+        Linux용
+         	헤더 |날짜	|내선번호 |상담원ID |상담원명|전화번호     |IN/OUT     |UUID|데이터1|데이터2|데이터3|데이터4|데이터5|데이터6|데이터7|데이터8|데이터9|데이터10
+        	REC3|       |19906  |1111    |       |010985804   |          |2   |3     |4     |5     |6     |7     |8     |9     |10    |11    |12    |13|14|15|
 		*/
 		String msg;
-		msg = String.format("%s| |%s|%s|%s|%s|%s| | | |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (user_id.equals("") ? " " : user_id), " ", ani, ani, rec_keycode,
+		msg = String.format("%s| |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (user_id.equals("") ? " " : user_id), " ", ani, " ", rec_keycode,
 				(customer_code.equals("") ? " " : customer_code),
 				(store_code.equals("") ? " " : store_code),
 				(mystery_code.equals("") ? " " : mystery_code),

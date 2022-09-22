@@ -52,8 +52,8 @@
   
 	<!-- session config -->
 	<session-config>  
-		<!-- Default to 30 minute session timeouts -->  
-		<session-timeout>10</session-timeout>
+		<!-- Default to 30 minute session timeouts -->
+		<session-timeout>30</session-timeout>
 	</session-config>
 	
 	<!-- log4j -->

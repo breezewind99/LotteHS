@@ -6,7 +6,7 @@
 <%
 	// 상담 APP 청취
 	// http://localhost:8080/app/player.jsp?date=2022-08-23&keycode=00001025271661214629
-
+	// https://cs-rec.lotteimall.com/app/player.jsp?rec_datm=2022-08-23&rec_keycode=00001025271661214629&user_id=test&user_name=%ED%85%8C%EC%8A%A4%ED%8A%B8
 	// DB Connection Object
 	Db db = null;
 

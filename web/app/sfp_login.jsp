@@ -36,7 +36,7 @@
 
 
 		String msg;
-		msg = String.format("%s| |%s|%s|%s|%s|%s| | | |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (cti_id.equals("") ? " " : cti_id), " ", " ", " ", " ",
+		msg = String.format("%s| |%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|", Mode, local_no, (cti_id.equals("") ? " " : cti_id), " ", " ", " ", " ",
 				("".equals("") ? " " : " "),
 				("".equals("") ? " " : " "),
 				("".equals("") ? " " : " "),

@@ -11,6 +11,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.cnet.crec.common.*"%>
 <%@ page import="java.net.URLEncoder"%>
+<%@ page import="java.io.IOException" %>
 <%!
 	/**
 	 * 녹취파일 청취 URL 리턴
@@ -206,7 +207,7 @@
 			logger.debug("file_url encode 암호화: " + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString());
 			logger.debug("file_url : " + file_url);
 		} 
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
