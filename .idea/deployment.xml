@@ -11,6 +11,7 @@
             <excludedPath path="/WEB-INF/classes/application.properties" />
             <excludedPath path="/Setup/CnetLauncher.CAB" />
             <excludedPath path="/META-INF/context.xml" />
+            <excludedPath path="/WEB-INF/web.xml" />
           </excludedPaths>
         </serverdata>
       </paths>

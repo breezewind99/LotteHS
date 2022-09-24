@@ -155,5 +155,14 @@
 		and login_date = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 		and login_id = #{login_id}
 	</update>
-	
+
+	<!-- 상담원 CTI 기준 내선번호 업데이트 updateLoginResult -->
+	<update id="updateLocalno" parameterType="map">
+		/* 상담원 CTI 기준 내선번호 업데이트 updateLoginResult */
+		update tbl_user
+		<set>
+			<if test='local_no!=null'>local_no = #{local_no},</if>
+		</set>
+		where cti_id = #{cti_id}
+	</update>
 </mapper>

@@ -7,6 +7,7 @@
 <%
 	/* 소프트폰 로그인 */
 	DatagramSocket ds = null;
+	Db db = null;
 	//http://localhost:8080/app/sfp_login.jsp?cti_id=1111&local_no=2222
 	//https://cs-rec.lotteimall.com/app/sfp_login.jsp?cti_id=29906&local_no=19906
 	try
@@ -24,6 +25,17 @@
 		logger.info("cti_id : " + cti_id);
 		logger.info("local_no : " + local_no);
 
+
+		db = new Db(true);
+		Map<String, Object> argMap = new HashMap<String, Object>();
+		Map<String, Object> curdata = new HashMap();
+		//
+		argMap.clear();
+		argMap.put("cti_id",cti_id);
+		argMap.put("local_no",local_no);
+		int ins_cnt = db.update("login.updateLocalno", argMap);
+
+		logger.info("update local no " + ins_cnt);
 		// UDP 통신 수신 전문
 		ds = new DatagramSocket();
 
@@ -71,5 +83,7 @@
 	{
 		//socket close
 		if(ds != null)	ds.close();
+		if(db != null)	db.close();
+
 	}
 %>	
