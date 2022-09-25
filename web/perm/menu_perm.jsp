@@ -39,10 +39,11 @@
 	$(function () 
 	{
 		var colModel = [
-			{ title: "메뉴명", width: 200, dataIndx: "menu_name",
+			{ title: "메뉴명", width: 200, dataIndx: "menu_name", editable: false,
 				validations: [
 					{ type: "minLen", value: "1", msg: "필수입력 사항입니다." },
 				],
+
 			},
 			{ title: "상위 메뉴", width: 200, dataIndx: "parent_name", editable: false},
 			{ title: "등급", width: 150, dataIndx: "user_level",
