@@ -430,8 +430,10 @@
 <body class="white-bg">
 
 	<form name=fMultiPlay method=post>
-		<input type=hidden name=curRecIdx value=<%=curRecIdx%>> <input
-			type=hidden name=info value="<%=info%>">
+		<input type=hidden name=curRecIdx value=<%=curRecIdx%>>
+		<input type=hidden name=info value="<%=info%>">
+		<input type=hidden name=reason_code value="<%=reason_code%>">
+		<input type=hidden name=reason_text value="<%=reason_text%>">
 	</form>
 
 	<div id="container" style="width: 556px">

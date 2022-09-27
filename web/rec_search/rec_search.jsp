@@ -564,7 +564,7 @@
 				<div id="recDiv3">
 					<div class="labelDiv">
 						<label class="simple_tag">녹취시간</label>
-						<input class="form-control search_time" type="time" name="rec_start_hour1" value="00:00:00"> ~ <input class="form-control search_time" type="time" name="rec_start_hour2" value="23:59:59">
+						<input class="form-control search_time" type="time" name="rec_start_hour1" value="00:00:00" step="1"> ~ <input class="form-control search_time" type="time" name="rec_start_hour2" value="23:59:59" step="1">
 					</div>
 				</div>
 
@@ -694,7 +694,7 @@
 					// 메인 백업 구분
 					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
 					sb.append("	<option value=''>전체</option>\n");
-					sb.append("	<option value='0'>메인</option>\n");
+					sb.append("	<option value='0' selected>메인</option>\n");
 					sb.append("	<option value='1'>백업</option>\n");
 					sb.append("</select>");
 				}
