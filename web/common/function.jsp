@@ -568,4 +568,26 @@
 			logger.error(ioe.getMessage());
 		}
 	}
+
+	/**
+	 * Order By 처리
+	 * @param orderby
+	 * @return
+	 */
+	public static String OrderBy(String orderby) {
+		Db db = null;
+		String ReturnValue = "";
+		try {
+			db = new Db(true);
+			Map<String,Object> argMap = new HashMap();
+			argMap.put("orderby",orderby);
+			Map<String, Object> data  = db.selectOne("search_config.selectOrderBy", argMap);
+			ReturnValue = (data.get("orderby") == null ? "": data.get("orderby").toString());
+		} catch(Exception e) {
+			ReturnValue = "";
+		} finally {
+			if(db!=null) db.close();
+		}
+		return ReturnValue;
+	}
 %>

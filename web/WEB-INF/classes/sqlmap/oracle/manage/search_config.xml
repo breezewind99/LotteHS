@@ -7,6 +7,16 @@
 
 <!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  QUERY  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->
 
+	<!-- Order By Field 설정 selectOrderBy -->
+	<select id="selectOrderBy" parameterType="map" resultType="lowerMap">
+		/* 조회/결과 설정 목록 selectList */
+		select
+			tsc.conf_field as orderby
+		from tbl_search_config tsc
+		where tsc.conf_type = 'R'
+		AND   tsc.conf_field = #{orderby}
+	</select>
+
 	<!-- 결과 권한 체크 selectResultPerm -->
 	<select id="selectResultPerm" parameterType="map" resultType="string">
 		/* 결과 권한 체크 selectResultPerm */

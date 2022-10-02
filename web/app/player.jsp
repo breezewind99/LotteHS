@@ -21,24 +21,21 @@
 		String seq_no = CommonUtil.getParameter("seq");
 		String user_id = CommonUtil.getParameter("user_id");
 		String user_name = CommonUtil.getParameter("user_name");
-		//String info = CommonUtil.ifNull(request.getParameter("info"));
+		String reason_code = CommonUtil.getParameter("reason_code");
+		String reason_text = CommonUtil.getParameter("reason_text");
 		int rec_seq = CommonUtil.getParameterInt("rec_seq", "-1");
-		
-		//logger.info("rec_keycode : "+rec_keycode);
 
+		
 		// 파라미터 체크
-		if(!CommonUtil.hasText(rec_datm) || !CommonUtil.hasText(rec_keycode))
+		if(!CommonUtil.hasText(reason_code) && !CommonUtil.hasText(reason_text))
 		{
-			out.print(CommonUtil.getDocumentMsg(CommonUtil.getErrorMsg("NO_PARAM"),"","close"));
+			out.print("<script>location.replace('player_reason.jsp?rec_datm="+ rec_datm +"&rec_keycode="+ rec_keycode +"&user_id="+ user_id +"&user_name="+ user_name +"')</script>");
 			return;
 		}
 		
-		//logger.info("rec_datm : "+rec_datm);
-
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		Map<String, Object> curdata = new HashMap();
 
-		//
 		argMap.clear();
 		argMap.put("seq_no",seq_no);
      	argMap.put("rec_keycode",rec_keycode);
@@ -96,8 +93,6 @@
 
 		// 청취 URL 생성
 		String file_url = getListenURL2("LISTEN", curdata, logger,"");
-		//String file_url = getListenURL2("LISTEN", curdata, logger, "");
-		//waveform 사용시 필요 - CJM(20190101)
 		String file_url2 = getListenURL2("LISTEN", curdata, logger);
 
 		String fft_ext = ("88".equals(curdata.get("system_code").toString())) ? "nmf" : "fft";
@@ -112,8 +107,8 @@
 
 		// 청취 이력 저장
 		argMap.put("rec_seq","0");
-//		argMap.put("login_id",user_id);
-//		argMap.put("login_name",user_id);
+		argMap.put("login_id",user_id);
+		argMap.put("login_name",user_name);
 		argMap.put("listen_ip",request.getRemoteAddr());
 		argMap.put("rec_datm",rec_datm);
 		argMap.put("rec_keycode",rec_keycode);
@@ -123,9 +118,11 @@
 		//argMap.put("local_no",station);
 		argMap.put("local_no",curdata.get("local_no").toString());
 		argMap.put("listen_src","O");
+		argMap.put("reason_code",reason_code);
+		argMap.put("reason_text",reason_text);
 
 		/*청취이력 저장제거 20171227  */
-		//int ins_cnt = db.insert("hist_listen.insertListenHist", argMap);
+		int ins_cnt = db.insert("hist_listen.insertListenHist", argMap);
 
 		// 브라우저 체크
 		String ua = request.getHeader("User-Agent");

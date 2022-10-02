@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp"%>
 <%
-	if(!Site.isPmss(out,"rec_search","json")) return;
+	if(!Site.isPmss(out,"rec_search","jsonerr")) return;
 
 	Db db = null;
 
@@ -51,7 +52,8 @@
 		String user_list = CommonUtil.getParameter("user_list");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;
-		sort_idx = ("v_".equals(CommonUtil.leftString(sort_idx, 2)) || "n_".equals(CommonUtil.leftString(sort_idx, 2))) ? sort_idx.substring(2) : sort_idx;
+		String tmp_sort_idx = ("v_".equals(CommonUtil.leftString(sort_idx, 2)) || "n_".equals(CommonUtil.leftString(sort_idx, 2))) ? sort_idx.substring(2) : sort_idx;
+		sort_idx = OrderBy(tmp_sort_idx);
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// user id list parsing

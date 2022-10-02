@@ -251,9 +251,8 @@
 							alert("설정 데이터가 없습니다.");
 							return false;
 						}
-					} 
-					else 
-					{
+
+					} else {
 						alert(dataJSON.msg);
 						return false;
 					}

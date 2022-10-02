@@ -16,8 +16,8 @@
 			{ title: "로그인IP", width: 150, dataIndx: "change_ip" },
 			{ title: "상담원ID", width: 150, dataIndx: "user_id" },
 			{ title: "상담사명", width: 150, dataIndx: "user_name" },
-			{ title: "기존등급", width: 150, dataIndx: "origin_level_desc" },
-			{ title: "변경등급", width: 150, dataIndx: "change_level_desc" }
+			{ title: "변경전내역", width: 150, dataIndx: "origin_level_desc" },
+			{ title: "변경후내역", width: 150, dataIndx: "change_level_desc" }
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");

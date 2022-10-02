@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cnet.crec.common.ComLib;
 import com.cnet.crec.common.Site;
 
 import org.apache.log4j.Logger;
@@ -667,6 +668,8 @@ public class CommonUtil {
 
 		if("json".equals(type)) {
 			sb.append(Site.getJsonResult(false, msg));
+		} else if("jsonerr".equals(type)) {
+			sb.append("{\"code\":\"ERRLOGIN\", \"msg\":\""+ ComLib.toNN(msg)+"\"}");
 		} else {
 			sb.append("<script>");
 			switch(type) 

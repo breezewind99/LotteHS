@@ -893,14 +893,16 @@ var getBaseGridDM = function(page_id) {
 			return { url: "remote_"+page_id+".jsp",	data: data }
 		},
 		getData: function (dataJSON, textStatus, jqXHR) {
-			//console.log("code : "+dataJSON.code);
+			console.log("code : "+dataJSON.code);
 			if(dataJSON.code == "ERR") 
 			{
 				alert(dataJSON.msg);
 				return false;
-			} 
-			else 
-			{
+			} else if (dataJSON.code == "ERRLOGIN") {
+				alert(dataJSON.msg);
+				top.location.replace('/index.jsp');
+				return false;
+			} else {
 				//alert(objToStr(dataJSON));
 				//console.log("dataJson : "+objToStr(dataJSON));
 				var $tit = $(this).find(".pq-toolbar input[name=toolbar_title]");

@@ -31,21 +31,24 @@
 			String rec_ehour = CommonUtil.getParameter("rec_ehour");
 			String rec_emin = CommonUtil.getParameter("rec_emin");
 
+			String rec_start_time = CommonUtil.getParameter("rec_start_time");
+			String rec_end_time = CommonUtil.getParameter("rec_end_time");
+
 			String rec_date2 = rec_date.replace("-", "");
 
 			// 파라미터 체크
-			if(!CommonUtil.hasText(step) || !CommonUtil.hasText(rec_date) || !CommonUtil.hasText(rec_shour) 
-					|| !CommonUtil.hasText(rec_smin) || !CommonUtil.hasText(rec_ehour) || !CommonUtil.hasText(rec_emin)) 
+			if(!CommonUtil.hasText(step) || !CommonUtil.hasText(rec_date) || !CommonUtil.hasText(rec_start_time)
+					|| !CommonUtil.hasText(rec_end_time))
 			{
 				Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
 				return;
 			}
 
-			String rec_datm1 = rec_date + " " + rec_shour + ":" + rec_smin + ":00";
-			String rec_datm2 = rec_date + " " + rec_ehour + ":" + rec_emin + ":00";
+			String rec_datm1 = rec_date + " " + rec_start_time;
+			String rec_datm2 = rec_date + " " + rec_end_time;
 
-			String rec_start_time = rec_shour + ":" + rec_smin + ":00";
-			String rec_end_time = rec_ehour + ":" + rec_emin + ":59";
+//			String rec_start_time = rec_shour + ":" + rec_smin + ":00";
+//			String rec_end_time = rec_ehour + ":" + rec_emin + ":59";
 
 			//argMap.put("dateStr", CommonUtil.getRecordTableNm(rec_datm1));
 			argMap.put("dateStr", "");				
@@ -56,12 +59,12 @@
 			argMap.put("rec_end_time", rec_end_time);
 			argMap.put("rec_date2", rec_date2);
 
-			int upd_cnt = db.insert("rec_search.updateAbortCode", argMap);
-			if(upd_cnt < 1) 
-			{
-				Site.writeJsonResult(out, false, "조회 조건과 일치하는 데이터가 없습니다.");
-				return;
-			}
+//			int upd_cnt = db.insert("rec_search.updateAbortCode", argMap);
+//			if(upd_cnt < 1)
+//			{
+//				Site.writeJsonResult(out, false, "조회 조건과 일치하는 데이터가 없습니다.");
+//				return;
+//			}
 
 			//selmap2.put("dateStr", CommonUtil.getRecordTableNm(rec_datm1));
 			selmap2.put("dateStr", "");
@@ -74,9 +77,17 @@
 
 			int ins_cnt = db.insert("hist_abort.insertAbortHist", selmap2);
 
-		} 
-		else 
-		{
+		} else if("delete".equals(step)) {
+			String abort_seq = CommonUtil.getParameter("abort_seq");
+			if(!CommonUtil.hasText(step) || !CommonUtil.hasText(abort_seq))
+			{
+				Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
+				return;
+			}
+			argMap.put("dateStr", "");
+			argMap.put("abort_seq", abort_seq);
+			int del_cnt = db.insert("hist_abort.deleteAbortHist", argMap);
+		} else	{
 			Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
 			return;
 		}
