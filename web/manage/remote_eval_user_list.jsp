@@ -17,7 +17,7 @@
 
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = CommonUtil.getParameter("sort_idx", "user_name");
+		String sort_idx = "user_name";//CommonUtil.getParameter("sort_idx", "user_name");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "up");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;

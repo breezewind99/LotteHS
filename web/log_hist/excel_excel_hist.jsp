@@ -12,7 +12,7 @@
 		db = new Db(true);
 	
 		// get parameter
-		String sort_idx = CommonUtil.getParameter("sort_idx", "excel_datm");
+		String sort_idx = "excel_datm";//CommonUtil.getParameter("sort_idx", "excel_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 	
 		String excel_date1 = CommonUtil.getParameter("excel_date1");

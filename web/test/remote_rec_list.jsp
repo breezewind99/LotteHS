@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/common.jsp" %>
+<%@ include file="../common/function.jsp" %>
 <%!	static Logger logger = Logger.getLogger("remote_rec_list.jsp"); %>
 <%
 	// DB Connection Object
@@ -15,7 +16,8 @@
 
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = CommonUtil.getParameter("sort_idx", "rec_date");
+		String tmp_sort_idx = CommonUtil.getParameter("sort_idx", "rec_date");
+		String sort_idx = OrderBy(tmp_sort_idx,"rec_date, rec_start_time, rec_end_time, rec_call_time, local_no, user_id, user_name, cust_tel");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 		
 		cur_page = (cur_page<1) ? 1 : cur_page;

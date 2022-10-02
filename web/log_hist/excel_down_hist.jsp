@@ -12,7 +12,7 @@
 		db = new Db(true);
 	
 		// get parameter
-		String sort_idx = CommonUtil.getParameter("sort_idx", "down_datm");
+		String sort_idx = "down_datm"; CommonUtil.getParameter("sort_idx", "down_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 	
 		String down_date1 = CommonUtil.getParameter("down_date1");

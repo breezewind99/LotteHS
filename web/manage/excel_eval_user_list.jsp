@@ -15,7 +15,7 @@ try {
 	String regi_date2 = CommonUtil.getParameter("regi_date2", "");
 	String user_id = CommonUtil.getParameter("user_id", "");
 	String user_name = CommonUtil.getParameter("user_name", "");
-	String sort_idx = CommonUtil.getParameter("sort_idx", "regi_datm");
+	String sort_idx =  "regi_datm";//CommonUtil.getParameter("sort_idx", "regi_datm");
 	String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 	sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";

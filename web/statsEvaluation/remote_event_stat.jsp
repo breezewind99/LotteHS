@@ -10,7 +10,7 @@
 		db = new Db(true);
 
 		String showType = CommonUtil.getParameter("showType","garo");
-		String sort_idx = CommonUtil.getParameter("sort_idx", "event_code");
+		String sort_idx = "event_code";//CommonUtil.getParameter("sort_idx", "event_code");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 		String sort_idx2 = CommonUtil.getParameter("sort_idx2", "eval_order");
 		String sort_dir2 = CommonUtil.getParameter("sort_dir2", "up");

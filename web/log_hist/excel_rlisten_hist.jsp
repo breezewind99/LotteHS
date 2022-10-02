@@ -11,7 +11,7 @@ try {
 	db = new Db(true);
 
 	// get parameter
-	String sort_idx = CommonUtil.getParameter("sort_idx", "rlisten_datm");
+	String sort_idx = "rlisten_datm";//CommonUtil.getParameter("sort_idx", "rlisten_datm");
 	String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 	String rlisten_date1 = CommonUtil.getParameter("rlisten_date1");

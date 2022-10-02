@@ -590,4 +590,17 @@
 		}
 		return ReturnValue;
 	}
+
+	/**
+	 * Order By 처리
+	 * @param orderby
+	 * @return
+	 */
+	public static String OrderBy(String orderby, String Value) {
+		String ReturnValue = "";
+		if (Value.contains(orderby)) {
+			ReturnValue = orderby;
+		}
+		return ReturnValue;
+	}
 %>

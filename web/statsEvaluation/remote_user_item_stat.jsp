@@ -13,7 +13,7 @@
 		
 		if(act.equals("list"))
 		{
-			String sort_idx = CommonUtil.getParameter("sort_idx", "user_id");
+			String sort_idx = "user_id";//CommonUtil.getParameter("sort_idx", "user_id");
 			String sort_dir = CommonUtil.getParameter("sort_dir", "up");
 			String eval_date1 = CommonUtil.getParameter("eval_date1");
 			String eval_date2 = CommonUtil.getParameter("eval_date2");
