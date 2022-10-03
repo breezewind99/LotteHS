@@ -20,10 +20,11 @@
 
 		// 없는 계정
 		// http://localhost:8080/login_app.jsp?info=mjxfPHh5q5%2BVlMMd73dJ0klwVAz8nEmMiIGyv8wvo5g%3D
+		// http://localhost:8080/login_app.jsp?info=ZqIhJl7iPntot0sNPy9Kp%2BGAFxgAa13wynkF50SBt8o%3D
 
 		AES256Cipher wfms = AES256Cipher.getInstance("lotte-wfms-cipher@20160622-qwer1");
 
-		//System.out.println(wfms.encrypt("admin|20220623171255941"));
+		//System.out.println(wfms.encrypt("19906|20220623171255941"));
 		String info="";
 		try {
 			info = wfms.decrypt(CommonUtil.getParameter("info", ""));
