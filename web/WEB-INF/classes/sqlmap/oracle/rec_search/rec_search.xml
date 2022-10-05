@@ -166,7 +166,7 @@
 			,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
 			,system_code
 			,rec_filename
-			,rec_keycode
+			,CASE NVL(custom_fld_08,' ') WHEN ' ' THEN rec_keycode else custom_fld_08 END as rec_keycode
 			,local_no
 			,user_id
 			,user_name
@@ -176,7 +176,8 @@
 		from tbl_record
 		where 1=1
 		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-		and rec_keycode = #{rec_keycode}
+		and rec_keycode = (select rec_keycode from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode}) and a.rec_mode = '0')
+		and rec_mode = '0'
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
 			<choose>
 				<when test='_user_level=="B"'>
@@ -488,7 +489,7 @@
 				select
 					rec_seq
 					,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
-					,rec_keycode
+					,CASE NVL(custom_fld_08,' ') WHEN ' ' THEN rec_keycode else custom_fld_08 END as rec_keycode
 					,rec_filename
 					,local_no
 					,system_code
@@ -555,6 +556,12 @@
 						<when test='idx=="v_memo"'>
 							nvl(memo_cnt,0) as ${idx}
 						</when>
+
+						<when test='idx=="n_rec_keycode"'>
+							CASE NVL(custom_fld_08, ' ')
+							WHEN ' ' THEN rec_keycode
+							else custom_fld_08 END as ${idx}
+						</when>
 						<otherwise>
 							${item} as ${idx}
 						</otherwise>
@@ -611,7 +618,7 @@
 				<!--and cust_tel=encode(encrypt(convert_to(#{s.cust_tel},'utf8'), 'cnet', 'aes'), 'hex')-->
 				</if>
 				<if test='s.rec_keycode!=null and s.rec_keycode!=""'>
-				and rec_keycode = #{s.rec_keycode}
+				and (rec_keycode = #{s.rec_keycode} OR custom_fld_08 = #{s.rec_keycode})
 				</if>
 				<if test='s.rec_filename!=null and s.rec_filename!=""'>
 				and rec_filename like #{s.rec_filename} || '%'

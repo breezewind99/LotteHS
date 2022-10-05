@@ -6,8 +6,8 @@
       <sshConfig authType="PASSWORD" host="10.144.36.137" id="4d6ced55-e4a6-41d4-8c3c-83364dd476aa" port="22" nameFormat="DESCRIPTIVE" username="oper" useOpenSSHConfig="true" />
       <sshConfig authType="PASSWORD" host="10.144.36.138" id="d46dc94b-3bf4-435e-8d50-eeea04aa16c5" port="22" nameFormat="DESCRIPTIVE" username="oper" useOpenSSHConfig="true" />
       <sshConfig authType="PASSWORD" host="192.168.0.222" id="5410f03d-b0d1-4c83-b7e2-e7eecc4a75e5" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
-      <sshConfig authType="PASSWORD" host="192.168.0.114" id="8638cc72-f98e-47fe-85f7-cd8effb92bbf" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
-      <sshConfig authType="PASSWORD" host="10.144.32.129" id="5eb70acb-7641-4b8b-bd34-fddac61722b8" port="22" nameFormat="DESCRIPTIVE" username="oper" />
+      <sshConfig authType="PASSWORD" host="192.168.0.114" id="8638cc72-f98e-47fe-85f7-cd8effb92bbf" port="22" nameFormat="DESCRIPTIVE" username="oper" useOpenSSHConfig="true" />
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="10.144.32.129" id="5eb70acb-7641-4b8b-bd34-fddac61722b8" port="22" nameFormat="DESCRIPTIVE" username="oper" />
     </configs>
   </component>
 </project>

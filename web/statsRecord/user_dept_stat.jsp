@@ -309,15 +309,15 @@
 						</div>
 					</div>
 
-					<div class="SearchDiv">
-						<div class="label_Div">
-							<label class="simple_tag">구분</label>
-							<select class="form-control search_combo_range_2" name="stat_type">
-								<option value="US">상담사별</option>
-								<option value="DE">부서별</option>
-							</select>
-					 	</div>
-					</div>
+<%--					<div class="SearchDiv">--%>
+<%--						<div class="label_Div">--%>
+<%--							<label class="simple_tag">구분</label>--%>
+<%--							<select class="form-control search_combo_range_2" name="stat_type">--%>
+<%--								<option value="US">상담사별</option>--%>
+<%--								<option value="DE">부서별</option>--%>
+<%--							</select>--%>
+<%--					 	</div>--%>
+<%--					</div>--%>
 
 					<div class="SearchDiv">
 						<div class="label_div">

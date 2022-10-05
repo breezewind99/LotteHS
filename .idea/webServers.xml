@@ -3,9 +3,9 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="8ad343ac-09a3-45c9-a68a-473b305aaaa1" name="가산 WAS1">
-        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="192.168.0.114" port="22" sshConfigId="8638cc72-f98e-47fe-85f7-cd8effb92bbf" sshConfig="root@192.168.0.114:22 password">
+        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="10.144.32.129" port="22" sshConfigId="5eb70acb-7641-4b8b-bd34-fddac61722b8" sshConfig="oper@10.144.32.129:22 password">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
@@ -38,7 +38,7 @@
         </fileTransfer>
       </webServer>
       <webServer id="963f8908-9757-43f8-8a8d-dc0ba3d228d0" name="사무실">
-        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="192.168.0.114" port="22" sshConfigId="8638cc72-f98e-47fe-85f7-cd8effb92bbf" sshConfig="root@192.168.0.114:22 password">
+        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="192.168.0.114" port="22" sshConfigId="8638cc72-f98e-47fe-85f7-cd8effb92bbf" sshConfig="oper@192.168.0.114:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
