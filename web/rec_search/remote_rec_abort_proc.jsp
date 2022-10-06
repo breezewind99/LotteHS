@@ -99,6 +99,7 @@
 	} 
 	catch(Exception e) 
 	{
+		e.printStackTrace();
 		// rollback
 		if(db != null)	db.rollback();
 

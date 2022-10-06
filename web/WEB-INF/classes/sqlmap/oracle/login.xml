@@ -165,4 +165,12 @@
 		</set>
 		where cti_id = #{cti_id}
 	</update>
+
+	<!-- 내선번호 클리어 업데이트 updateLoginResult -->
+	<update id="updateClearLocalno" parameterType="map">
+		/* 상담원 CTI 기준 내선번호 업데이트 updateLoginResult */
+		update tbl_user
+		SET local_no = ' '
+		where local_no = #{local_no}
+	</update>
 </mapper>

@@ -33,7 +33,11 @@
 		argMap.clear();
 		argMap.put("cti_id",cti_id);
 		argMap.put("local_no",local_no);
-		int ins_cnt = db.update("login.updateLocalno", argMap);
+
+		int ins_cnt = db.update("login.updateClearLocalno", argMap);
+		logger.info("update Clear local no " + ins_cnt);
+
+		ins_cnt = db.update("login.updateLocalno", argMap);
 
 		logger.info("update local no " + ins_cnt);
 		// UDP 통신 수신 전문

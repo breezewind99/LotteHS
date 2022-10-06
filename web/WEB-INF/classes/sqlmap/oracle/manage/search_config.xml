@@ -59,6 +59,8 @@
 			,(select business_name from tbl_business 
 				where business_code = tsc.business_code) as business_name
 			,fn_GetCodeName('USER_LEVEL', tsc.user_level) as user_level_desc
+			,tsc.user_level as origin_level
+			,tsc.use_yn as origin_yn
 		from tbl_search_config tsc
 		where tsc.conf_type = #{conf_type}
 		<if test='business_code!=null and business_code!=""'>

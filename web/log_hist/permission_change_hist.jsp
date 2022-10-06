@@ -10,14 +10,11 @@
 		var colModel = [
 			{ title: "순번", width: 60, dataIndx: "idx", sortable: false },
 			{ title: "변경일시", width: 150, dataIndx: "change_datm" },
-			{ title: "구분", width: 100, dataIndx: "v_change_type", sortable: false },
 			{ title: "로그인ID", width: 150, dataIndx: "change_id" },
 			{ title: "로그인명", width: 150, dataIndx: "change_name" },
 			{ title: "로그인IP", width: 150, dataIndx: "change_ip" },
-			{ title: "상담원ID", width: 150, dataIndx: "user_id" },
-			{ title: "상담사명", width: 150, dataIndx: "user_name" },
-			{ title: "변경전내역", width: 150, dataIndx: "origin_level_desc" },
-			{ title: "변경후내역", width: 150, dataIndx: "change_level_desc" }
+			{ title: "변경전내역", width: 150, dataIndx: "origin_desc" },
+			{ title: "변경후내역", width: 150, dataIndx: "change_desc" }
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
@@ -40,10 +37,10 @@
 
 	<!--title 영역 -->
 	<div class="row titleBar border-bottom2">
-		<div style="float:left;"><h4>접근보안변경 이력</h4></div>
+		<div style="float:left;"><h4>권한변경 이력</h4></div>
 		<ol class="breadcrumb" style="float:right;">
 			<li><a href="#none"><i class="fa fa-home"></i> 이력</a></li>
-			<li class="active"><strong>접근보안변경 이력</strong>	</li>
+			<li class="active"><strong>권한변경 이력</strong>	</li>
 		</ol>
 	</div>
 	<!--title 영역 끝 -->
@@ -83,43 +80,16 @@
 
 					<div class="SearchDiv">
 						<div id="labelDiv">
-							<label class="simple_tag">로그인ID</label><input type="text" name="login_id" class="form-control search_input" placeholder="">
+							<label class="simple_tag">변경자ID</label><input type="text" name="change_id" class="form-control search_input" placeholder="">
 						</div>
 					</div>
 
 					<div class="SearchDiv">
 						<div id="label_Div">
-							<label class="simple_tag">로그인명</label><input type="text" name="login_name" class="form-control search_input" placeholder="">
+							<label class="simple_tag">변경자명</label><input type="text" name="change_name" class="form-control search_input" placeholder="">
 					 	</div>
 					</div>
 					<!--1행 끝-->
-
-					<!--2행 시작-->
-					<div class="SearchDiv">
-						<div class="labelDiv">
-							<label class="simple_tag">구분</label>
-							<select class="form-control search_combo_range_2" name="change_type" >
-								<option value="">전체</option>
-								<option value="I">등록</option>
-								<option value="U">수정</option>
-								<option value="D">삭제</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="SearchDiv">
-						<div class="labelDiv">
-							<label class="simple_tag">상담원ID</label><input type="text" name="user_id" class="form-control search_input" placeholder="">
-						</div>
-					</div>
-
-					<div class="SearchDiv">
-						<div class="labelDiv">
-							<label class="simple_tag">상담사명</label><input type="text" name="user_name" class="form-control search_input" placeholder="">
-						</div>
-					</div>
-					<!--1행 끝-->
-
 				</div>
 				<!--검색조건 영역 끝-->
 

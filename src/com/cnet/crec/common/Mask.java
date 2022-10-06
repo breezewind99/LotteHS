@@ -9,7 +9,9 @@ public class Mask {
     public Mask(){}
 
     // 전화번호 마스킹
-    public static String getMaskedPhoneNum(String phoneNum) {
+    public static String getMaskedPhoneNum(Object temp) {
+        if (temp == null) return "";
+        String phoneNum = temp.toString();
         String regex = "(\\d{2,3})(\\d{3,4})(\\d{4})$";
         //String regex = "(\\d{2,3})-?(\\d{3,4})-?(\\d{4})$";		//휴대폰번호 '-' 포함
         Matcher matcher = Pattern.compile(regex).matcher(phoneNum);

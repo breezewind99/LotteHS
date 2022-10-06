@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
 <%
-	if(!Site.isPmss(out,"rec_search","json")) return;
+	if(!Site.isPmss(out,"rec_search","jsonerr")) return;
 
 	Db db = null;
 

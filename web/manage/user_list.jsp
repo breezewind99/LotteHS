@@ -293,7 +293,7 @@
 		<%if(Finals.isManageModify) {%>
 		var baseObj = getBaseGridOption("user_list", "Y", "Y", "Y", "Y");
 		<%} else {%>
-		var baseObj = getBaseGridOption("user_list", "N", "N", "N", "N");
+		var baseObj = getBaseGridOption("user_list", "Y", "N", "N", "N");
 		<%}%>
 		// grid 크기 조절 활성화 - CJM(20180808)
 		var obj = $.extend({}, baseObj, {

@@ -60,6 +60,21 @@
 					db.update("menu.updateParentMenu", argMap);
 					parentCode = jsonItem.get("menu_code").toString();
 				}
+
+				argMap.clear();
+				argMap.put("change_id", _LOGIN_ID);
+				argMap.put("change_name", _LOGIN_NAME);
+				argMap.put("change_ip", request.getRemoteAddr());
+
+				argMap.put("menu_name", jsonItem.get("menu_name"));
+				argMap.put("user_level", jsonItem.get("user_level"));
+				argMap.put("use_yn", jsonItem.get("use_yn"));
+
+				argMap.put("origin_level", jsonItem.get("origin_level"));
+				argMap.put("origin_yn", jsonItem.get("origin_yn"));
+
+				db.update("hist_permission.insertUserChangeHist", argMap);
+
 			}
 
 			if(upd_cnt < 1) 

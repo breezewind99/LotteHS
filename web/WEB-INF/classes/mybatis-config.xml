@@ -184,6 +184,7 @@
 		<mapper resource="sqlmap/oracle/log_hist/hist_pass_change.xml"/>
 		<mapper resource="sqlmap/oracle/log_hist/hist_abort.xml"/>
 		<mapper resource="sqlmap/oracle/log_hist/hist_excel.xml"/>
+		<mapper resource="sqlmap/oracle/log_hist/hist_permission.xml"/>
 
 		<mapper resource="sqlmap/oracle/sheet/cate.xml"/>
 		<mapper resource="sqlmap/oracle/sheet/item.xml"/>

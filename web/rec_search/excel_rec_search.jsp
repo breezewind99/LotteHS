@@ -189,7 +189,7 @@ try {
 				if (resarr.get(i).equals("n_user_name"))
 					sb.append("<td>" + Mask.getMaskedName(item.get(resarr.get(i))) + "</td>");
 				else if (resarr.get(i).equals("n_cust_tel"))
-					sb.append("<td>" + Mask.getMaskedPhoneNum(item.get(resarr.get(i)).toString()) + "</td>");
+					sb.append("<td>" + Mask.getMaskedPhoneNum(item.get(resarr.get(i))) + "</td>");
 				else
 					sb.append("<td>" + item.get(resarr.get(i)) + "</td>");
 			}

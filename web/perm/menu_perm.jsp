@@ -88,7 +88,9 @@
 					}
 	
 				},
-			}
+			},
+			{ title: "기존등급", dataIndx: "origin_level", hidden: true },
+			{ title: "기존사용여부", dataIndx: "origin_yn", hidden: true }
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");

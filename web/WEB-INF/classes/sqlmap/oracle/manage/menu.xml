@@ -43,13 +43,15 @@
 			,nvl(tm.menu_etc, '') as menu_etc
 			,tm.order_no
 			,tm.use_yn
-			,(select business_name from tbl_business 
+			,(select business_name from tbl_business
 				where business_code = tm.business_code) as business_name
 			,(case tm.menu_depth when 1 then '없음' 
 				else (select menu_name from tbl_menu 
 						where business_code = tm.business_code 
 						and menu_code = tm.parent_code) end) as parent_name
 			,fn_GetCodeName('USER_LEVEL', user_level) as user_level_desc
+			,tm.user_level as origin_level
+			,tm.use_yn as origin_yn
 		from tbl_menu tm
 		where 1=1
 		<if test='business_code!=null and business_code!=""'>

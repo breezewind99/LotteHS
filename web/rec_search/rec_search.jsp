@@ -288,9 +288,11 @@
 							alert("정상적으로 등록되었습니다.");
 							$("#modalSearchConfig").modal("hide");
 							location.reload();
-						} 
-						else 
-						{
+						}  else if (dataJSON.code == "ERRLOGIN") {
+							alert(dataJSON.msg);
+							top.location.replace('/index.jsp');
+							return false;
+						} else {
 							alert(dataJSON.msg);
 							return false;
 						}

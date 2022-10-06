@@ -155,14 +155,13 @@
 			out.print("<div class=\"ext_frame\">\n");
 			
 			out.print("	<div class=\"ext_number ext_bg0" + status_cls + "\" style=\"cursor: pointer;\" onclick=\"playRlisten('" + ch_status + "','" + ch_no + "','" + local_no + "','" + ip + "')\">\n");
-			out.print("		<span>" + ch_no + "<br>"+local_no+"</span>\n");
+			out.print("		<span><br>" + ch_no + "<br>"+local_no+"</span>\n");
 			out.print("	</div>\n");
 			
 			out.print("	<div class=\"ext_name\" >\n");
-			out.print("		<span class=\"colLeft ext_with\" title=\"" + spart_name + "\" >" + ComLib.getEllipsis(spart_name, 4) + "</span>\n");
-			out.print("		<span class=\"colRight ext_with\">" + user_name + "</span>\n");
+			out.print("		<span class=\"colLeft ext_all_with\" title=\"" + spart_name + "\" >" + ComLib.getEllipsis(spart_name, 4) + "</span>\n");
+			out.print("		<span class=\"colLeft ext_all_with ext_col_66\">" + user_name + "</span>\n");
 			out.print("		<span class=\"colLeft ext_all_with ext_col_66\">" + ani + "</span>\n");
-			
 			out.print("		<span class=\"colLeft ext_with ext_col_9d\">" + rec_inout_nm + "</span>\n");
 			out.print("		<span class=\"colRight ext_with ext_col_9d\">" + call_time + "</span>\n");
 			
