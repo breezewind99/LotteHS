@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"excel_hist","")) return;
 	
@@ -12,7 +13,7 @@
 		db = new Db(true);
 	
 		// get parameter
-		String sort_idx = "excel_datm";//CommonUtil.getParameter("sort_idx", "excel_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "excel_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 	
 		String excel_date1 = CommonUtil.getParameter("excel_date1");
@@ -22,7 +23,8 @@
 	
 		String login_id = CommonUtil.getParameter("login_id");
 		String login_name = CommonUtil.getParameter("login_name");
-	
+
+		sort_idx = OrderBy(sort_idx,"excel_datm,excel_menu,bpart_name,mpart_name,spart_name,excel_id,excel_name,excel_ip");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 	
 		StringBuffer sb = new StringBuffer();

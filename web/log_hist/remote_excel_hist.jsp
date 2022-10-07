@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"excel_hist","jsonerr")) return;
 
@@ -12,7 +13,7 @@
 		// get parameter
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = "excel_datm";//CommonUtil.getParameter("sort_idx", "excel_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "excel_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 		String excel_date1 = CommonUtil.getParameter("excel_date1");
@@ -21,6 +22,7 @@
 		String excel_name = CommonUtil.getParameter("excel_name");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;
+		sort_idx = OrderBy(sort_idx,"excel_datm,excel_menu,bpart_name,mpart_name,spart_name,excel_id,excel_name,excel_ip");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// paging 변수

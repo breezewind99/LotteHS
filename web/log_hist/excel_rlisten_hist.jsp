@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 if(!Site.isPmss(out,"rlisten_hist","")) return;
 
@@ -11,7 +12,7 @@ try {
 	db = new Db(true);
 
 	// get parameter
-	String sort_idx = "rlisten_datm";//CommonUtil.getParameter("sort_idx", "rlisten_datm");
+	String sort_idx = CommonUtil.getParameter("sort_idx", "rlisten_datm");
 	String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 	String rlisten_date1 = CommonUtil.getParameter("rlisten_date1");
@@ -22,6 +23,7 @@ try {
 	String user_id = CommonUtil.getParameter("user_id");
 	String user_name = CommonUtil.getParameter("user_name");
 
+	sort_idx = OrderBy(sort_idx,"rlisten_datm,rlisten_id,rlisten_name,rlisten_ip,system_name,channel_no,local_no,user_id,user_name");
 	sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 	StringBuffer sb = new StringBuffer();

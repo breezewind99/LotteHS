@@ -73,7 +73,7 @@
 			and A.system_code = #{system_code}
 			</if>
 			order by ${sort_idx} ${sort_dir}
-			limit ${top_cnt} offset (${start_cnt}-1)
+			limit #{top_cnt} offset (#{start_cnt}-1)
 		) U
 	</select>
 	

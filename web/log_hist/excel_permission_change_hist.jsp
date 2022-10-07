@@ -2,13 +2,13 @@
 <%@ include file="/common/common.jsp" %>
 <%@ include file="/common/function.jsp" %>
 <%
-	if(!Site.isPmss(out,"user_change_hist","")) return;
+	if(!Site.isPmss(out,"permission_change_hist","")) return;
 	
 	Db db = null;
 	
 	try 
 	{
-		Site.setExcelHeader(response, out, "계정변경이력");
+		Site.setExcelHeader(response, out, "권한변경이력");
 	
 		db = new Db(true);
 	
@@ -18,13 +18,11 @@
 	
 		String change_date1 = CommonUtil.getParameter("change_date1");
 		String change_date2 = CommonUtil.getParameter("change_date2");
-		String login_id = CommonUtil.getParameter("login_id");
-		String login_name = CommonUtil.getParameter("login_name");
-		String user_id = CommonUtil.getParameter("user_id");
-		String user_name = CommonUtil.getParameter("user_name");
-		String change_type = CommonUtil.getParameter("change_type");
 
-		sort_idx = OrderBy(sort_idx,"change_datm,change_id,change_name,change_ip,user_id,user_name,origin_level_desc,change_level_desc");
+		String change_id = CommonUtil.getParameter("change_id");
+		String change_name = CommonUtil.getParameter("change_name");
+
+		sort_idx = OrderBy(sort_idx,"change_datm,change_id,change_name,change_ip,origin_desc,change_desc");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 	
 		StringBuffer sb = new StringBuffer();
@@ -32,14 +30,11 @@
 		sb.append("<table border='1' bordercolor='#bbbbbb'>");
 		sb.append("<tr align='center'>");
 		sb.append("<td class=th>변경일시</td>");
-		sb.append("<td class=th>구분</td>");
 		sb.append("<td class=th>로그인ID</td>");
 		sb.append("<td class=th>로그인명</td>");
 		sb.append("<td class=th>로그인IP</td>");
-		sb.append("<td class=th>상담원ID</td>");
-		sb.append("<td class=th>상담사명</td>");
-		sb.append("<td class=th>기존등급</td>");
-		sb.append("<td class=th>변경등급</td>");
+		sb.append("<td class=th>변경전내역</td>");
+		sb.append("<td class=th>변경후내역</td>");
 		sb.append("</tr>");
 	
 		// search
@@ -47,22 +42,21 @@
 	
 		argMap.put("change_date1",change_date1);
 		argMap.put("change_date2",change_date2);
-		argMap.put("change_id",login_id);
-		argMap.put("change_name",login_name);
-		argMap.put("user_id",user_id);
-		argMap.put("user_name",user_name);
-		argMap.put("change_type",change_type);
+	
+		argMap.put("change_id",change_id);
+		argMap.put("change_name",change_name);
+	
 		argMap.put("sort_idx", sort_idx);
 		argMap.put("sort_dir", sort_dir);
 	
-		List<Map<String, Object>> list = db.selectList("hist_user_change.selectListAll", argMap);
+		List<Map<String, Object>> list = db.selectList("hist_permission.selectListAll", argMap);
 	
 		// 2016.12.27 현원희 추가 -다운로드 이력
 		//=========================================================================
 		Map<String, Object> selmap2 = new HashMap();
 	
 		selmap2.put("excel_id", _LOGIN_ID);
-		selmap2.put("excel_menu", "계정변경이력");
+		selmap2.put("excel_menu", "권한변경이력");
 		selmap2.put("excel_name", _LOGIN_NAME);
 		selmap2.put("excel_ip",request.getRemoteAddr());
 	
@@ -75,14 +69,14 @@
 			{
 				sb.append("<tr>");
 				sb.append("<td>" + item.get("change_datm") + "</td>");
-				sb.append("<td>" + item.get("v_change_type") + "</td>");
+
 				sb.append("<td>" + item.get("change_id") + "</td>");
-				sb.append("<td>" + Mask.getMaskedName(item.get("change_name")) + "</td>");
+				sb.append("<td>" + item.get("change_name") + "</td>");
 				sb.append("<td>" + item.get("change_ip") + "</td>");
-				sb.append("<td>" + item.get("user_id") + "</td>");
-				sb.append("<td>" + Mask.getMaskedName(item.get("user_name")) + "</td>");
-				sb.append("<td>" + item.get("origin_level_desc") + "</td>");
-				sb.append("<td>" + item.get("change_level_desc") + "</td>");
+
+				sb.append("<td>" + item.get("origin_desc") + "</td>");
+				sb.append("<td>" + item.get("change_desc") + "</td>");
+
 				sb.append("</tr>");
 			}
 		}

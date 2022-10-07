@@ -34,9 +34,8 @@
 		];
 		
 		if(isExistPlayDownReason){
-			colModel.push( { title: "TA", width: 50, dataIndx: "down_src" } );
-			colModel.push( { title: "다운사유", width: 150, dataIndx: "reason_code_desc" } );
-			colModel.push( { title: "기타사유", width: 150, dataIndx: "reason_text" } );
+			colModel.push( { title: "다운사유", width: 150, dataIndx: "reason_code_desc", sortable: false  } );
+			colModel.push( { title: "기타사유", width: 150, dataIndx: "reason_text", sortable: false  } );
 		}
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");

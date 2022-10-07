@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"login_hist","")) return;
 	
@@ -12,7 +13,7 @@
 		db = new Db(true);
 	
 		// get parameter
-		String sort_idx = "login_datm";//CommonUtil.getParameter("sort_idx", "login_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "login_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 	
 		String login_date1 = CommonUtil.getParameter("login_date1");
@@ -21,7 +22,8 @@
 		String login_name = CommonUtil.getParameter("login_name");
 		String login_type = CommonUtil.getParameter("login_type");
 		String login_result = CommonUtil.getParameter("login_result");
-	
+
+		sort_idx = OrderBy(sort_idx,"login_datm,login_id,login_name,login_ip");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 	
 		StringBuffer sb = new StringBuffer();

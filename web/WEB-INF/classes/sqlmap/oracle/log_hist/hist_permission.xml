@@ -28,7 +28,7 @@
 	<select id="selectList" parameterType="map" resultType="lowerMap">
 		/* 권한 변경 이력 조회 selectList */
 		select
-			(${tot_cnt}-rnum+1) as idx
+			(#{tot_cnt}-rnum+1) as idx
 			,X.*
 		from 
 		(
@@ -56,9 +56,9 @@
 				order by ${sort_idx} ${sort_dir}
 			) XX
 		<![CDATA[
-			where rownum <= ${end_cnt}
+			where rownum <= #{end_cnt}
 		) X
-		where X.rnum >= ${start_cnt}
+		where X.rnum >= #{start_cnt}
 		]]>
 	</select>
 	
@@ -109,9 +109,9 @@
 		)
 	</insert>
 
-	<!-- 권한 변경 이력 저장 insertUserChangeHist2 -->
-	<insert id="insertUserChangeHist2" parameterType="map">
-		/* 권한 변경 이력 저장 insertUserChangeHist */
+	<!-- 권한 변경 이력 저장 insertPermissionIpChangeHist -->
+	<insert id="insertUserChangeHistIP" parameterType="map">
+		/* 권한 변경 이력 저장 insertPermissionIpChangeHist */
 		insert into tbl_permission_hist
 		(
 			change_datm
@@ -122,13 +122,13 @@
 			,change_desc
 		)
 		values
-			(
-				sysdate
+		(
+			sysdate
 			,#{change_id}
 			,#{change_name}
 			,#{change_ip}
 			,#{menu_name} || ' 변경(등급 : ' || fn_GetCodeName('USER_LEVEL', #{origin_level}) || ', 사용여부:' || #{origin_yn} || ')'
 			,#{menu_name} || ' 변경(등급 : ' || fn_GetCodeName('USER_LEVEL', #{user_level}) || ', 사용여부:' || #{use_yn} || ')'
-			)
+		)
 	</insert>
 </mapper>

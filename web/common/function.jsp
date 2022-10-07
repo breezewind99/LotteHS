@@ -597,10 +597,24 @@
 	 * @return
 	 */
 	public static String OrderBy(String orderby, String Value) {
-		String ReturnValue = "";
+		String ReturnValue = "1";
 		if (Value.contains(orderby)) {
 			ReturnValue = orderby;
 		}
+
+		// 기본 자료가 없으면 첫번째 Column으로 처리
 		return ReturnValue;
+	}
+
+	public static String OrderBy(String orderby, String direction, String Value) {
+		String ReturnValue = "1";
+		if (Value.contains(orderby)) {
+			ReturnValue = orderby;
+		}
+
+		String Direction = ("down".equals(direction)) ? "desc" : "asc";
+
+		// 기본 자료가 없으면 첫번째 Column으로 처리
+		return ReturnValue + " " + Direction;
 	}
 %>

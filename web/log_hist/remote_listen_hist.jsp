@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"listen_hist","jsonerr")) return;
 
@@ -12,7 +13,7 @@
 		// get parameter
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = "listen_datm";//CommonUtil.getParameter("sort_idx", "listen_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "listen_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 		String listen_date1 = CommonUtil.getParameter("listen_date1");
@@ -26,6 +27,7 @@
 		String reason_code = CommonUtil.getParameter("reason_code");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;
+		sort_idx = OrderBy(sort_idx,"listen_datm,listen_id,listen_name,listen_ip,rec_datm,user_id,user_name,rec_filename");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// paging 변수

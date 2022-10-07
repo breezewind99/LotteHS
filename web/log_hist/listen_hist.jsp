@@ -34,8 +34,8 @@
 		
 		if(isExistPlayDownReason)
 		{
-			colModel[colModel.length] = { title: "청취사유", width: 150, dataIndx: "reason_code_desc" };
-			colModel[colModel.length] = { title: "기타사유", width: 150, dataIndx: "reason_text" };
+			colModel[colModel.length] = { title: "청취사유", width: 150, dataIndx: "reason_code_desc", sortable: false  };
+			colModel[colModel.length] = { title: "기타사유", width: 150, dataIndx: "reason_text", sortable: false  };
 		}
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");

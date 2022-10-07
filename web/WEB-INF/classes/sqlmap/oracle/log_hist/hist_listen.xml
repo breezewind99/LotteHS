@@ -40,7 +40,7 @@
 	<select id="selectList" parameterType="map" resultType="lowerMap">
 		/* 청취 이력 조회 selectList */
 		select
-			(${tot_cnt}-rnum+1) as idx
+			(#{tot_cnt}-rnum+1) as idx
 			,X.*
 		from 
 		(
@@ -103,9 +103,9 @@
 				
 			) XX
 		<![CDATA[
-			where rownum <= ${end_cnt}
+			where rownum <= #{end_cnt}
 		) X
-		where X.rnum >= ${start_cnt}
+		where X.rnum >= #{start_cnt}
 		]]>
 	</select>
 	
