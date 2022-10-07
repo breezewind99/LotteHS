@@ -173,4 +173,14 @@
 		SET local_no = ' '
 		where local_no = #{local_no}
 	</update>
+
+	<insert id="insertSoftphone"  parameterType="map">
+		/* Softphone Login History */
+		insert into tbl_softphone_hist
+		(
+			rec_mode, local_no, cti_id, rec_keycode, rec_store_code, rec_mystery_code
+		) values (
+			#{rec_mode}, #{local_no}, #{cti_id}, #{rec_keycode}, #{rec_store_code}, #{rec_mystery_code}
+		)
+	</insert>
 </mapper>

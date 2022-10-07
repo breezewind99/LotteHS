@@ -1,8 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.net.DatagramSocket" %>
 <%@ page import="java.net.InetAddress" %>
 <%@ page import="java.net.DatagramPacket" %>
 <%@ page import="static com.cnet.crec.common.Finals.*" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
 <%
 	/* 소프트폰 Interface */
@@ -13,6 +13,7 @@
 	//https://cs-rec.lotteimall.com/app/sfp_interface.jsp?rec_mode=2&rec_datm=20220109&local_no=19906&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
 
 	DatagramSocket ds = null;
+	Db db = null;
 	try
 	{
 		// get parameter
@@ -41,6 +42,21 @@
 			out.print("ERR_PARAM");
 			return;
 		}
+
+		db = new Db(true);
+		Map<String, Object> argMap = new HashMap<String, Object>();
+		//
+
+		argMap.clear();
+		argMap.put("rec_mode",rec_mode);
+		argMap.put("local_no",local_no);
+		argMap.put("cti_id"," ");
+		argMap.put("rec_keycode",rec_keycode);
+		argMap.put("rec_store_code",store_code);
+		argMap.put("rec_mystery_code",mystery_code);
+
+		int ins_cnt = db.insert("login.insertSoftphone",argMap);
+		logger.info("Insert Softphone Log : " + ins_cnt);
 
 		logger.info("rec_mode : " + rec_mode);
 		logger.info("rec_datm : " + rec_datm);
@@ -96,12 +112,13 @@
 		ds.send(packet_backup);
 		out.print("OK");
 	}
-	catch(Exception e)
-	{
+	catch (NullPointerException ne) {
+		logger.error(ne.getMessage());
+	}
+	catch(Exception e) {
 		logger.error(e.getMessage());
 	}
-	finally
-	{
-
+	finally	{
+		if(db != null)	db.close();
 	}
 %>	

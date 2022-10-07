@@ -8,7 +8,7 @@
 	/* 소프트폰 로그인 */
 	DatagramSocket ds = null;
 	Db db = null;
-	//http://localhost:8080/app/sfp_login.jsp?cti_id=1111&local_no=2222
+	//http://localhost:8080/app/sfp_login.jsp?cti_id=29906&local_no=19906
 	//https://cs-rec.lotteimall.com/app/sfp_login.jsp?cti_id=29906&local_no=19906
 	try
 	{
@@ -28,14 +28,20 @@
 
 		db = new Db(true);
 		Map<String, Object> argMap = new HashMap<String, Object>();
-		Map<String, Object> curdata = new HashMap();
 		//
 		argMap.clear();
-		argMap.put("cti_id",cti_id);
+		argMap.put("rec_mode","0");
 		argMap.put("local_no",local_no);
+		argMap.put("cti_id",cti_id);
+		argMap.put("rec_keycode"," ");
+		argMap.put("rec_store_code"," ");
+		argMap.put("rec_mystery_code"," ");
 
 		int ins_cnt = db.update("login.updateClearLocalno", argMap);
 		logger.info("update Clear local no " + ins_cnt);
+
+		ins_cnt = db.insert("login.insertSoftphone",argMap);
+		logger.info("Insert Softphone Log : " + ins_cnt);
 
 		ins_cnt = db.update("login.updateLocalno", argMap);
 
@@ -78,16 +84,15 @@
 		ds.send(packet_backup);
 		out.print("OK");
 	}
-	catch(Exception e)
-	{
-		logger.error(e.getMessage());
-//		out.print(e.getMessage());
+	catch (NullPointerException ne) {
+		logger.error(ne.getMessage());
 	}
-	finally
-	{
+	catch(Exception e) {
+		logger.error(e.getMessage());
+	}
+	finally	{
 		//socket close
 		if(ds != null)	ds.close();
 		if(db != null)	db.close();
-
 	}
 %>	

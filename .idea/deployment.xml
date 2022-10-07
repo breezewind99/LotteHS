@@ -27,7 +27,7 @@
           </excludedPaths>
         </serverdata>
       </paths>
-      <paths name="사무실">
+      <paths name="사무실2">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/Export" web="/" />
