@@ -1,3 +1,4 @@
+<%@ page import="javax.persistence.criteria.Order" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
 <%@ include file="/common/function.jsp"%>
@@ -13,7 +14,7 @@
 		// get parameter
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = "rec_datm";//CommonUtil.getParameter("sort_idx", "rec_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "rec_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 		String rec_date1 = CommonUtil.getParameter("rec_date1");
@@ -46,14 +47,13 @@
 		String custom_fld_03 = CommonUtil.getParameter("custom_fld_03");
 		String custom_fld_04 = CommonUtil.getParameter("custom_fld_04");
 		String custom_fld_05 = CommonUtil.getParameter("custom_fld_05");
-		String rec_mode = CommonUtil.getParameter("rec_mode");
+		String rec_mode = CommonUtil.getParameter("rec_mode","0");
 		
 		// tree에서 선택된 user id list
 		String user_list = CommonUtil.getParameter("user_list");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;
 		String tmp_sort_idx = ("v_".equals(CommonUtil.leftString(sort_idx, 2)) || "n_".equals(CommonUtil.leftString(sort_idx, 2))) ? sort_idx.substring(2) : sort_idx;
-		sort_idx = OrderBy(tmp_sort_idx);
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// user id list parsing
@@ -120,16 +120,17 @@
 		confMap.put("login_ip", _LOGIN_IP);
 		// config select
 		List<Map<String, Object>> conf_list = db.selectList("rec_search.selectResultConfig", confMap);
-
+		String OrderbyValue = "";
 		for(Map<String, Object> item : conf_list) 
 		{
 			// result
 			// 리스트 설정에서 hidden 개념 삭제
 			//if(!"hidden".equals(item.get("result_value"))) {
 				resMap.put(item.get("result_value").toString(), item.get("field_value").toString());
+				OrderbyValue += "," + item.get("conf_field").toString();
 			//}
 		}
-		
+		sort_idx = OrderBy(tmp_sort_idx, OrderbyValue);
 		// search
 		//argMap.put("dateStr", CommonUtil.getRecordTableNm(rec_date1));
 		argMap.put("dateStr", "");

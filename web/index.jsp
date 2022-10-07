@@ -212,10 +212,6 @@
 					  		<input type="checkbox" id="id_save" name="id_save" value="1"> 아이디 저장
 						</label>
 				  	</div>
-				  	<p class="text-center" style="margin-top: 7px;">
-				  		<a href="#" class="btn_passwd_reissue" style="padding-right: 20px;"><u>비밀번호 재발급</u></a>
-				  		<a href="#" class="btn_passwd_change"><u>비밀번호 변경</u></a>
-				  	</p>
 				</div>
 				<div class="space03">
 					<button type="submit" class="btn btn-login block"><i class="fa fa-lock" style="font-size: 22px;"></i><br/>Login</button>
@@ -224,75 +220,5 @@
 		</div>
 	</div>
 </div>
-<!--비밀번호 재발급 띄우기-->
-<div class="modal inmodal" id="modalPasswdReissue" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content animated fadeIn">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">비밀번호 재발급</h4>
-			</div>
-			<div class="modal-body">
-				<h5>담당자 연락처 : </h5>
-				<p><strong>기업부설 연구소팀</strong></p>
-				<p>
-					<strong>TEL :</strong>+82 02-6342-2580<br/>
-					<strong>Mail :</strong> cnettech@cnettech.co.kr<br/>
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" name="modal_ok" class="btn btn-primary btn-sm" data-dismiss="modal"><i class="fa fa-check"></i> 확인</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!--비밀번호 재발급 끝-->
-<!--비밀번호 팝업창 띄우기-->
-<div class="modal inmodal" id="modalPasswdForm" tabindex="-1" role="dialog"  aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content animated fadeIn">
-			<form id="passwdUpdEn" method="post">
-				<input type="hidden" name="en_user_id" value=""/>
-				<input type="hidden" name="en_user_pass" value=""/>
-				<input type="hidden" name="en_new_pass" value=""/>
-			</form>
-			<form id="passwdUpd" method="post">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title">비밀번호 변경</h4>
-				</div>
-				<div class="modal-body">
-					<!--table-->
-					<table class="table top-line1 table-bordered2">
-						<thead>
-						<tr>
-							<td style="width:40%;" class="table-td">상담원ID <span class="required">*</span></td>
-							<td style="width:60%;"><input type="text" name="user_id" class="form-control" placeholder=""></td>
-						</tr>
-						</thead>
-						<tr>
-							<td class="table-td">현재 비밀번호 <span class="required">*</span></td>
-							<td><input type="password" class="form-control" name="user_pass" placeholder=""></td>
-						</tr>
-						<tr>
-							<td class="table-td">변경 비밀번호 <span class="required">*</span></td>
-							<td><input type="password" class="form-control" name="new_pass" placeholder=""></td>
-						</tr>
-						<tr>
-							<td class="table-td">변경 비밀번호 (재확인) <span class="required">*</span></td>
-							<td><input type="password" class="form-control" name="new_pass_re" placeholder=""></td>
-						</tr>
-					</table>
-					<!--table 끝-->
-				</div>
-				<div class="modal-footer">
-					<button type="button" name="modal_regi" class="btn btn-primary btn-sm" prop="C"><i class="fa fa-pencil"></i> 저장</button>
-					<button type="button" name="modal_cancel" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> 취소</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!--비밀번호 팝업창 띄우기 끝-->
 </body>
 </html>

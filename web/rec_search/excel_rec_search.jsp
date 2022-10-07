@@ -45,6 +45,7 @@ try {
 	String custom_fld_03 = CommonUtil.getParameter("custom_fld_03");
 	String custom_fld_04 = CommonUtil.getParameter("custom_fld_04");
 	String custom_fld_05 = CommonUtil.getParameter("custom_fld_05");
+	String rec_mode = CommonUtil.getParameter("rec_mode","0");
 	// tree에서 선택된 user id list
 	String user_list = CommonUtil.getParameter("user_list");
 
@@ -141,6 +142,7 @@ try {
 	argMap.put("custom_fld_03", custom_fld_03);
 	argMap.put("custom_fld_04", custom_fld_04);
 	argMap.put("custom_fld_05", custom_fld_05);
+	argMap.put("rec_mode", rec_mode);
 	argMap.put("_user_id", _LOGIN_ID);
 	argMap.put("_user_level", _LOGIN_LEVEL);
 	argMap.put("_bpart_code",_BPART_CODE);

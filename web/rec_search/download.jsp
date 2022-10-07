@@ -19,6 +19,16 @@
 	{
 		db = new Db(true);
 
+		Map<String, Object> confMap = new HashMap<String, Object>();
+		List<Map<String, Object>> conf_list = db.selectList("download.selectList");
+		boolean bDownload = false;
+		for(Map<String, Object> item : conf_list) {
+			if (item.get("download_ip").toString().equals(request.getRemoteAddr().toString())) {bDownload=true;}
+		}
+		if (!bDownload) {
+			out.print(CommonUtil.getPopupMsg("권한이 없습니다.","","close"));
+			return;
+		}
 
 		// get parameter
 		String info = CommonUtil.getParameter("info");

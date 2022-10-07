@@ -176,7 +176,7 @@
 		from tbl_record
 		where 1=1
 		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-		and rec_keycode = (select rec_keycode from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode}) and a.rec_mode = '0')
+		and rec_keycode in (select distinct rec_keycode from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode}) and a.rec_mode = '0')
 		and rec_mode = '0'
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
 			<choose>
@@ -477,7 +477,7 @@
 	<select id="selectList" parameterType="map" resultType="lowerMap">
 		/* 녹취이력 조회 selectList */
 		select
-		    (${s.tot_cnt}-rnum+1) as idx
+		    (#{s.tot_cnt}-rnum+1) as idx
 		    ,X.*
 		from 
 		(
