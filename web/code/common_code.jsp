@@ -245,11 +245,11 @@ $(function () {
 
 <jsp:include page="/include/bottom.jsp"/>
 <%
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	}
 	finally 
 	{
 		if(db != null)	db.close();

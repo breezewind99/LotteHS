@@ -23,12 +23,11 @@
 		List<Map<String, Object>> list = db.selectList("layout.selectSystemTree", argMap);
 
 		out.print(jsonarr.toJSONString(list));
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

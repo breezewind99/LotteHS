@@ -176,12 +176,12 @@ function showPopupPage(act,afterCloseAct,title,url,top,left,width,height){//창�
 	if(act==''){
 		E('winSubTitle').innerHTML = title;
 		if(url!='') ifSub.location = url;
-		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){}
+		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
 		comm.afterClosePopupPage	= afterCloseAct;
 		comm.afterCloseSubPage		= comm.afterClosePopupPage;	//팝업이 따로 생성되면 삭제
 	}
 	else if(act=='none'){
-		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){}
+		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
 		comm.afterClosePopupPage	= "";
 		comm.afterCloseSubPage		= "";	//팝업이 따로 생성되면 삭제
 	}
@@ -209,12 +209,12 @@ function showSubPage(act,top,left,width,height){
 	else if(act=='none'){
 		winSub.style.display= act;
 		E('winSubTitle').innerHTML = '';
-		if(comm.afterCloseSubPage) try{eval(comm.afterCloseSubPage);}catch(e){}
+		if(comm.afterCloseSubPage) try{eval(comm.afterCloseSubPage);}catch(e){return "";}
 		comm.afterCloseSubPage	= "";
 		comm.afterClosePopupPage	= "";		//팝업이 따로 생성되면 삭제
 		ifSub.location = 'about:blank';
 		E('ifSub').style.height	= '50px';
-		try{optimizeResize();}catch(e){}
+		try{optimizeResize();}catch(e){return "";}
 	}
 }
 function getFormObjName(obj){
@@ -274,7 +274,7 @@ function openWindow(url,target, width, height, center, toolbar, menubar, statusb
 		if(center) strCenter = ', top='+getCenterY(height)+', left='+getCenterX(width)
 		var win = window.open(url, target, 'width='+width+',height='+height+',toolbar='+toolbar_str+',menubar='+menubar_str+',status='+statusbar_str+',scrollbars='+scrollbar_str+',resizable='+resizable_str + strCenter);
 		win.focus();
-	}catch(e){}
+	}catch(e){return "";}
 }
 function openCaseWindow(vCase,url,target,width,height){
 	try{
@@ -288,7 +288,7 @@ function openCaseWindow(vCase,url,target,width,height){
 			win = openWindow(url,target,width,height,0,0,0,0,1,0);
 		win.focus();
 		return win;
-	}catch(e){}
+	}catch(e){return "";}
 }
 function openWinCenter(URL,width,height,target){
 	try{
@@ -302,7 +302,7 @@ function openWinCenter(URL,width,height,target){
 		win_center=window.open(URL,target,'toolbar=0,location=0,directory=0,status=0,menubar=0,scrollbars=1,resizable=0, width='+width+', height='+height+', top='+getCenterY(height)+', left='+getCenterX(width));
 		win_center.focus();
 		//return win_center;
-	}catch(e){}
+	}catch(e){return "";}
 }
 function openWinModal(obj,URL,width,height){
 	window_style = "dialogWidth="+width+"px; dialogHeight="+height+"px; center=yes; border=thin; status=no; help=no; scroll=no";
@@ -451,7 +451,7 @@ function getObjName(obj){
 function getByteLen(obj){
 	var byteLen = 0;
 	var objVal = (obj.value!=undefined) ? obj.value : obj;
-	try{objVal = objVal.replace(/\r\n/g,"\n");}catch(e){}
+	try{objVal = objVal.replace(/\r\n/g,"\n");}catch(e){return 0;}
 	if(objVal==null) return 0;
 	//특수문자 바이트수 체크 추가 - CJM(20200715)
 	for(var i=0; i<objVal.length; i++){
@@ -615,7 +615,7 @@ function openLeftFull(width,url,winName,resizable){
 		var win = window.open(url,"_"+winName,'resizable='+resizable+',scrollbars=no,status=no,width=' + width + ',height=' + height + ',top=0 ,left=0');
 		win.focus();
 	}
-	catch(e){}
+	catch(e){return "";}
 }
 function openRightFull(width,url,winName,resizable){
 	try {
@@ -626,7 +626,7 @@ function openRightFull(width,url,winName,resizable){
 		var win = window.open(url,"_"+winName,'resizable='+resizable+',scrollbars=no,status=no,width=' + width + ',height=' + height + ',top=0 ,left='+left);
 		win.focus();
 	}
-	catch(e){}
+	catch(e){return "";}
 }
 function openCenterFull(width,url,winName,resizable,scroll){
 	try {
@@ -637,7 +637,7 @@ function openCenterFull(width,url,winName,resizable,scroll){
 		var win = window.open(url,"_"+winName,'resizable='+resizable+',scrollbars='+scroll+',status=no,width=' + width + ',height=' + height + ',top=0 ,left='+left);
 		win.focus();
 	}
-	catch(e){}
+	catch(e){return "";}
 }
 
 // 오브젝트 top값 구하기
@@ -660,9 +660,9 @@ function setRemoveHypon(obj){
 	try{
 		obj.value=removeHypon(obj.value);
 		obj.select();
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 	}
-	catch(e){}
+	catch(e){return "";}
 }
 
 //'-' 제거
@@ -912,12 +912,12 @@ function optimizeResize(plus,isForce){
 			if(prntHeight<parseFloat(parent.document.body.scrollHeight)){
 				//서브창으로 인해 부모창이 더 커진 경우 아래 여백을 10 더 주기 위함
 				try{
-					try{parent.optimizeResize(10);}catch(e){}
+					try{parent.optimizeResize(10);}catch(e){return "";}
 					parent.alphaWindow.style.height = parseFloat(parent.document.body.scrollHeight)+plus +'px';
-				}catch(e){}
+				}catch(e){return "";}
 			}
 			else{
-				try{parent.optimizeResize();}catch(e){}
+				try{parent.optimizeResize();}catch(e){return "";}
 			}
 		}
 		else if(isForce){
@@ -945,12 +945,12 @@ function optimizeResizeBoth(plus,isForce){
 			if(prntHeight<parseFloat(parent.document.body.scrollHeight)){
 				//서브창으로 인해 부모창이 더 커진 경우 아래 여백을 10 더 주기 위함
 				try{
-					try{parent.optimizeResize(10);}catch(e){}
+					try{parent.optimizeResize(10);}catch(e){return "";}
 					parent.alphaWindow.style.height = parseFloat(parent.document.body.scrollHeight)+10+'px';
-				}catch(e){}
+				}catch(e){return "";}
 			}
 			else{
-				try{parent.optimizeResize();}catch(e){}
+				try{parent.optimizeResize();}catch(e){return "";}
 			}
 		}
 		else if(isForce){
@@ -970,7 +970,7 @@ function optimizeResizeHeight(plus,isParent){
 			try{
 				parent.E(window.name).style.height = document.body.scrollHeight + plus;
 				if(isParent) parent.optimizeResizeHeight();
-			}catch(e){}
+			}catch(e){return "";}
 		}
 	}
 	else{
@@ -1110,27 +1110,27 @@ function stopBlink2(layerName,isView){
 function checkIDType(obj,strMsg){
 	if(true==isSpace(obj)){
 		alert (strMsg +  '반드시 입력하셔야 합니다.');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}
 
 	if( true==isSpecialKey(obj) ){
 		alert (strMsg +  ' 특수문자를 입력하실 수 없습니다. ');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
 
 	if( true==checkCode(obj) ){
 		alert ( strMsg + ' 특수문자를 입력하실 수 없습니다. ');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
 
 	if( false==checkRange(obj, 4, 20) ){
 		alert ( strMsg + ' 영/숫자 4~20자 이내로 입력하세요.   ');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
@@ -1140,27 +1140,27 @@ function checkIDType(obj,strMsg){
 function chkName(obj, str){
 	if(true==isSpace(obj)){	//입력유무체크
 		alert (str + ' 반드시 입력하셔야 합니다.');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}
 
 	if( true==isSpecialKey(obj) ){
 		alert ( ' 특수문자는 입력하실 수 없습니다 ');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
 
 	if( false==checkRange(obj, 4, 10) ){
 		alert (' 기입하신 ' + str + '이 너무 짧거나 깁니다. ' );
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
 
 	if( check_format(obj.value.toLowerCase(),"0123456789abcdefghijklmnopqrstuvwxyz")){
 		alert ( ' 한글로 입력해 주세요. ' );
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		obj.select();
 		return false;
 	}
@@ -1171,19 +1171,19 @@ function chkEmailAlert(obj,isOption){
 
 	if(!isOption && emailType==0){
 		alert('[EMail]을 입력하세요.');
-		try{obj.focus();}catch(e){}
+		try{obj.focus();}catch(e){return "";}
 		return false;
 	}
 
 	if(emailType==-1){
 		alert ('[EMail]에 특수 문자는 입력하실 수 없습니다.');
-		try{obj.focus();}catch(e){}
+		try{obj.focus();}catch(e){return "";}
 		return false;
 	}
 
 	if(emailType==-2){
 		alert ('[EMail] 주소가 정확하지 않습니다.');
-		try{obj.focus();}catch(e){}
+		try{obj.focus();}catch(e){return "";}
 		return false;
 	}
 	return true;
@@ -1225,7 +1225,7 @@ function checkLength(obj, fromLen, toLen, word, act){
 	if(!checkRange(obj, fromLen, toLen, act)){
 		var msg = (fromLen==toLen) ? "["+word+"] 항목은 "+fromLen+" Byte 입니다." : "["+word+"] 항목은 "+fromLen+" ~ "+toLen+" Byte 까지입니다.";
 		alert(msg);
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}
 	return true;
@@ -1235,31 +1235,31 @@ function chkValidityAlert(obj, fromLen, word, act){
 	if(act=='phone'){
 		if(fromLen>0 && obj.value==''){
 			alert("["+word+"] 항목을 입력하세요.");
-			try{obj.focus();}catch(e){}
+			try{obj.focus();}catch(e){return "";}
 			return false;
 		}
 		else if(!isPhoneNumberLowChk(obj.value)){
 			alert("잘못된 전화번호 형식입니다.");
-			try{try{obj.focus();}catch(e){};obj.select();}catch(e){}
+			try{try{obj.focus();}catch(e){return "";};obj.select();}catch(e){return "";}
 			return false;
 		}
 	}
 	else if(act=='bizNo'){
 		if (!isBusinessNoHypon(obj.value)){
 			alert("잘못된 사업자번호 형식입니다.\n\n["+word+"] 항목을 '-' 까지 정확히 입력하세요.");
-			try{obj.focus();}catch(e){}
+			try{obj.focus();}catch(e){return "";}
 			return false;
 		}
 	}
 	else if(!checkRange(obj, fromLen, obj.maxLength, act)){
 		var msg = (fromLen==obj.maxLength) ? "["+word+"] 항목은 "+fromLen+"Byte 입니다." : word+" 항목은 "+fromLen+" ~ "+obj.maxLength+" Byte 까지입니다.";
 		alert(msg);
-		try{obj.focus();}catch(e){}
+		try{obj.focus();}catch(e){return "";}
 		return false;
 	}
 	else if(fromLen<0 && obj.value==""){
 		alert("["+word+"] 항목을 입력하세요.");
-		try{obj.focus();}catch(e){}
+		try{obj.focus();}catch(e){return "";}
 		return false;
 	}
 	return true;
@@ -1274,7 +1274,7 @@ function chkLenOnKeyUp(obj,pByte,cntLabel){
 		alert("["+title+"] 항목은 "+pByte+"Byte 까지 쓰실 수 있습니다.");
 		obj.value = getTextByByteLen(obj.value,pByte);
 		cntLabel.innerHTML = getByteLen(obj.value);
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}else{
 		return true;
@@ -1350,7 +1350,7 @@ function isEqual(obj1,obj2,strMst){
 function chkValueNull(obj, word){
 	if(obj.value==""){
 		alert(word);
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}
 	return true;
@@ -1449,7 +1449,7 @@ function selTrBg(obj,bgColor){// chgTrBg와 같이 써야 함
 }
 function unSelTrBg(bgColor){
 	bgColor = (!bgColor) ? "#ffffff" : bgColor
-	try{comm.selTrObj.style.backgroundColor = bgColor;}catch(e){}
+	try{comm.selTrObj.style.backgroundColor = bgColor;}catch(e){return "";}
 	comm.selTrObj = '';
 }
 function selTrBgFg(obj,bgColor,fgColor,isBold){// chgTrBg와 같이 써야 함
@@ -1480,7 +1480,7 @@ function chkMaxLenAlert(obj,isTrim, removeStr){
 	if(!isValidMaxLen(obj, removeStr)){
 		var title = toNN(obj.alt,obj.title);
 		alert('입력길이가 초과 하였습니다!\n\n['+title+'] 항목의 최대 입력 가능 길이는 '+obj.maxLength+'Byte 입니다\n\n( 현재 입력 한 길이 : '+getByteLen(obj.value)+'Byte )');
-		try{obj.focus();}catch(e){};
+		try{obj.focus();}catch(e){return "";};
 		return false;
 	}
 	else return true;
@@ -1507,7 +1507,7 @@ function chkElementAlert(obj, removeStr){
 			if(type.indexOf('select')==0){
 				if(obj.value==''){
 					alert('['+title+'] 항목은 필수선택 입니다.');
-					try{obj.focus();}catch(e){}
+					try{obj.focus();}catch(e){return "";}
 					return false;
 				}
 				else return true;
@@ -1832,7 +1832,7 @@ function showTextAll(obj,contents){
 			textBox.style.visibility= "hidden";
 			textBox.style.display	= "none";
 		}
-		catch(e){}
+		catch(e){return "";}
 	}
 	else if(!isNothing(contents)){
 		//alert(obj.parentElement.parentElement.parentElement.className)
@@ -1857,7 +1857,7 @@ function showTextAllTd(obj,contents){
 			textBox.style.visibility= "hidden";
 			textBox.style.display	= "none";
 		}
-		catch(e){}
+		catch(e){return "";}
 	}
 	else if(!isNothing(contents)){
 		//var tableClassName = obj.parentElement.parentElement.parentElement.className;
@@ -1888,7 +1888,7 @@ function showCopyBox(isShow){
 			copyBox.style.visibility= "hidden";
 			copyBox.style.display	= "none";
 		}
-		catch(e){}
+		catch(e){return "";}
 	}
 	else{
 		var obj = event.srcElement;

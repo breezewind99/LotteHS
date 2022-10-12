@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"user_mgmt","json")) return;
 
@@ -16,10 +17,12 @@
 		String local_no = CommonUtil.getParameter("local_no", "");
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = "regi_datm";//CommonUtil.getParameter("sort_idx", "regi_datm");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "regi_datm");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
 		cur_page = (cur_page < 1) ? 1 : cur_page;
+
+		sort_idx = OrderBy(sort_idx,"user_id,user_pass,user_name,local_no,system_code,user_level,eval_yn,rec_down_yn,pass_chg_term,pass_expire_date,pass_upd_date,user_ip,resign_yn,use_yn,regi_datm");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		//paging 변수
@@ -104,12 +107,11 @@
 		json.put("curPage", cur_page);
 		json.put("data", list);
 		out.print(json.toJSONString());
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

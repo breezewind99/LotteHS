@@ -35,9 +35,11 @@
 		
 		//
 		response.sendRedirect(tmp_arr[1]);
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
-    } finally {
+	} finally {
 
     }
 %>		

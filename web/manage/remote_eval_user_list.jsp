@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
+
 <%
 	if(!Site.isPmss(out,"eval_user_list","json")) return;
 
@@ -17,10 +19,11 @@
 
 		int cur_page = CommonUtil.getParameterInt("cur_page", "1");
 		int top_cnt = CommonUtil.getParameterInt("top_cnt", "20");
-		String sort_idx = "user_name";//CommonUtil.getParameter("sort_idx", "user_name");
+		String sort_idx = CommonUtil.getParameter("sort_idx", "user_name");
 		String sort_dir = CommonUtil.getParameter("sort_dir", "up");
 
 		cur_page = (cur_page<1) ? 1 : cur_page;
+		sort_idx = OrderBy(sort_idx,"business_name,bpart_name,mpart_name,spart_name,user_id,user_pass,user_name,user_level,use_yn");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// paging 변수
@@ -78,12 +81,11 @@
 		json.put("data", list);
 		
 		out.print(json.toJSONString());
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

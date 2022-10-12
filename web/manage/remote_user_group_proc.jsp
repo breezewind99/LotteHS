@@ -154,12 +154,11 @@
 		}
 
 		out.print("{\"code\":\"OK\", \"tree\": {\"refresh\":\"true\"}, \"msg\":\"\"}");
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

@@ -45,12 +45,11 @@
 		json.put("totalRecords", list.size());
 		json.put("data", list);
 		out.print(json.toJSONString());
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

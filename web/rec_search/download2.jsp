@@ -405,13 +405,11 @@
 		in.close();
 		httpconn.disconnect();
 
-	} 
-	catch(Exception e) 
-	{
-		out.print(CommonUtil.getPopupMsg(e.getMessage(),"",""));
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(httpconn != null)	httpconn.disconnect();
 		if(in != null)	in.close();

@@ -26,6 +26,8 @@
 		List<Map<String, Object>> list = db.selectList("cate.selectCateTree", argMap);
 
 		out.print(jsonarr.toJSONString(list));
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {

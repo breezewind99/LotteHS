@@ -161,7 +161,7 @@ $(function()
 	$("select[name=template_color]").val($.cookie("ck_template_color"));
 	
 	// 달력 제어
-	try{$(".datepicker").datepicker(dp_option);}catch(e){};
+	try{$(".datepicker").datepicker(dp_option);}catch(e){return "";};
 
 	// 달력 아이콘 클릭 시 오픈
 	$(".btn-datepicker").click(function() {
@@ -1264,7 +1264,7 @@ var searchs = function()
 		if(!fnValidation(fvId))	return;
 		
 		var isContinue = true;
-		try{isContinue = beforeSearchFunc()}catch(e){}
+		try{isContinue = beforeSearchFunc()}catch(e){console.log("Not Found Searchfunctioin")}
 		if(!isContinue) return;
 		
 		// 1번 page로	초기화

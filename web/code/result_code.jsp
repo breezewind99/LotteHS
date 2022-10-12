@@ -346,6 +346,8 @@ $(function () {
 	<!--wrapper-content영역 끝-->
 <jsp:include page="/include/bottom.jsp"/>
 <%
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {

@@ -62,6 +62,8 @@
 
 		json.put("data", list);
 		out.print(json.toJSONString());
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {

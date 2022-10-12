@@ -61,6 +61,8 @@
 </body>
 </html>
 <%
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {

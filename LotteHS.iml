@@ -34,6 +34,14 @@
       <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/postgre" />
       <excludeFolder url="file://$MODULE_DIR$/web/eval" />
       <excludeFolder url="file://$MODULE_DIR$/web/player" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/oracle/app" />
+      <excludeFolder url="file://$MODULE_DIR$/web/dashboard" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/oracle/dashboard" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/oracle/eval" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/oracle/player" />
+      <excludeFolder url="file://$MODULE_DIR$/web/WEB-INF/classes/sqlmap/oracle/sheet" />
+      <excludeFolder url="file://$MODULE_DIR$/web/sheet" />
+      <excludeFolder url="file://$MODULE_DIR$/web/statsEvaluation" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -431,11 +431,10 @@
 			//전송 url
 			logger.debug("file_url : " + file_url);
 			*/
-		} 
-		catch(Exception e) 
-		{
+		} catch(NullPointerException e) {
 			logger.error(e.getMessage());
-			return "ERR" + e.getMessage();
+		} catch(Exception e) {
+			logger.error(e.getMessage());
 		}
 		
 		return file_url;
@@ -574,22 +573,24 @@
 	 * @param orderby
 	 * @return
 	 */
-	public static String OrderBy(String orderby) {
-		Db db = null;
-		String ReturnValue = "";
-		try {
-			db = new Db(true);
-			Map<String,Object> argMap = new HashMap();
-			argMap.put("orderby",orderby);
-			Map<String, Object> data  = db.selectOne("search_config.selectOrderBy", argMap);
-			ReturnValue = (data.get("orderby") == null ? "": data.get("orderby").toString());
-		} catch(Exception e) {
-			ReturnValue = "";
-		} finally {
-			if(db!=null) db.close();
-		}
-		return ReturnValue;
-	}
+//	public static String OrderBy(String orderby) {
+//		Db db = null;
+//		String ReturnValue = "";
+//		try {
+//			db = new Db(true);
+//			Map<String,Object> argMap = new HashMap();
+//			argMap.put("orderby",orderby);
+//			Map<String, Object> data  = db.selectOne("search_config.selectOrderBy", argMap);
+//			ReturnValue = (data.get("orderby") == null ? "": data.get("orderby").toString());
+//		} catch(NullPointerException e) {
+//			logger.error(e.getMessage());
+//		} catch(Exception e) {
+//			logger.error(e.getMessage());
+//		} finally {
+//			if(db!=null) db.close();
+//		}
+//		return ReturnValue;
+//	}
 
 	/**
 	 * Order By 처리

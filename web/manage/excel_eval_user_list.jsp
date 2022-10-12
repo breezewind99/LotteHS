@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 if(!Site.isPmss(out,"eval_user_list","")) return;
 
@@ -15,9 +16,10 @@ try {
 	String regi_date2 = CommonUtil.getParameter("regi_date2", "");
 	String user_id = CommonUtil.getParameter("user_id", "");
 	String user_name = CommonUtil.getParameter("user_name", "");
-	String sort_idx =  "regi_datm";//CommonUtil.getParameter("sort_idx", "regi_datm");
+	String sort_idx =  CommonUtil.getParameter("sort_idx", "regi_datm");
 	String sort_dir = CommonUtil.getParameter("sort_dir", "down");
 
+	sort_idx = OrderBy(sort_idx,"business_name,bpart_name,mpart_name,spart_name,user_id,user_pass,user_name,user_level,use_yn");
 	sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 	StringBuffer sb = new StringBuffer();
@@ -67,6 +69,8 @@ try {
 
 	sb.append("</table>");
 	out.print(sb.toString());
+} catch(NullPointerException e) {
+	logger.error(e.getMessage());
 } catch(Exception e) {
 	logger.error(e.getMessage());
 } finally {

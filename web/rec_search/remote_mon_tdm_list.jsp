@@ -222,12 +222,11 @@
 		<div class="colLeft"><span class="ext_squre03 colLeft"></span><span class="ext_text">녹취불량</span></div>
 	</div>
 <%
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		// socket close
 		if (ds != null) ds.close();

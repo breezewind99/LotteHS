@@ -186,10 +186,9 @@
 		argMap.put("down_src","AP");
 
 		int ins_cnt = db.insert("hist_down.insertDownHist", argMap);
-	} 
-	catch(Exception e) 
-	{
-		out.print(CommonUtil.getPopupMsg(e.getMessage(),"",""));
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
+	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} 
 	finally 

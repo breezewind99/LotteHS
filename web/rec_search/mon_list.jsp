@@ -242,6 +242,8 @@ var playRlisten = function(status, ch_no, local_no, system_code, user_id, user_n
 	
 <jsp:include page="/include/bottom.jsp"/>
 <%
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {

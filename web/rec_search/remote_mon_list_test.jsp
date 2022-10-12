@@ -62,9 +62,11 @@
         //logger.debug("receive data : " + recv);
 		
 		out.print("receive data : " + recv);
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
-    } finally {
+	} finally {
     	// socket close    	
     	if (ds != null) ds.close();
     }

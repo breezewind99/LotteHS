@@ -214,7 +214,10 @@
 		rd = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())));
 		//logger.debug("rd="+rd.readLine());
 		String reLine = rd.readLine();
-		
+		if (reLine == null) {
+			out.print(CommonUtil.getPopupMsg("미디어서버 오류가 발생하였습니다.","",""));
+			return;
+		}
 		//logger.debug("rd1 :"+rd.readLine());
 		//logger.debug("rd2 :"+rd.readLine().trim().substring(0, 4));
 		
@@ -277,13 +280,11 @@
 		argMap.put("down_src","");
 
 		int ins_cnt = db.insert("hist_down.insertDownHist", argMap);
-	} 
-	catch(Exception e) 
-	{
-		out.print(CommonUtil.getPopupMsg(e.getMessage(),"",""));
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(httpconn != null)	httpconn.disconnect();
 		if(in != null)	in.close();

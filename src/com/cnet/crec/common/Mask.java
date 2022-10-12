@@ -50,7 +50,10 @@ public class Mask {
         int lastNameStartPoint;     // 이름 시작 포인터
         if (temp == null) return "";
         String name = temp.toString();
+        maskedName = name;
 
+        /*보안 심의에서 제외 처리 요청*/
+        /*
         if(!name.equals("") || name != null || name.equals("null")){
             if(name.length() > 1){
                 firstName = name.substring(0, 1);
@@ -74,7 +77,7 @@ public class Mask {
                 maskedName = name;
             }
         }
-
+        */
         return maskedName;
     }
 

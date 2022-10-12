@@ -290,12 +290,11 @@
 	<!-- <object id="CNet" classid="CLSID:CA177FAA-118C-4ACB-80F5-671E66766073" width="0" height="0" codebase="../Setup/CnetLauncher.CAB#version=1,0,0,93" hidden="true"></object> -->
 <jsp:include page="/include/bottom.jsp"/>
 <%
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

@@ -201,6 +201,8 @@ try {
 
 	sb.append("</table>");
 	out.print(sb.toString());
+} catch(NullPointerException e) {
+	logger.error(e.getMessage());
 } catch(Exception e) {
 	logger.error(e.getMessage());
 } finally {

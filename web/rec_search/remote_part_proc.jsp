@@ -124,13 +124,12 @@
 		//System.out.println("☆☆");
 		
 		Site.writeJsonResult(out,true);
-		
-	} 
-	catch(Exception e) 
-	{
+
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		//socket close
 		if(ds!=null) ds.close();

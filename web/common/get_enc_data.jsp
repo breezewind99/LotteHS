@@ -26,10 +26,10 @@
 		info = aes.Encrypt(info);
 
 		out.print("{\"code\":\"OK\", \"data\":\"" + info + "\"}");
-		
-	} 
-	catch(Exception e) 
-	{
+
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
+	} catch(Exception e) {
 		logger.error(e.getMessage());
 	}
 %>

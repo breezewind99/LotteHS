@@ -7,6 +7,8 @@ try {
 	db = new Db(true);
 	int obsCnt1 = db.selectOne("db_dual.getObstacleDbCnt", "");
 	out.println("obsCnt1="+obsCnt1);
+} catch(NullPointerException e) {
+	logger.error(e.getMessage());
 } catch(Exception e) {
 	logger.error(e.getMessage());
 } finally {

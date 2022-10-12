@@ -231,12 +231,11 @@
 		</div>
 		<!--top영역 끝-->
 <%
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null) db.close();
 	}

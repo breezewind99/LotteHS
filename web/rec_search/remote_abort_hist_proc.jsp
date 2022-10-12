@@ -86,6 +86,8 @@
 		db.commit();
 
 		Site.writeJsonResult(out,true);
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		// rollback
 		if(db!=null) db.rollback();

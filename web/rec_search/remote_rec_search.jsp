@@ -270,12 +270,11 @@
 		json.put("data", list);
 		out.print(json.toJSONString());
 		logger.info("Search Result");
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

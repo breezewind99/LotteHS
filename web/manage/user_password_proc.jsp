@@ -80,10 +80,9 @@
 		db.commit();
 		out.print("{\"code\":\"OK\", \"tree\": {\"refresh\":\"false\"}, \"msg\":\"\"}");
 
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
-		// rollback
-		if(db!=null) db.rollback();
-
 		logger.error(e.getMessage());
 	} finally {
 		if(db!=null) db.close();

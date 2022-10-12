@@ -337,14 +337,13 @@
 		else						 Finals.setApplicationVariable();
 
 		out.print("<script>location.href = '/rec_search/rec_search.jsp';</script>");
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		out.print("<script>alert('로그인 처리중 오류가 발생하였습니다.');</script>");
 		logger.error(e.getMessage());
-	} 
-	finally 
-	{
+	} catch(Exception e) {
+		out.print("<script>alert('로그인 처리중 오류가 발생하였습니다.');</script>");
+		logger.error(e.getMessage());
+	} finally {
 		if(db!=null)	db.close();
 	}
 %>

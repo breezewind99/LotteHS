@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/common.jsp" %>
+<%@ include file="/common/function.jsp" %>
 <%
 	if(!Site.isPmss(out,"channel_mgmt","json")) return;
 
@@ -17,6 +18,7 @@
 		String phone_num = CommonUtil.getParameter("phone_num", "");
 		String phone_ip = CommonUtil.getParameter("phone_ip", "");
 
+		sort_idx = OrderBy(sort_idx,"channel,phone_num,phone_ip");
 		sort_dir = ("down".equals(sort_dir)) ? "desc" : "asc";
 
 		// system_code
@@ -51,12 +53,11 @@
 
 		json.put("data", list);
 		out.print(json.toJSONString());
-	} 
-	catch(Exception e) 
-	{
+	} catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null) db.close();
 	}

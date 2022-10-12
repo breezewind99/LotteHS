@@ -26,6 +26,8 @@
 		// 페이지 이동
 		ComLib.script(out,"top.location.replace('/index.jsp')");
 		//out.print(CommonUtil.getPopupMsg("로그아웃 되었습니다.","index.jsp","url"));
+	} catch(NullPointerException e) {
+		logger.error(e.getMessage());
 	} catch(Exception e) {
 		logger.error(e.getMessage());
 	} finally {
