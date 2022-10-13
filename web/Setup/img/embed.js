@@ -66,7 +66,9 @@ function install_error(){
 			return;
 		}
 	}
-	catch(e){}
+	catch(e){
+		console.log("설치 오류");
+	}
 
 	document.body.onload = "";
 	alert(errorMsg);
@@ -180,6 +182,7 @@ function checkSoeVista()
             today = values[1];
         }
     }catch(e) {
+		console.log("쿠키 세팅중 오류");
     }
 
     var aSOEProxyIP = new Array(

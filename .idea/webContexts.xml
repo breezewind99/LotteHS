@@ -8,6 +8,7 @@
         <entry key="file://$PROJECT_DIR$/web/log_hist/login_hist.jsp" value="file://$PROJECT_DIR$/web/log_hist" />
         <entry key="file://$PROJECT_DIR$/web/login.jsp" value="file://$PROJECT_DIR$/web" />
         <entry key="file://$PROJECT_DIR$/web/rec_search/rec_search.jsp" value="file://$PROJECT_DIR$/web/rec_search" />
+        <entry key="file://$PROJECT_DIR$/web/statsRecord/remote_user_dept_stat.jsp" value="file://$PROJECT_DIR$/web/statsRecord" />
       </map>
     </option>
   </component>

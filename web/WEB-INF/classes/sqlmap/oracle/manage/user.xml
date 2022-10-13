@@ -166,9 +166,9 @@
 				order by ${sort_idx} ${sort_dir}
 			) XX
 		<![CDATA[
-			where rownum <= ${end_cnt}
+			where rownum <= #{end_cnt}
 		) X
-		where X.rnum >= ${start_cnt}
+		where X.rnum >= #{start_cnt}
 		]]>
 	</select>
 	
@@ -344,9 +344,9 @@
 				order by ${sort_idx} ${sort_dir}
 			) XX
 		<![CDATA[
-			where rownum <= ${end_cnt}
+			where rownum <= #{end_cnt}
 		) X
-		where X.rnum >= ${start_cnt}
+		where X.rnum >= #{start_cnt}
 		]]>
 	</select>
 
@@ -448,7 +448,7 @@
 							and rownum =  1), '') end
 			,#{pass_chg_term}
 			,case #{pass_chg_term} when '0' then '9999-12-31' 
-				else to_char(sysdate + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD') end
+				else to_char(sysdate + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD') end
 			,null
 			,#{user_ip}
 			,'0'
@@ -534,7 +534,7 @@
 			,#{user_level}
 			,#{pass_chg_term}
 			,case #{pass_chg_term} when '0' then '9999-12-31' 
-				else to_char(sysdate + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD') end
+				else to_char(sysdate + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD') end
 			,to_char(sysdate, 'YYYY-MM-DD')
 			,'0'
 			,'0'
@@ -576,8 +576,8 @@
 				<when test='pass_chg_term!=null and pass_chg_term!="" and pass_chg_term!="0"'>
 					<choose>
 						<when test='pass_upd_date!=null and pass_upd_date!=""'>
-							pass_expire_date = to_char(to_date(pass_upd_date, 'YYYY-MM-DD') + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</when>
-						<otherwise>pass_expire_date = to_char(sysdate + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</otherwise>
+							pass_expire_date = to_char(to_date(pass_upd_date, 'YYYY-MM-DD') + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</when>
+						<otherwise>pass_expire_date = to_char(sysdate + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</otherwise>
 					</choose>
 				</when>
 			</choose>
@@ -652,8 +652,8 @@
 				<when test='pass_chg_term!=null and pass_chg_term!="" and pass_chg_term=="0"'>pass_expire_date = '9999-12-31',</when>
 				<when test='pass_chg_term!=null and pass_chg_term!="" and pass_chg_term!="0"'>
 					<choose>
-						<when test='user_pass!=null and user_pass!=""'>pass_expire_date = to_char(sysdate + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</when>
-						<otherwise>pass_expire_date = to_char(to_date(pass_upd_date, 'YYYY-MM-DD') + (${pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</otherwise>
+						<when test='user_pass!=null and user_pass!=""'>pass_expire_date = to_char(sysdate + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</when>
+						<otherwise>pass_expire_date = to_char(to_date(pass_upd_date, 'YYYY-MM-DD') + (#{pass_chg_term} * interval '1' day), 'YYYY-MM-DD'),</otherwise>
 					</choose>
 				</when>
 			</choose>

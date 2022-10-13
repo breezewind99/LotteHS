@@ -12,7 +12,7 @@
 		/* 권한 변경 이력 count selectCount */
 		select 
 			count(*) as tot_cnt
-			,ceil(count(*) / ${top_cnt}) as page_cnt
+			,ceil(count(*) / #{top_cnt}) as page_cnt
 		from tbl_permission_hist
 		where 1=1
 		and change_datm between to_date(#{change_date1} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{change_date2} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')

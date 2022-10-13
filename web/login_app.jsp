@@ -28,8 +28,13 @@
 		String info="";
 		try {
 			info = wfms.decrypt(CommonUtil.getParameter("info", ""));
+		} catch(NullPointerException e) {
+			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
+			logger.error(e.getMessage());
+			return;
 		} catch (Exception e) {
 			out.print("<script>alert('정상적인 접근이 아닙니다.');</script>");
+			logger.error(e.getMessage());
 			return;
 		}
 

@@ -392,7 +392,14 @@ var gf_isNull = function(sValue){
 //open popup
 var openPopup = function (mypage, myname, w, h, scroll, pos){
 	var win = null;
-	if(pos == 'random'){LeftPosition=(screen.width)?Math.floor(Math.random()*(screen.width-w)):100;TopPosition=(screen.height)?Math.floor(Math.random()*((screen.height-h)-75)):100;}
+	// if(pos == 'random'){
+	// 	var array = new Uint32Array(1);
+	// 	window.crypto.getRandomValues(array);
+	// 	var secureNumber = (array[0] % 100) + 1;
+	//
+	// 	LeftPosition=(screen.width)?Math.floor(Math.random()*(screen.width-w)):100;
+	// 	TopPosition=(screen.height)?Math.floor(Math.random()*((screen.height-h)-75)):100;
+	// }
 	if(pos == 'center'){LeftPosition=(screen.width)?(screen.width-w)/2:100;TopPosition=(screen.height)?(screen.height-h-100)/2:100;}
 	else if((pos!='center' && pos!='random') || pos == null){LeftPosition = 0;TopPosition = 0;}
 

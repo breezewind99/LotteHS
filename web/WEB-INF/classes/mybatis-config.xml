@@ -186,16 +186,16 @@
 		<mapper resource="sqlmap/oracle/log_hist/hist_excel.xml"/>
 		<mapper resource="sqlmap/oracle/log_hist/hist_permission.xml"/>
 
-		<mapper resource="sqlmap/oracle/sheet/cate.xml"/>
-		<mapper resource="sqlmap/oracle/sheet/item.xml"/>
-		<mapper resource="sqlmap/oracle/sheet/sheet.xml"/>
-                                 
-		<mapper resource="sqlmap/oracle/eval/event.xml"/>
-		<mapper resource="sqlmap/oracle/eval/eval_target.xml"/>
-		<mapper resource="sqlmap/oracle/eval/eval_result.xml"/>
-		<mapper resource="sqlmap/oracle/eval/eval_claim.xml"/>
-		<mapper resource="sqlmap/oracle/eval/eval_rec_search.xml"/>
-		<mapper resource="sqlmap/oracle/eval/eval_search_setup.xml"/>
+<!--		<mapper resource="sqlmap/oracle/sheet/cate.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/sheet/item.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/sheet/sheet.xml"/>-->
+<!--                                 -->
+<!--		<mapper resource="sqlmap/oracle/eval/event.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/eval/eval_target.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/eval/eval_result.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/eval/eval_claim.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/eval/eval_rec_search.xml"/>-->
+<!--		<mapper resource="sqlmap/oracle/eval/eval_search_setup.xml"/>-->
 
 		<mapper resource="sqlmap/oracle/statistics/stat_system.xml"/>
 		<mapper resource="sqlmap/oracle/statistics/stat_user_dept.xml"/>
@@ -205,6 +205,6 @@
 		<mapper resource="sqlmap/oracle/statistics/stat_period.xml"/>
 		<mapper resource="sqlmap/oracle/statistics/stat_average.xml"/>
 
-		<mapper resource="sqlmap/oracle/dashboard/dashboard.xml"/>
+<!--		<mapper resource="sqlmap/oracle/dashboard/dashboard.xml"/>-->
 	</mappers>
 </configuration>

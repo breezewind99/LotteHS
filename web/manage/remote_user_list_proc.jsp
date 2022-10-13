@@ -194,8 +194,8 @@
 				logger.info("pass_chg_term : "+jsonItem.get("pass_chg_term").toString());
 				
 				//비밀번호 사용 기간 정보 체크 - CJM(20201112)
-				if(!CommonUtil.hasText(jsonItem.get("pass_chg_term").toString()))	argMap.put("pass_chg_term", "0");
-				else																argMap.put("pass_chg_term", jsonItem.get("pass_chg_term").toString());
+				if(!CommonUtil.hasText(jsonItem.get("pass_chg_term").toString()))	argMap.put("pass_chg_term", 0);
+				else																argMap.put("pass_chg_term", Integer.parseInt(jsonItem.get("pass_chg_term").toString()));
 				
 				//패스워드 수정 일자 체크 - CJM(20201112)
 				logger.info("user_pass : "+jsonItem.get("user_pass").toString());

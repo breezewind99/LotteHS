@@ -27,28 +27,28 @@ function alertJsonErrSite(aCallback, req,status,err){
 	}
 }
 
-function goToAjaxSite(aUrl, aData, aCallback){
-	$.ajax({
-		type: "POST",
-		url: aUrl,
-		async: false,
-		data: aData,
-		dataType: "json",
-		success:function(dataJSON){
-			if (dataJSON.code=="OK") {
-				eval(aCallback+"(dataJSON)");
-				return true;
-			} else {
-				alert(aCallback+" :: "+dataJSON.msg);
-				return false;
-			}
-		},
-		error:function(req,status,err){
-			alertJsonErrSite(aCallback, req,status,err);
-			return false;
-		}
-	});
-}
+// function goToAjaxSite(aUrl, aData, aCallback){
+// 	$.ajax({
+// 		type: "POST",
+// 		url: aUrl,
+// 		async: false,
+// 		data: aData,
+// 		dataType: "json",
+// 		success:function(dataJSON){
+// 			if (dataJSON.code=="OK") {
+// 				eval(aCallback+"(dataJSON)");
+// 				return true;
+// 			} else {
+// 				alert(aCallback+" :: "+dataJSON.msg);
+// 				return false;
+// 			}
+// 		},
+// 		error:function(req,status,err){
+// 			alertJsonErrSite(aCallback, req,status,err);
+// 			return false;
+// 		}
+// 	});
+// }
 
 // colModel의 dataIndx로 배열번호 구하기
 function getIdxColModel(colModel, dataIndx){

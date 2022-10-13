@@ -176,12 +176,12 @@ function showPopupPage(act,afterCloseAct,title,url,top,left,width,height){//창�
 	if(act==''){
 		E('winSubTitle').innerHTML = title;
 		if(url!='') ifSub.location = url;
-		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
+		// if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
 		comm.afterClosePopupPage	= afterCloseAct;
 		comm.afterCloseSubPage		= comm.afterClosePopupPage;	//팝업이 따로 생성되면 삭제
 	}
 	else if(act=='none'){
-		if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
+		// if(comm.afterClosePopupPage) try{eval(comm.afterClosePopupPage);}catch(e){return "";}
 		comm.afterClosePopupPage	= "";
 		comm.afterCloseSubPage		= "";	//팝업이 따로 생성되면 삭제
 	}
@@ -209,7 +209,7 @@ function showSubPage(act,top,left,width,height){
 	else if(act=='none'){
 		winSub.style.display= act;
 		E('winSubTitle').innerHTML = '';
-		if(comm.afterCloseSubPage) try{eval(comm.afterCloseSubPage);}catch(e){return "";}
+		// if(comm.afterCloseSubPage) try{eval(comm.afterCloseSubPage);}catch(e){return "";}
 		comm.afterCloseSubPage	= "";
 		comm.afterClosePopupPage	= "";		//팝업이 따로 생성되면 삭제
 		ifSub.location = 'about:blank';
@@ -218,51 +218,52 @@ function showSubPage(act,top,left,width,height){
 	}
 }
 function getFormObjName(obj){
-	if(!obj) return "";
-	if(!obj.name){
-		//문자열로 들어 온 경우
-		try{
-			obj = (E(obj)) ? E(obj) : eval(obj);
-			return (obj) ? getFormObjName(obj) : "";
-		}
-		catch(e){return ""}
-	}
-	else{
-		//Object로 들어 온 경우
-		try{
-			var tObj = eval(obj.form.name+"."+obj.name);
-			var objName;
-			if(tObj.length){
-				for(var i=0;i<tObj.length;i++){
-					if(obj==tObj[i]){
-						objName = obj.form.name+"."+obj.name+"["+i+"]";
-						break;
-					}
-				}
-			}
-			else{
-				objName = obj.form.name+"."+obj.name;
-			}
-			return objName;
-		}catch(e){
-			return "";
-		}
-	}
+	// console.log("getFormObjName" + obj)
+	// if(!obj) return "";
+	// if(!obj.name){
+	// 	//문자열로 들어 온 경우
+	// 	try{
+	// 		obj = (E(obj)) ? E(obj) : eval(obj);
+	// 		return (obj) ? getFormObjName(obj) : "";
+	// 	}
+	// 	catch(e){return ""}
+	// }
+	// else{
+	// 	//Object로 들어 온 경우
+	// 	try{
+	// 		var tObj = eval(obj.form.name+"."+obj.name);
+	// 		var objName;
+	// 		if(tObj.length){
+	// 			for(var i=0;i<tObj.length;i++){
+	// 				if(obj==tObj[i]){
+	// 					objName = obj.form.name+"."+obj.name+"["+i+"]";
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	// 		else{
+	// 			objName = obj.form.name+"."+obj.name;
+	// 		}
+	// 		return objName;
+	// 	}catch(e){
+	// 		return "";
+	// 	}
+	// }
 }
 //문자열이던 오브젝트건 상관 않고 오브젝트 구하기
-function getObj(obj){
-	if(typeof(obj)=='object') return obj;
-	else{
-		try{
-			var o = E(obj);
-			if(typeof(o)=='object') return o;
-			var o = eval(obj);
-			if(typeof(o)=='object') return o;
-			else return "";
-		}
-		catch(e){return ""}
-	}
-}
+// function getObj(obj){
+// 	if(typeof(obj)=='object') return obj;
+// 	else{
+// 		try{
+// 			var o = E(obj);
+// 			if(typeof(o)=='object') return o;
+// 			var o = eval(obj);
+// 			if(typeof(o)=='object') return o;
+// 			else return "";
+// 		}
+// 		catch(e){return ""}
+// 	}
+// }
 function openWindow(url,target, width, height, center, toolbar, menubar, statusbar, scrollbar, resizable){
 	try{
 		var strCenter = "";
@@ -2057,13 +2058,13 @@ function objToStr2(o){
 		return string.join("");
 	}
 }
-function strToObj(str){
-	try{
-		eval("var x = "+ str +";");
-		return x;
-	}
-	catch(e){return str;}
-}
+// function strToObj(str){
+// 	try{
+// 		eval("var x = "+ str +";");
+// 		return x;
+// 	}
+// 	catch(e){return str;}
+// }
 
 //스트링 아스크코드 반환
 function asc(str){
@@ -2272,34 +2273,34 @@ function gotoAjax(url){
 	hl.style.display="none";
 	hl.appendChild(scriptObj);
 }
-function gotoAjaxJson(aUrl, callback){
-	$.ajax({
-		type: "get",
-		url: aUrl,
-		contentType: "application/json;charset=euc-kr",
-		dataType: "json",
-		error: function(xhr, status, error) {
-			alert("Ajax Error!!\nstatus : "+status+"\nerror : "+objToStr(error));
-		},
-		success: function(jData){
-			eval(callback+"(jData)");
-		}
-	});
-}
-function gotoAjaxXml(aUrl, callback){
-	$.ajax({
-		type: "get",
-		url: aUrl,
-		contentType: "text/xml;charset=euc-kr",
-		dataType: "xml",
-		error: function(xhr, status, error) {
-			alert("AjaxXml Error!!\nstatus : "+status+"\nerror : "+objToStr(error));
-		},
-		success: function(xml){
-			eval(callback+"(xml)");
-		}
-	});
-}
+// function gotoAjaxJson(aUrl, callback){
+// 	$.ajax({
+// 		type: "get",
+// 		url: aUrl,
+// 		contentType: "application/json;charset=euc-kr",
+// 		dataType: "json",
+// 		error: function(xhr, status, error) {
+// 			alert("Ajax Error!!\nstatus : "+status+"\nerror : "+objToStr(error));
+// 		},
+// 		success: function(jData){
+// 			eval(callback+"(jData)");
+// 		}
+// 	});
+// }
+// function gotoAjaxXml(aUrl, callback){
+// 	$.ajax({
+// 		type: "get",
+// 		url: aUrl,
+// 		contentType: "text/xml;charset=euc-kr",
+// 		dataType: "xml",
+// 		error: function(xhr, status, error) {
+// 			alert("AjaxXml Error!!\nstatus : "+status+"\nerror : "+objToStr(error));
+// 		},
+// 		success: function(xml){
+// 			eval(callback+"(xml)");
+// 		}
+// 	});
+// }
 
 Date.prototype.format = function(f){
 	if(!this.valueOf()) return " ";

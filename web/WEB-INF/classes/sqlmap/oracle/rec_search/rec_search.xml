@@ -176,7 +176,11 @@
 		from tbl_record
 		where 1=1
 		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
-		and rec_keycode in (select distinct rec_keycode from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode}) and a.rec_mode = '0')
+		and (
+		    rec_keycode in (select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode}) and a.rec_mode = '0')
+		OR
+		    rec_conf_code in (select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode}) and a.rec_mode = '0')
+        )
 		and rec_mode = '0'
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
 			<choose>
@@ -428,9 +432,9 @@
 		<if test='rec_mystery_code!=null and rec_mystery_code!=""'>
 		and rec_mystery_code = #{rec_mystery_code}
 		</if>
-		<if test='user_list!=null and user_list!=""'>
-		and user_id in (${user_list})
-		</if>
+<!--		<if test='user_list!=null and user_list!=""'>-->
+<!--		and user_id in (${user_list})-->
+<!--		</if>-->
 		<if test='custom_fld_01!=null and custom_fld_01!=""'>
 		and custom_fld_01 = #{custom_fld_01}
 		</if>
@@ -632,9 +636,9 @@
 				<if test='s.rec_mystery_code!=null and s.rec_mystery_code!=""'>
 				and rec_mystery_code = #{s.rec_mystery_code}
 				</if>
-				<if test='s.user_list!=null and s.user_list!=""'>
-				and user_id in (${s.user_list})
-				</if>
+<!--				<if test='s.user_list!=null and s.user_list!=""'>-->
+<!--				and user_id in (${s.user_list})-->
+<!--				</if>-->
 				<if test='s.custom_fld_01!=null and s.custom_fld_01!=""'>
 				and custom_fld_01 = #{s.custom_fld_01}
 				</if>

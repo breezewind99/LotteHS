@@ -150,7 +150,8 @@
 				for(var i=0; i<data.length; i++) 
 				{
 					chartTick.push(data[i].v_rec_date);
-					chartData.push(parseInt(eval("data[i]."+baseField)));
+					//chartData.push(parseInt(eval("data[i]."+baseField)));
+					chartData.push(parseInt((function() {return eval("data[i]."+baseField)}())));
 				}
 			} 
 			else 
@@ -354,12 +355,12 @@
 
 <jsp:include page="/include/bottom.jsp"/>
 <%
-	} 
-	catch(Exception e) 
-	{
+	}
+	catch(NullPointerException e) {
 		logger.error(e.getMessage());
-	} 
-	finally 
+	} catch(Exception e) {
+		logger.error(e.getMessage());
+	} finally
 	{
 		if(db != null)	db.close();
 	}

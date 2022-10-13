@@ -76,9 +76,10 @@
 			//전송 url
 			logger.debug("file_url : " + file_url);
 			*/
-		} 
-		catch (Exception e) 
-		{
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
 		}
@@ -108,10 +109,11 @@
 	
 			//전송 url
 			//logger.debug("file_url2 : " + file_url2);    
-	
-		} 
-		catch (Exception e) 
-		{
+
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
 		}
@@ -206,9 +208,10 @@
 			logger.debug("file_url AES 원본암호화: " + aes.Encrypt(file_prefix + "|" + file_path + ".mp3"));
 			logger.debug("file_url encode 암호화: " + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString());
 			logger.debug("file_url : " + file_url);
-		} 
-		catch (Exception e)
-		{
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
 		}
@@ -279,8 +282,10 @@
 			//전송 url
 			logger.debug("file_url : " + file_url);
 			*/
-		} 
-		catch (Exception e) 
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e)
 		{
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
@@ -351,8 +356,10 @@
 			//전송 url
 			logger.debug("file_url4 : " + file_url);
 			*/
-		} 
-		catch (Exception e) 
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e)
 		{
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
@@ -475,8 +482,10 @@
 			//전송 url
 			logger.debug("file_url : " + file_url);
 			*/
-		} 
-		catch (Exception e) 
+		} catch(NullPointerException e) {
+			logger.error(e.getMessage());
+			return "ERR" + e.getMessage();
+		} catch (Exception e)
 		{
 			logger.error(e.getMessage());
 			return "ERR" + e.getMessage();
@@ -538,9 +547,9 @@
 			{
 				throw new Exception("녹취파일 복호화에 실패했습니다.[" + recv + "]");
 			}
-		}
-		catch (Exception e) 
-		{
+		} catch(NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 		finally
