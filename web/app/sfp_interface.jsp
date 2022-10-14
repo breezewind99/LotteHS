@@ -13,7 +13,7 @@
 	//https://cs-rec.lotteimall.com/app/sfp_interface.jsp?rec_mode=2&rec_datm=20220109&local_no=19906&rec_keycode=3333&store_code=1&mystery_code=2&customer_code=9999&ani=01098580428&user_id=1111
 
 	DatagramSocket ds = null;
-	Db db = null;
+//	Db db = null;
 	try
 	{
 		// get parameter
@@ -34,7 +34,6 @@
 		String DATA9 = CommonUtil.getParameter("DATA9");
 		String DATA10 = CommonUtil.getParameter("DATA10");
 
-
 		if(!CommonUtil.hasText(rec_datm)
 				|| !CommonUtil.hasText(local_no)
 				|| !CommonUtil.hasText(rec_keycode))
@@ -43,20 +42,20 @@
 			return;
 		}
 
-		db = new Db(true);
-		Map<String, Object> argMap = new HashMap<String, Object>();
-		//
-
-		argMap.clear();
-		argMap.put("rec_mode",rec_mode);
-		argMap.put("local_no",local_no);
-		argMap.put("cti_id"," ");
-		argMap.put("rec_keycode",rec_keycode);
-		argMap.put("rec_store_code",store_code);
-		argMap.put("rec_mystery_code",mystery_code);
-
-		int ins_cnt = db.insert("login.insertSoftphone",argMap);
-		logger.info("Insert Softphone Log : " + ins_cnt);
+//		db = new Db(true);
+//		Map<String, Object> argMap = new HashMap<String, Object>();
+//		//
+//
+//		argMap.clear();
+//		argMap.put("rec_mode",rec_mode);
+//		argMap.put("local_no",local_no);
+//		argMap.put("cti_id"," ");
+//		argMap.put("rec_keycode",rec_keycode);
+//		argMap.put("rec_store_code",store_code);
+//		argMap.put("rec_mystery_code",mystery_code);
+//
+//		int ins_cnt = db.insert("login.insertSoftphone",argMap);
+//		logger.info("Insert Softphone Log : " + ins_cnt);
 
 		logger.info("rec_mode : " + rec_mode);
 		logger.info("rec_datm : " + rec_datm);
@@ -90,7 +89,7 @@
 				(customer_code.equals("") ? " " : customer_code),
 				(store_code.equals("") ? " " : store_code),
 				(mystery_code.equals("") ? " " : mystery_code),
-				(DATA4.equals("") ? " " : DATA4),
+				(ani.equals("") ? " " : ani),
 				(DATA5.equals("") ? " " : DATA5),
 				(DATA6.equals("") ? " " : DATA6),
 				(DATA7.equals("") ? " " : DATA7),
@@ -119,6 +118,6 @@
 		logger.error(e.getMessage());
 	}
 	finally	{
-		if(db != null)	db.close();
+//		if(db != null)	db.close();
 	}
 %>	

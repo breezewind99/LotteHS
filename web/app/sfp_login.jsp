@@ -44,8 +44,8 @@
 		logger.info("Insert Softphone Log : " + ins_cnt);
 
 		ins_cnt = db.update("login.updateLocalno", argMap);
-
 		logger.info("update local no " + ins_cnt);
+
 		// UDP 통신 수신 전문
 		ds = new DatagramSocket();
 
