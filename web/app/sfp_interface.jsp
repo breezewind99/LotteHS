@@ -73,6 +73,7 @@
 		// send data 설정
 		InetAddress udp_main = InetAddress.getByName(UDP_MAIN);
 		InetAddress udp_backup = InetAddress.getByName(UDP_BACKUP);
+		InetAddress udp_image = InetAddress.getByName(UDP_IMAGE);
 		String Mode = "";
 		if(rec_mode.equals("1")) {
 			Mode = "REC1";
@@ -109,6 +110,8 @@
 		ds.send(packet_main);
 		DatagramPacket packet_backup = new DatagramPacket(buf, buf.length, udp_backup, UDP_PORT);
 		ds.send(packet_backup);
+		DatagramPacket packet_image = new DatagramPacket(buf, buf.length, udp_image, UDP_PORT_IMAGE);
+		ds.send(packet_image);
 		out.print("OK");
 	}
 	catch (NullPointerException ne) {

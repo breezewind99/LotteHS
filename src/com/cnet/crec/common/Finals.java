@@ -43,7 +43,10 @@ public class Finals
 
 	public static String 			UDP_MAIN = pros.getProperty("UDP.Main");
 	public static String 			UDP_BACKUP = pros.getProperty("UDP.Backup");
+
+	public static String 			UDP_IMAGE = pros.getProperty("UDP.Image");
 	public static int 			UDP_PORT = Integer.parseInt(pros.getProperty("UDP.Port"));
+	public static int 			UDP_PORT_IMAGE = Integer.parseInt(pros.getProperty("UDP.Port_Image"));
 
 	/**
 	 * 관리자 기능 신규 / 편집 기능 가능여부

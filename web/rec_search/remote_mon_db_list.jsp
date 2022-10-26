@@ -149,7 +149,12 @@
 			//if("".equals(backup_ip))	ip = system_ip;
 			//KT114에만 백업 IP 정보 필요하여 주석 처리 - CJM(20200103)
 			String ip = system_ip;
-			
+
+			if (Integer.parseInt(local_no) < 30000) {
+				ip = "10.144.31.18";
+			} else {
+				ip = "10.144.35.18";
+			}
 			//logger.info("ip : "+ip);
 			//logger.info("spart_name : "+spart_name);
 			out.print("<div class=\"ext_frame\">\n");

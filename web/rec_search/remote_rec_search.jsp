@@ -47,7 +47,7 @@
 		String custom_fld_03 = CommonUtil.getParameter("custom_fld_03");
 		String custom_fld_04 = CommonUtil.getParameter("custom_fld_04");
 		String custom_fld_05 = CommonUtil.getParameter("custom_fld_05");
-		String rec_mode = CommonUtil.getParameter("rec_mode","0");
+		String rec_mode = CommonUtil.getParameter("rec_mode");
 		
 		// tree에서 선택된 user id list
 		String user_list = CommonUtil.getParameter("user_list");

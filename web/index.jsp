@@ -7,13 +7,14 @@
 	String publicKeyModulus = rsa.getPublicKeyModulus();
 	String publicKeyExponent = rsa.getPublicKeyExponent();
 	session.setAttribute("__rsaPrivateKey__", rsa.getPrivateKey());
+	String serverIP = request.getLocalAddr();
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>녹취관리 시스템</title>
+	<title>녹취관리 시스템[<%=serverIP%>]</title>
 
 	<link href="./css/bootstrap.css" rel="stylesheet" />
 	<link href="./css/font-awesome.css" rel="stylesheet" />
