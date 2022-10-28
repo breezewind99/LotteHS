@@ -694,7 +694,7 @@
 				{
 					// 메인 백업 구분
 					sb.append("<select class='form-control search_combo_range_2' name='"+conf_field+"'>\n");
-					sb.append("	<option value=''>전체</option>\n");
+					sb.append("	<option value='A'>전체</option>\n");
 					sb.append("	<option value='0' selected>메인</option>\n");
 					sb.append("	<option value='1'>백업</option>\n");
 					sb.append("</select>");

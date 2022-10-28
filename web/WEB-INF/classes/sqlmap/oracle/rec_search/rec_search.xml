@@ -158,7 +158,7 @@
 	<!-- 연관 녹취이력 조회 selectRelationList -->
 	<select id="selectRelationList" parameterType="map" resultType="lowerMap">
 		/* 연관 녹취이력 조회 selectRelationList */
-		select 
+		select
 			rec_seq
 			,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
 			,rec_date
@@ -177,13 +177,19 @@
 		where 1=1
 		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 		and (
-		    rec_keycode in (select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
-		    and a.rec_mode = '0'
-		)
-		OR
-		    rec_conf_code in (select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
-		    and a.rec_mode = '0'
-		)
+		    rec_keycode in (
+				to_char((
+					select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+					and a.rec_mode = '0'
+				))
+			)
+			OR
+		    rec_conf_code in (
+		    	to_char((
+		    		select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+		    		and a.rec_mode = '0'
+				))
+			)
         )
 		and rec_mode = '0'
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>

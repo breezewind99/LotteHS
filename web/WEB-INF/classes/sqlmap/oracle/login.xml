@@ -28,6 +28,7 @@
 			,mpart_code
 			,spart_code
 			,user_level
+			,nvl(user_level_cd, ' ') as user_level_cd
 			,eval_yn
 			,nvl(pass_expire_date, '') as pass_expire_date
 			,nvl(pass_upd_date, '') as pass_upd_date
@@ -60,6 +61,7 @@
 			 ,mpart_code
 			 ,spart_code
 			 ,user_level
+			 ,nvl(user_level_cd, ' ') as user_level_cd
 			 ,eval_yn
 			 ,nvl(pass_expire_date, ' ') as pass_expire_date
 			 ,nvl(pass_upd_date, ' ') as pass_upd_date

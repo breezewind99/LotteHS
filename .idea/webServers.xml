@@ -31,7 +31,7 @@
         </fileTransfer>
       </webServer>
       <webServer id="2ac12703-b479-4d80-a4e3-790055517381" name="집" url="http://192.168.0.222">
-        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="192.168.0.222" port="22" sshConfigId="5410f03d-b0d1-4c83-b7e2-e7eecc4a75e5" sshConfig="root@192.168.0.222:22 password">
+        <fileTransfer rootFolder="/data/cnet/www" accessType="SFTP" host="10.144.36.137" port="22" sshConfigId="5410f03d-b0d1-4c83-b7e2-e7eecc4a75e5" sshConfig="oper@10.144.36.137:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

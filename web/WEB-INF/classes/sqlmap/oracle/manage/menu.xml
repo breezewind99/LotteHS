@@ -23,6 +23,9 @@
 		<![CDATA[
 		and user_level >= #{user_level}
 		]]>
+		<if test='user_level_cd!=null and user_level_cd=="42057444"'>
+			and PARENT_CODE not in ('1000')
+		</if>
 		and use_yn = '1'
 		order by order_no asc
 	</select>

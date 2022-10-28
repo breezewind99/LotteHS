@@ -225,7 +225,7 @@
 		*/
 		argMap.put("business_code", data.get("business_code").toString());
 		argMap.put("user_level", data.get("user_level").toString());
-		
+		argMap.put("user_level_cd", data.get("user_level_cd").toString());
 		List<Map<String, Object>> menuList = db.selectList("menu.selectMenuPerm", argMap);
 		if(menuList.size() < 1) 
 		{

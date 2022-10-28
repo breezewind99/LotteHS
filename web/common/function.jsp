@@ -184,26 +184,28 @@
 			if("RX".equals(type2))
 			{
 				//file_url = Finals.MEDIA_SERVER_URL + "/?refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_RX") + "." + file_ext;
-				file_url = Finals.MEDIA_SERVER_URL + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_RX") + "." + file_ext;
+				file_url = "http://10.144.31.30:8888" + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_RX") + "." + file_ext;
 				//원본 url
 				//logger.debug("file_url 원본RX: " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "_RX." + file_ext);
 			} 
 			else if ("TX".equals(type2)) 
 			{
 				//file_url = Finals.MEDIA_SERVER_URL + "/?refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_TX") + "." + file_ext;
-				file_url = Finals.MEDIA_SERVER_URL + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_TX") + "." + file_ext;
+				file_url = "http://10.144.31.30:8888" + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path + "_TX") + "." + file_ext;
 				//원본 url
 				//logger.debug("file_url 원본TX: " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "_TX." + file_ext);
 			} 
 			else 
 			{
 				//file_url = Finals.MEDIA_SERVER_URL + "/?refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
-				file_url = Finals.MEDIA_SERVER_URL + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
+				file_url = "http://10.144.31.30:8888" + "/refer=" + aes.Encrypt(file_prefix + "|" + file_path) + "." + file_ext;
 				
 				//원본 url
-				logger.debug("file_url 원본: " + Finals.MEDIA_SERVER_URL + "/refer=" + file_prefix + "|" + file_path + "." + file_ext);
+				logger.debug("file_url 원본: " + "http://10.144.31.30:8888" + "/refer=" + file_prefix + "|" + file_path + "." + file_ext);
 			}
-			file_url = Finals.MEDIA_SERVER_URL + "/media/mp3?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString() ;
+			//if (system_code.equals("01")) {
+				file_url = Finals.MEDIA_SERVER_URL + "/media/mp3?refer=" + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"), "UTF-8").toString();
+			//}
 			//전송 url
 			logger.debug("file_url AES 원본암호화: " + aes.Encrypt(file_prefix + "|" + file_path + ".mp3"));
 			logger.debug("file_url encode 암호화: " + URLEncoder.encode(aes.Encrypt(file_prefix + "|" + file_path + ".mp3"),"UTF-8").toString());

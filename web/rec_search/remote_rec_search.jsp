@@ -47,8 +47,9 @@
 		String custom_fld_03 = CommonUtil.getParameter("custom_fld_03");
 		String custom_fld_04 = CommonUtil.getParameter("custom_fld_04");
 		String custom_fld_05 = CommonUtil.getParameter("custom_fld_05");
-		String rec_mode = CommonUtil.getParameter("rec_mode");
-		
+		String rec_mode = CommonUtil.getParameter("rec_mode","0");
+		if (rec_mode.equals("A")) rec_mode = "";
+
 		// tree에서 선택된 user id list
 		String user_list = CommonUtil.getParameter("user_list");
 
@@ -221,9 +222,9 @@
 			//롯데 보안 이슈로 수정 요청
 			if(item.containsKey("n_cust_tel") && item.get("n_cust_tel") != null){
 				String temp =  Mask.getMaskedPhoneNum(item.get("n_cust_tel").toString().trim());
-//				if (_LOGIN_LEVEL.equals("E"))
-//					item.put("n_cust_tel", temp);
-//				else
+				if (_LOGIN_LEVEL.equals("E"))
+					item.put("n_cust_tel", temp);
+				else
 					item.put("n_cust_tel", "<img class='copy' src='../img/icon/ico_memo.png' data-clipboard-text='" + item.get("n_cust_tel").toString().trim() + "' style='margin-left: 5px; cursor: pointer;'/> " + temp);
 			}
 			if(item.containsKey("n_rec_keycode") && item.get("n_rec_keycode") != null){
