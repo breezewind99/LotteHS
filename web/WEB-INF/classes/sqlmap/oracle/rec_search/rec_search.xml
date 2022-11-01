@@ -194,18 +194,18 @@
 		and rec_mode = '0'
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
 			<choose>
-				<when test='_user_level=="B"'>
-				and bpart_code = #{_bpart_code}
-				</when>
-				<when test='_user_level=="C"'>
-				and bpart_code = #{_bpart_code} 
-				and mpart_code = #{_mpart_code}
-				</when>
-				<when test='_user_level=="D"'>
-				and bpart_code = #{_bpart_code} 
-				and mpart_code = #{_mpart_code} 
-				and spart_code = #{_spart_code}
-				</when>
+<!--				<when test='_user_level=="B"'>-->
+<!--				and bpart_code = #{_bpart_code}-->
+<!--				</when>-->
+<!--				<when test='_user_level=="C"'>-->
+<!--				and bpart_code = #{_bpart_code} -->
+<!--				and mpart_code = #{_mpart_code}-->
+<!--				</when>-->
+<!--				<when test='_user_level=="D"'>-->
+<!--				and bpart_code = #{_bpart_code} -->
+<!--				and mpart_code = #{_mpart_code} -->
+<!--				and spart_code = #{_spart_code}-->
+<!--				</when>-->
 				<when test='_user_level=="E"'>
 				and user_id = #{_user_id}
 				</when>
@@ -468,18 +468,18 @@
 		</if>
 		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
 			<choose>
-				<when test='_user_level=="B"'>
-					and bpart_code = #{_bpart_code}
-				</when>
-				<when test='_user_level=="C"'>
-					and bpart_code = #{_bpart_code} 
-					and mpart_code = #{_mpart_code}
-				</when>
-				<when test='_user_level=="D"'>
-					and bpart_code = #{_bpart_code} 
-					and mpart_code = #{_mpart_code} 
-					and spart_code = #{_spart_code}
-				</when>
+<!--				<when test='_user_level=="B"'>-->
+<!--					and bpart_code = #{_bpart_code}-->
+<!--				</when>-->
+<!--				<when test='_user_level=="C"'>-->
+<!--					and bpart_code = #{_bpart_code} -->
+<!--					and mpart_code = #{_mpart_code}-->
+<!--				</when>-->
+<!--				<when test='_user_level=="D"'>-->
+<!--					and bpart_code = #{_bpart_code} -->
+<!--					and mpart_code = #{_mpart_code} -->
+<!--					and spart_code = #{_spart_code}-->
+<!--				</when>-->
 				<when test='_user_level=="E"'>
 					and user_id = #{_user_id}
 				</when>
@@ -672,18 +672,18 @@
 				</if>
 				<if test='s._user_level!=null and s._user_level!="" and s._user_level>"A"'>
 					<choose>
-						<when test='s._user_level=="B"'>
-							and bpart_code = #{s._bpart_code}
-						</when>			
-						<when test='s._user_level=="C"'>
-							and bpart_code = #{s._bpart_code} 
-							and mpart_code = #{s._mpart_code}
-						</when>
-						<when test='s._user_level=="D"'>
-							and bpart_code = #{s._bpart_code} 
-							and mpart_code = #{s._mpart_code} 
-							and spart_code = #{s._spart_code}
-						</when>
+<!--						<when test='s._user_level=="B"'>-->
+<!--							and bpart_code = #{s._bpart_code}-->
+<!--						</when>			-->
+<!--						<when test='s._user_level=="C"'>-->
+<!--							and bpart_code = #{s._bpart_code} -->
+<!--							and mpart_code = #{s._mpart_code}-->
+<!--						</when>-->
+<!--						<when test='s._user_level=="D"'>-->
+<!--							and bpart_code = #{s._bpart_code} -->
+<!--							and mpart_code = #{s._mpart_code} -->
+<!--							and spart_code = #{s._spart_code}-->
+<!--						</when>-->
 						<when test='s._user_level=="E"'>
 							and user_id = #{s._user_id}
 						</when>

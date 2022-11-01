@@ -97,10 +97,33 @@
 	<select id="selectCountList" parameterType="map" resultType="lowerMap">
 		/* 녹취전체 건수 및 진행중 건수 조회 selectCountList */
 		select
-			(select count(*) from tbl_record
-				where rec_date = to_char(sysdate,'YYYYMMDD')) as rec_count
-			,(select count(*) from crec_monitoring
-				where state = '1') as mon_count
+			(
+			select count(*) from tbl_record	where rec_date = to_char(sysdate,'YYYYMMDD')
+			<if test='bpart_code!=null and bpart_code!=""'>
+				and bpart_code = #{bpart_code}
+			</if>
+			<if test='mpart_code!=null and mpart_code!=""'>
+				and mpart_code = #{mpart_code}
+			</if>
+			<if test='spart_code!=null and spart_code!=""'>
+				and spart_code = #{spart_code}
+			</if>
+			) as rec_count
+			,(
+			select count(*)
+			from crec_monitoring cm
+			left join tbl_user tu on (cm.USER_ID = tu.CTI_ID OR cm.USER_ID = tu.USER_ID)
+			where state = '1'
+			<if test='bpart_code!=null and bpart_code!=""'>
+				and tu.bpart_code = #{bpart_code}
+			</if>
+			<if test='mpart_code!=null and mpart_code!=""'>
+				and tu.mpart_code = #{mpart_code}
+			</if>
+			<if test='spart_code!=null and spart_code!=""'>
+				and tu.spart_code = #{spart_code}
+			</if>
+			) as mon_count
 			,to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') as time
 		from dual
 	</select>
