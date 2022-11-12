@@ -33,11 +33,17 @@ public class Site
 	 */
 	public static int getDepthByUserLevel(Object userLevel) 
 	{
-		return 	(userLevel.equals("0")) ? 9 : //시스템 관리자
+//		return 	(userLevel.equals("0")) ? 9 : //시스템 관리자
+//				(userLevel.equals("A")) ? 3 : //관리자	: 대분류 전체
+//				(userLevel.equals("B")) ? 2 : //센터장 	: 중분류 전체
+//				(userLevel.equals("C")) ? 1 : //팀장 	: 소분류 전체
+//				(userLevel.equals("D")) ? 0 : //조장		: 소분류 하나 : 자신이 속한 소분류만
+//				-1;							  //상담원	: 소분류 하나 : 자신이 속한 소분류만
+				return 	(userLevel.equals("0")) ? 9 : //시스템 관리자
 				(userLevel.equals("A")) ? 3 : //관리자	: 대분류 전체
-				(userLevel.equals("B")) ? 2 : //센터장 	: 중분류 전체
-				(userLevel.equals("C")) ? 1 : //팀장 	: 소분류 전체
-				(userLevel.equals("D")) ? 0 : //조장		: 소분류 하나 : 자신이 속한 소분류만
+				(userLevel.equals("B")) ? 3 : //센터장 	: 중분류 전체
+				(userLevel.equals("C")) ? 3 : //팀장 	: 소분류 전체
+				(userLevel.equals("D")) ? 3 : //조장		: 소분류 하나 : 자신이 속한 소분류만
 				-1;							  //상담원	: 소분류 하나 : 자신이 속한 소분류만
 	}
 

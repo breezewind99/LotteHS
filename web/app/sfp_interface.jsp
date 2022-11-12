@@ -77,6 +77,8 @@
 		String Mode = "";
 		if(rec_mode.equals("1")) {
 			Mode = "REC1";
+		} else if (rec_mode.equals("3")){
+			Mode = "REC2";
 		} else {
 			Mode = "REC3";
 		}
@@ -121,6 +123,7 @@
 		logger.error(e.getMessage());
 	}
 	finally	{
+		if(ds != null)	ds.close();
 //		if(db != null)	db.close();
 	}
 %>	

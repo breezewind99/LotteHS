@@ -155,13 +155,16 @@
 		where use_yn = '1'
 		and business_code = #{business_code}
 		and part_depth = #{part_depth}
-		<if test='(part_depth>1 and bpart_code!=null and bpart_code!="")  or _user_level>"A"'>
+<!--		<if test='(part_depth>1 and bpart_code!=null and bpart_code!="")  or _user_level>"A"'>-->
+		<if test='(part_depth>1 and bpart_code!=null and bpart_code!="")'>
 		and bpart_code = #{bpart_code}
 		</if>
-		<if test='(part_depth>2 and mpart_code!=null and mpart_code!="") or (_user_level>"B" and part_depth>=2)'>
+<!--&#45;&#45; 		<if test='(part_depth>2 and mpart_code!=null and mpart_code!="") or (_user_level>"B" and part_depth>=2)'>-->
+		<if test='(part_depth>2 and mpart_code!=null and mpart_code!="") or (part_depth>=2)'>
 		and mpart_code = #{mpart_code}
 		</if>
-		<if test='(part_depth>3 and spart_code!=null and spart_code!="") or (_user_level>"C" and part_depth>=3)'>
+<!--		<if test='(part_depth>3 and spart_code!=null and spart_code!="") or (_user_level>"C" and part_depth>=3)'>-->
+		<if test='(part_depth>3 and spart_code!=null and spart_code!="") or (part_depth>=3)'>
 		and spart_code = #{spart_code}
 		</if>
 		order by row_id asc

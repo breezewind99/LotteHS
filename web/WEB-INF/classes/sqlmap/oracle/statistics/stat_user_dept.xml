@@ -131,18 +131,18 @@
 				</if>
 				<if test='s._user_level!=null and s._user_level!="" and s._user_level>"A"'>
 					<choose>
-						<when test='s._user_level=="B"'>
-						and tsr.bpart_code = #{s._bpart_code}
-						</when>					
-						<when test='s._user_level=="C"'>
-						and tsr.bpart_code = #{s._bpart_code} 
-						and tsr.mpart_code = #{s._mpart_code}
-						</when>
-						<when test='s._user_level=="D"'>
-						and tsr.bpart_code = #{s._bpart_code} 
-						and tsr.mpart_code = #{s._mpart_code} 
-						and tsr.spart_code = #{s._spart_code}
-						</when>
+<!--						<when test='s._user_level=="B"'>-->
+<!--						and tsr.bpart_code = #{s._bpart_code}-->
+<!--						</when>					-->
+<!--						<when test='s._user_level=="C"'>-->
+<!--						and tsr.bpart_code = #{s._bpart_code} -->
+<!--						and tsr.mpart_code = #{s._mpart_code}-->
+<!--						</when>-->
+<!--						<when test='s._user_level=="D"'>-->
+<!--						and tsr.bpart_code = #{s._bpart_code} -->
+<!--						and tsr.mpart_code = #{s._mpart_code} -->
+<!--						and tsr.spart_code = #{s._spart_code}-->
+<!--						</when>-->
 						<when test='s._user_level=="E"'>
 						and tsr.user_id = #{s._user_id}
 						</when>

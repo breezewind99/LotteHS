@@ -42,7 +42,7 @@
 		// 사용자 권한에 따른 조직도 조회
 		if("1".equals(perm_check)) 
 		{
-			argMap.put("_user_level", _LOGIN_LEVEL);
+			argMap.put("_user_level", "A");
 			argMap.put("_bpart_code",_BPART_CODE);
 			argMap.put("_mpart_code",_MPART_CODE);
 			argMap.put("_spart_code",_SPART_CODE);
