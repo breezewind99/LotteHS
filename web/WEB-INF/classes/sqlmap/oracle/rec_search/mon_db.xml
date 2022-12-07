@@ -127,5 +127,14 @@
 			,to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') as time
 		from dual
 	</select>
-	
+	<!-- 전화번호 조회 -->
+	<select id="selectAni" parameterType="map" resultType="lowerMap">
+		/*  전화번호 조회  */
+		select ani
+		from crec_monitoring cm
+		where state = '1'
+		<if test='phone!=null and phone!=""'>
+			and cm.phone = #{phone}
+		</if>
+	</select>
 </mapper>
