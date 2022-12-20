@@ -202,10 +202,10 @@
 <!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: DELETE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  -->	
 
 	<!-- 채널 삭제 deleteChannel -->
-	<delete id="deleteChannel" parameterType="string">
+	<delete id="deleteChannel" parameterType="map">
 		/* 채널 삭제 deleteChannel */
 		delete from crec_ip_info 
-		where phone_num = #{phone_num}
+		where phone_num = #{phone_num} and phone_ip = #{phone_ip}
 	</delete>
 
 </mapper>

@@ -95,11 +95,13 @@
 			{
 				JSONObject jsonItem = (JSONObject) iterator.next();
 
+				String PhoneNum = jsonItem.get("phone_num").toString().replace("&nbsp;","").replace(" ","");
+				String PhoneIp = jsonItem.get("phone_ip").toString().replace("&nbsp;","").replace(" ","");
 				// duplicate check
 				argMap.clear();
-				argMap.put("phone_num",jsonItem.get("phone_num"));
+				argMap.put("phone_num",PhoneNum);
 				argMap.put("ori_phone_num",jsonItem.get("ori_phone_num"));
-				argMap.put("phone_ip",jsonItem.get("phone_ip"));
+				argMap.put("phone_ip",PhoneIp);
 
 				// 중복시 다음 루프 실행
 				String result_code = db.selectOne("channel.selectDuplicateCheck", argMap);
@@ -116,8 +118,8 @@
 				if("I".equals(jsonItem.get("act_type").toString())) 
 				{
 					argMap.put("system_code",jsonItem.get("system_code"));
-					argMap.put("phone_num",jsonItem.get("phone_num"));
-					argMap.put("phone_ip",jsonItem.get("phone_ip"));
+					argMap.put("phone_num",PhoneNum);
+					argMap.put("phone_ip",PhoneIp);
 					argMap.put("channel",jsonItem.get("channel"));
 					argMap.put("mac",jsonItem.get("mac"));
 					argMap.put("tn_num",jsonItem.get("tn_num"));
@@ -129,8 +131,8 @@
 				else 
 				{
 					argMap.put("ori_phone_num",jsonItem.get("ori_phone_num"));
-					argMap.put("phone_num",jsonItem.get("phone_num"));
-					argMap.put("phone_ip",jsonItem.get("phone_ip"));
+					argMap.put("phone_num",PhoneNum);
+					argMap.put("phone_ip",PhoneIp);
 					argMap.put("mac",jsonItem.get("mac"));
 					argMap.put("tn_num",jsonItem.get("tn_num"));
 
@@ -155,16 +157,21 @@
 		else if("delete".equals(step)) 
 		{
 			// get parameter
-			String phone_num = CommonUtil.getParameter("row_id");
+			String PhoneNum = CommonUtil.getParameter("phone_num");
+			String PhoneIp = CommonUtil.getParameter("phone_ip");
 
 			// 파라미터 체크
-			if(!CommonUtil.hasText(phone_num)) 
+			if(!CommonUtil.hasText(PhoneNum) || !CommonUtil.hasText(PhoneIp))
 			{
 				Site.writeJsonResult(out, false, CommonUtil.getErrorMsg("NO_PARAM"));
 				return;
 			}
 
-			int del_cnt = db.delete("channel.deleteChannel", phone_num);
+			argMap.clear();
+			argMap.put("phone_num",PhoneNum);
+			argMap.put("phone_ip",PhoneIp);
+
+			int del_cnt = db.delete("channel.deleteChannel", argMap);
 			if(del_cnt < 1) 
 			{
 				Site.writeJsonResult(out, false, "삭제에 실패했습니다.");

@@ -50,7 +50,7 @@
 			{ title: "MAC", dataIndx: "mac", hidden: true, sortable: false },
 			{ title: "등록/수정", dataIndx: "act_type", hidden: true },
 			{ title: "삭제", width: 40, editable: false, sortable: false, render: function (ui) {
-					return "<img src='../img/icon/ico_delete.png' class='btn_delete'/>";
+					return "<img src='../img/icon/ico_delete.png' class='new_btn_delete'/>";
 				}
 			}
 		];
@@ -74,7 +74,49 @@
 		});
 	
 		$grid = $("#grid").pqGrid(obj);
-	
+
+		console.log($grid);
+
+		$grid.on("pqgridrefresh", function(event, ui) {
+			console.log("refresh");
+			$("#grid").find(".new_btn_delete")
+					.unbind("click")
+					.bind("click", function (evt) {
+						if (confirm("정말로 삭제 하시겠습니까?")) {
+							var $tr = $(this).closest("tr");
+							var rowIndx = $grid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
+							var rowData = $grid.pqGrid("getRowData", { rowIndxPage: rowIndx });
+							var phone_num = rowData["phone_num"];
+							var phone_ip = rowData["phone_ip"];
+
+							//cabort
+							$.ajax({
+								type: "POST",
+								url: "remote_channel_list_proc.jsp",
+								async: false,
+								data: "step=delete&phone_num="+phone_num+"&phone_ip="+phone_ip,
+								dataType: "json",
+								success:function(dataJSON){
+									if(dataJSON.code=="OK") {
+										alert("정상적으로 삭제 되었습니다.");
+										$grid.pqGrid("refreshDataAndView");
+									} else {
+										alert(dataJSON.msg);
+										return false;
+									}
+								},
+								error:function(req,status,err){
+									alertJsonErr(req,status,err);
+									return false;
+								}
+							});
+
+						}
+					});
+
+		});
+
+
 		// 채널 등록폼 오픈시
 		$("#modalRegiForm").on("show.bs.modal", function(e) {
 			var system_code = $("#regi input[name=system_code]").val();
