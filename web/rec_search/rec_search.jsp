@@ -573,7 +573,8 @@
 					<div class="labelDiv">
 						<label class="simple_tag">통화시간</label>
 						<select class="form-control search_combo_range_2" name="rec_call_time1">
-                            <option value="20">20초</option>
+							<option value="0">0초</option>
+							<option value="20">20초</option>
                             <option value="30">30초</option>
 							<option value="60">1분</option>
                             <option value="90">1분30초</option>
@@ -586,6 +587,7 @@
 							<option value="3600">60분</option>
 						</select> ~
 						<select class="form-control search_combo_range_2" name="rec_call_time2">
+							<option value="0">0초</option>
                             <option value="20">20초</option>
                             <option value="30">30초</option>
                             <option value="60">1분</option>

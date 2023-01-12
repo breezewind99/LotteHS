@@ -13,8 +13,11 @@
 		Map<String, Object> cntmap = db.selectOne("mon_db.selectAni", argMap);
 
 		//oracle 오류 발생하여 수정 - CJM(20190521)
-		String ani = cntmap.get("ani").toString();
-		ani = "01098580428";
+		String ani = "";
+		try {
+			ani = cntmap.get("ani").toString();
+		} catch (Exception e) {}
+		//ani = "01098580428";
 %>
 <%=ani%>
 <%
