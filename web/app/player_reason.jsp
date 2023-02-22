@@ -9,6 +9,7 @@
 		String seq_no = CommonUtil.getParameter("seq");
 		String user_id = CommonUtil.getParameter("user_id");
 		String user_name = CommonUtil.getParameter("user_name");
+		String rec_seq = CommonUtil.getParameter("rec_seq");
 		//out.print(info);
 		// 파라미터 체크
 		if(!CommonUtil.hasText(user_id))
@@ -45,7 +46,7 @@
 			<input type="hidden" name="rec_keycode" value="<%=seq_no %>"/>
 			<input type="hidden" name="user_id" value="<%=user_id %>"/>
 			<input type="hidden" name="user_name" value="<%=user_name %>"/>
-
+			<input type="hidden" name="rec_seq" value="<%=rec_seq %>"/>
 			<input type="hidden" name="reason_code" value="">
 			<input type="hidden" name="reason_text" value="">
 		</form>

@@ -178,17 +178,13 @@
 		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
 		and (
 		    rec_keycode in (
-				to_char((
-					select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+					select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN to_char(rec_keycode) ELSE to_char(REC_CONF_CODE) END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
 					and a.rec_mode = '0'
-				))
 			)
 			OR
 		    rec_conf_code in (
-		    	to_char((
-		    		select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN rec_keycode ELSE REC_CONF_CODE END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+		    		select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN to_char(rec_keycode) ELSE to_char(REC_CONF_CODE) END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
 		    		and a.rec_mode = '0'
-				))
 			)
         )
 		and rec_mode = '0'

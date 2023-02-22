@@ -7,6 +7,8 @@
 	// 상담 APP 청취
 	// http://localhost:8080/app/player.jsp?date=2022-08-23&keycode=00001025271661214629
 	// https://cs-rec.lotteimall.com/app/player.jsp?rec_datm=2022-08-23&rec_keycode=00001025271661214629&user_id=test&user_name=%ED%85%8C%EC%8A%A4%ED%8A%B8
+	// 내부 테스트용
+	// http://localhost:8080/app/player.jsp?rec_datm=2022-08-23&rec_keycode=00001025181661206381&user_id=test&user_name=%ED%85%8C%EC%8A%A4%ED%8A%B8&reason_code=11
 	// DB Connection Object
 	Db db = null;
 
@@ -23,13 +25,13 @@
 		String user_name = CommonUtil.getParameter("user_name");
 		String reason_code = CommonUtil.getParameter("reason_code");
 		String reason_text = CommonUtil.getParameter("reason_text");
-		int rec_seq = CommonUtil.getParameterInt("rec_seq", "-1");
+		String rec_seq = CommonUtil.getParameter("rec_seq");
 
 		
 		// 파라미터 체크
 		if(!CommonUtil.hasText(reason_code) && !CommonUtil.hasText(reason_text))
 		{
-			out.print("<script>location.replace('player_reason.jsp?rec_datm="+ rec_datm +"&rec_keycode="+ rec_keycode +"&user_id="+ user_id +"&user_name="+ user_name +"')</script>");
+			out.print("<script>location.replace('player_reason.jsp?rec_datm="+ rec_datm +"&rec_keycode="+ rec_keycode +"&user_id="+ user_id +"&user_name="+ user_name +"&rec_seq="+ rec_seq +"')</script>");
 			return;
 		}
 		
@@ -49,10 +51,12 @@
 			return;
 		}
 
+		logger.info("Seq : " + rec_seq);
 		// 현재 클릭된 녹취이력 정보 별도 저장
 		for(int i=0;i<list.size();i++) 
 		{
-			if(list.get(i).get("rec_keycode").toString().equals(rec_keycode)) 
+			logger.info("Check Seq : " + list.get(i).get("rec_seq").toString());
+			if(list.get(i).get("rec_seq").toString().equals(rec_seq))
 			{
 				curdata = list.get(i);
 				break;
@@ -63,6 +67,7 @@
 		if(curdata.size() < 1) 
 		{
 			curdata = list.get(0);
+			rec_seq = list.get(0).get("rec_seq").toString();
 		}
 		
 		// S : 연관녹취이력 ===========================================
@@ -74,15 +79,15 @@
 			dispRelateRecord = "";
 			for(Map<String, Object> item : list) 
 			{
-				htmlRelateRecord +=
-					"<tr class='" + (rec_keycode.equals(item.get("rec_keycode").toString()) ? "odd4" : "") + "'>"+
-						"<td><a href='#none' "+
-							"onclick=\"playRecFileLink('"+item.get("rec_datm")+"', '" + item.get("local_no") + "', '" + item.get("rec_filename") + "', '" + rec_keycode + "','0','');\"><u>" + item.get("rec_datm") + "</u></a></td>"+
-						"<td>" + item.get("rec_call_time") + "</td>"+
-						"<td>" + Mask.getMaskedName(item.get("user_name")) + "</td>"+
-						"<td>" + item.get("local_no") + "</td>"+
-						"<td>" + Mask.getMaskedPhoneNum(item.get("cust_tel").toString().trim()) + "</td>"+
-					"</tr>";
+				htmlRelateRecord +=	"<tr class='" + (rec_seq.equals(item.get("rec_seq").toString()) ? "odd4" : "") + "'>";
+				htmlRelateRecord +="<td>";
+				htmlRelateRecord +="<a href='/app/player.jsp?rec_datm="+rec_datm+"&rec_keycode="+rec_keycode+"&user_id="+user_id+"&user_name="+user_name+"&rec_seq="+item.get("rec_seq")+"' >";
+				htmlRelateRecord +="<u>" + item.get("rec_datm") + "</u></a></td>";
+				htmlRelateRecord +="<td>" + item.get("rec_call_time") + "</td>";
+				htmlRelateRecord +="<td>" + Mask.getMaskedName(item.get("user_name")) + "</td>";
+				htmlRelateRecord +="<td>" + item.get("local_no") + "</td>";
+				htmlRelateRecord +="<td>" + (item.get("cust_tel")!=null ? Mask.getMaskedPhoneNum(item.get("cust_tel").toString().trim()) : "") + "</td>";
+				htmlRelateRecord +="</tr>";
 			}
 		}
 		else
@@ -242,7 +247,7 @@
 				</tr>
 				<tr>
 					<td class="table-td">고객 전화번호</td>
-					<td><%=Mask.getMaskedPhoneNum(curdata.get("cust_tel").toString().trim()) %></td>
+					<td><%=(curdata.get("cust_tel")!=null ? Mask.getMaskedPhoneNum(curdata.get("cust_tel").toString().trim()) : "") %></td>
 				</tr>
 			</table>
 		</div>

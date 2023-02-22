@@ -159,10 +159,12 @@
 			out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_DATA"),"","close"));
 			return;
 		}
-	
+
+		logger.info("FileName : " + rec_filename);
 		// 현재 클릭된 녹취이력 정보 별도 저장
 		for(int i=0; i<relateRecList.size(); i++) 
 		{
+			logger.info("Check FileName : " + relateRecList.get(i).get("rec_filename").toString());
 			if(relateRecList.get(i).get("rec_filename").toString().equals(rec_filename)) 
 			{
 				curRec = relateRecList.get(i);
