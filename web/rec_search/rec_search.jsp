@@ -83,9 +83,24 @@
 </style>
 <script type="text/javascript" src="../js/plugins/tree/jstree.min.js"></script>
 <script type="text/javascript" src="../js/clipboard.min.js"></script>
+<script type="text/javascript" src="../js/aes.js"></script>
+<script type="text/javascript" src="../js/aescommon.js"></script>
 <script type="text/javascript">
 
 	new ClipboardJS('.copy');
+
+    var clipboardTel = new ClipboardJS('.copyTel',{
+        text: function(trigger) {
+            var encTel = trigger.getAttribute('data-clipboard-text');
+            var decryptTel = CryptoJS.AES.decrypt(encTel, rkEncryptionKey, {mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: rkEncryptionIv});
+            var Tel = decryptTel.toString(CryptoJS.enc.Utf8).replace(/\s|-|:|\./gi,"");
+            return Tel;
+        }
+    });
+
+    clipboardTel.on('success', function(e) {
+        e.clearSelection();
+    });
 
 	//청취/다운 사유입력 유무
 	var isExistPlayDownReason = <%=Finals.isExistPlayDownReason%>;
@@ -465,17 +480,12 @@
 		openPopup("memo.jsp?rec_datm="+rec_datm+"&local_no="+rowData["local_no"]+"&rec_filename="+rowData["rec_filename"],"_memo","478","590","yes","center");
 	};
 
-	function copyTel(rowIndx) {
-		var rowData = $grid.pqGrid("getRowData", { rowIndxPage: rowIndx });
-		var Tel = rowData["n_cust_tel"].replace(/\s|-|:|\./gi,"");
-		console.log(Tel);
-
-		var tempInput = document.createElement("input");
-		tempInput.setAttribute("type", "text");
-		tempInput.setAttribute("value", Tel);
-		tempInput.select();
-		document.execCommand( 'Copy' );
-		alert( 'URL 이 복사 되었습니다.' );
+	function copyTel(control, rowIndx) {
+        var rkEncryptionKey = CryptoJS.enc.Base64.parse('u/Gu5posvwDsXUnV5Zaq4g==');
+        var rkEncryptionIv = CryptoJS.enc.Base64.parse('5D9r9ZVzEYYgha93/aUK2w==');
+        var decryptTel = CryptoJS.AES.decrypt(rowIndx, rkEncryptionKey, {mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7, iv: rkEncryptionIv});
+		var Tel = decryptTel.toString(CryptoJS.enc.Utf8).replace(/\s|-|:|\./gi,"");
+        $(control).attr('data-clipboard-text',  Tel);
 	}
 	//다중다운로드
 	function getSelectedRows() 

@@ -165,7 +165,7 @@
 				</choose>
 			</if>
 		) U
-		order by part_code
+		order by parent_code, part_name
 	</select>
 	
 	<!-- tree 목록 조회 (시스템) selectSystemTree -->

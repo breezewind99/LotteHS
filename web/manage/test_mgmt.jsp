@@ -41,7 +41,7 @@
 			//tree node를 클릭하면 해당하는 grid load
 			if(data.node.type != "depth0") 
 			{
-				var url = "channel_list.jsp";
+				var url = "test_list.jsp";
 				var param = { type: data.node.type, system_code: data.node.id, system_name: data.node.text };
 	
 				$("#outer_grid").load(url, param, function(response, status, xhr){

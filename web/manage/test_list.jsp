@@ -52,7 +52,71 @@
 			{ title: "삭제", width: 40, editable: false, sortable: false, render: function (ui) {
 					return "<img src='../img/icon/ico_delete.png' class='new_btn_delete'/>";
 				}
+			},
+			{ title: "대그룹", width: 150, dataIndx: "user_bpart",
+				editor: {
+					type: 'select',
+					options: [{'1':'녹취 서버'}, {'2':'백업 서버'}, {'0':'기타 서버'}],
+					getData: function(ui) {
+						console.log("test");
+					}
+				},
+
+				cls:'user_bpart',
+				render: function(ui) {
+					var options = ui.column.editor.options,
+							cellData = ui.cellData;
+					for(var i = 0; i < options.length; i++)
+					{
+						var option = options[i];
+						if(option[cellData])
+						{
+							return option[cellData];
+						}
+					}
+				},
+			},
+			{ title: "중그룹", width: 150, dataIndx: "user_mpart",
+				editor: {
+					type: 'select',
+					options: [{'1':'녹취 서버'}, {'2':'백업 서버'}, {'0':'기타 서버'}]
+				},
+				cls:'user_mpart',
+				render: function(ui) {
+					var options = ui.column.editor.options,
+							cellData = ui.cellData;
+					for(var i = 0; i < options.length; i++)
+					{
+						var option = options[i];
+						if(option[cellData])
+						{
+							return option[cellData];
+						}
+					}
+				},
+			},
+			{ title: "소그룹", width: 150, dataIndx: "user_spart",
+				editor: {
+					type: 'select',
+					options: []
+				},
+				cls:'user_spart',
+				render: function(ui) {
+
+					var options = ui.column.editor.options,
+							cellData = ui.cellData;
+					for(var i = 0; i < options.length; i++)
+					{
+						var option = options[i];
+						if(option[cellData])
+						{
+							return option[cellData];
+						}
+					}
+
+				},
 			}
+
 		];
 	
 		var baseDataModel = getBaseGridDM("<%=page_id%>");
@@ -75,10 +139,7 @@
 	
 		$grid = $("#grid").pqGrid(obj);
 
-		console.log($grid);
-
 		$grid.on("pqgridrefresh", function(event, ui) {
-			console.log("refresh");
 			$("#grid").find(".new_btn_delete")
 					.unbind("click")
 					.bind("click", function (evt) {
@@ -113,7 +174,6 @@
 
 						}
 					});
-
 		});
 
 

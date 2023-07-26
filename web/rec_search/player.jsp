@@ -215,7 +215,7 @@
 		
 		//if(Finals.isDev) file_url = "http://192.168.0.115:8889/20170712132127_7858.wav";
 		//if(Finals.isDev) file_url = "http://192.168.0.115:8888/?refer=ZjPhCD9M55IRFodh0aYkZw/3dCsTdZRPdzB30xoe0ludKUEK7ydEhhUdQXOeh/7RHXYWgY+CF+V5/nH9rnXjIg==.wav";
-		//file_url = "http://127.0.0.1:8888/refer=01|20220827011836|20220823/19/20220823193748_19906.mp3";
+		//file_url = "http://127.0.0.1:8080/rec_search/audio.jsp?refer=7t3OC3fve1FsTnENp%2FIo8Yg%2BFkrU%2FSh1mTPXVNkJwMI75gtPohEf%2BRJDzxs7lZEW4DejeNcxlowtzEpvCvjlnQg3%2FuO52bohtBnv%2Fojj6wtUf0jFx%2FCUzu6zOP9o630fjfqNonyR3IyhhH%2F61iGfIA%3D%3D.mp3";
 		String fft_ext = ("88".equals(curRec.get("system_code").toString())) ? "nmf" : "fft";
 		if(file_url == null || "".equals(file_url)) 
 		{
