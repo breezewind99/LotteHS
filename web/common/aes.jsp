@@ -34,4 +34,49 @@
     }
   }
 
+  public String EncKey() {
+    try {
+      byte[] _IV = null;
+      byte[] _Key = null;
+      _Key = new byte[16];
+      _IV = new byte[16];
+      MessageDigest hash = null;
+      hash = MessageDigest.getInstance("SHA-256");
+      Base64.encodeBase64String(hash.digest(CommonUtil.getEncKey().getBytes("UTF-8")));
+      byte[] key = hash.digest(CommonUtil.getEncKey().getBytes("UTF-8"));
+
+      int i;
+      for (i = 0; i < 16; ++i) {
+        _Key[i] = key[i];
+      }
+
+      return Base64.encodeBase64String(_Key);
+    } catch (Exception e) {
+      throw new RuntimeException("This should not happen in production.", e);
+    }
+  }
+
+    public String EncIv() {
+      try {
+        byte[] _IV = null;
+        byte[] _Key = null;
+        _Key = new byte[16];
+        _IV = new byte[16];
+        MessageDigest hash = null;
+        hash = MessageDigest.getInstance("SHA-256");
+        Base64.encodeBase64String(hash.digest(CommonUtil.getEncKey().getBytes("UTF-8")));
+        byte[] key = hash.digest(CommonUtil.getEncKey().getBytes("UTF-8"));
+
+        int i;
+
+        for(i = 16; i < 32; ++i) {
+          _IV[i - 16] = key[i];
+        }
+        return Base64.encodeBase64String(_IV);
+      } catch (Exception e) {
+        throw new RuntimeException("This should not happen in production.", e);
+      }
+
+  }
+
 %>
