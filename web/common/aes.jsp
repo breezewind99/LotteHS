@@ -4,6 +4,7 @@
 <%@ page import="java.security.spec.AlgorithmParameterSpec" %>
 <%@ page import="javax.crypto.spec.IvParameterSpec" %>
 <%@ page import="javax.crypto.Cipher" %>
+<%@ page import="java.security.MessageDigest" %>
 <%!
   public static String decryptMsg(final String encrypted) {
     try {

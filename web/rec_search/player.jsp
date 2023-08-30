@@ -156,8 +156,11 @@
 
 		if(relateRecList.size() < 1) 
 		{
-			out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_DATA"),"","close"));
-			return;
+			relateRecList = db.selectList("rec_search.selectRelationListBackup", argMap);
+            if (relateRecList.size() < 1) {
+				out.print(CommonUtil.getPopupMsg(CommonUtil.getErrorMsg("NO_DATA"), "", "close"));
+				return;
+			}
 		}
 
 		logger.info("FileName : " + rec_filename);

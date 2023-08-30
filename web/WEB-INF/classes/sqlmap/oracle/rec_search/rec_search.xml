@@ -209,6 +209,49 @@
 		</if>
 		order by rec_datm asc, rec_start_time asc
 	</select>
+
+	<!-- 연관 녹취이력 조회 selectRelationListBackup -->
+	<select id="selectRelationListBackup" parameterType="map" resultType="lowerMap">
+		/* 연관 녹취이력 조회 selectRelationListBackup */
+		select
+		rec_seq
+		,to_char(rec_datm, 'YYYY-MM-DD HH24:MI:SS') as rec_datm
+		,rec_date
+		,to_char(rec_start_time, 'HH24:MI:SS') as rec_start_time
+		,to_char(rec_call_time, 'HH24:MI:SS') as rec_call_time
+		,system_code
+		,rec_filename
+		,CASE NVL(custom_fld_08,' ') WHEN ' ' THEN rec_keycode else custom_fld_08 END as rec_keycode
+		,local_no
+		,user_id
+		,user_name
+		,nvl(rec_store_code, '0') as rec_store_code
+		,web_url
+		,cust_tel
+		from tbl_record
+		where 1=1
+		and rec_datm between to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') and to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		and (
+		rec_keycode in (
+		select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN to_char(rec_keycode) ELSE to_char(REC_CONF_CODE) END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+		and a.rec_mode = '1'
+		)
+		OR
+		rec_conf_code in (
+		select distinct CASE nvl(REC_CONF_CODE,' ') WHEN ' ' THEN to_char(rec_keycode) ELSE to_char(REC_CONF_CODE) END from tbl_record a where rec_datm BETWEEN to_date(#{rec_date} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS')		AND to_date(#{rec_date} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') AND (a.rec_keycode = #{rec_keycode} OR a.custom_fld_08 = #{rec_keycode} OR a.rec_conf_code = #{rec_keycode})
+		and a.rec_mode = '1'
+		)
+		)
+		and rec_mode = '1'
+		<if test='_user_level!=null and _user_level!="" and _user_level>"A"'>
+			<choose>
+				<when test='_user_level=="E"'>
+					and user_id = #{_user_id}
+				</when>
+			</choose>
+		</if>
+		order by rec_datm asc, rec_start_time asc
+	</select>
 	
 	<!-- 상담APP 연동페이지 selectRelationList2 -->
 	<select id="selectRelationList2" parameterType="map" resultType="lowerMap">
